@@ -64,14 +64,14 @@
 
   .back-link {
     display: inline-flex; align-items: center; gap: 6px;
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 12px;
     letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--muted); text-decoration: none;
     margin-bottom: 20px;
     transition: color 0.15s;
   }
   .back-link:hover { color: var(--accent); }
-  .back-link::before { content: '←'; font-size: 12px; }
+  .back-link::before { content: '←'; font-size: 14px; }
 
   .header-top {
     display: flex; align-items: flex-end;
@@ -92,7 +92,7 @@
     padding-bottom: 4px;
   }
   .session-tag {
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 12px;
     letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--accent);
     background: rgba(71,184,255,0.1);
@@ -101,7 +101,7 @@
     display: inline-block; margin-bottom: 8px;
   }
   .session-goal {
-    font-size: 11px; color: var(--muted);
+    font-size: 13px; color: var(--muted);
     font-family: var(--font-mono); letter-spacing: 0.08em;
     display: block;
   }
@@ -112,13 +112,13 @@
     margin-bottom: 28px; flex-wrap: wrap;
   }
   .week-bar-label {
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 12px;
     color: var(--muted); letter-spacing: 0.15em;
     text-transform: uppercase; white-space: nowrap;
   }
   .week-pills { display: flex; gap: 5px; flex-wrap: wrap; }
   .week-pill {
-    font-family: var(--font-mono); font-size: 11px;
+    font-family: var(--font-mono); font-size: 13px;
     padding: 4px 12px; border-radius: 100px;
     border: 1px solid var(--border);
     background: transparent; color: var(--muted);
@@ -140,18 +140,18 @@
     padding: 12px 14px;
   }
   .stat-box-value {
-    font-family: var(--font-display); font-size: 26px;
+    font-family: var(--font-display); font-size: 28px;
     color: var(--accent); line-height: 1;
   }
   .stat-box-label {
-    font-family: var(--font-mono); font-size: 9px;
+    font-family: var(--font-mono); font-size: 11px;
     color: var(--muted); letter-spacing: 0.12em;
     text-transform: uppercase; margin-top: 4px;
   }
 
   /* ── Section label ── */
   .section-label {
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 12px;
     color: var(--muted); letter-spacing: 0.18em;
     text-transform: uppercase; margin-bottom: 12px;
     display: flex; align-items: center; gap: 8px;
@@ -189,7 +189,7 @@
     display: flex; align-items: center; gap: 10px;
   }
   .superset-badge {
-    font-family: var(--font-mono); font-size: 9px;
+    font-family: var(--font-mono); font-size: 11px;
     letter-spacing: 0.14em; text-transform: uppercase;
     background: rgba(71,184,255,0.12);
     color: var(--accent);
@@ -197,7 +197,7 @@
     padding: 3px 8px; border-radius: 100px;
   }
   .solo-badge {
-    font-family: var(--font-mono); font-size: 9px;
+    font-family: var(--font-mono); font-size: 11px;
     letter-spacing: 0.14em; text-transform: uppercase;
     background: rgba(255,255,255,0.05);
     color: var(--muted);
@@ -205,11 +205,11 @@
     padding: 3px 8px; border-radius: 100px;
   }
   .rounds-label {
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 12px;
     color: var(--muted); letter-spacing: 0.08em;
   }
   .card-drag-handle {
-    color: var(--subtle); cursor: grab; font-size: 14px;
+    color: var(--subtle); cursor: grab; font-size: 16px;
     padding: 2px 4px; user-select: none;
     touch-action: none; transition: color 0.15s;
   }
@@ -245,7 +245,7 @@
   }
   .ex-name-block { flex: 1; min-width: 0; }
   .ex-label {
-    font-family: var(--font-mono); font-size: 9px;
+    font-family: var(--font-mono); font-size: 11px;
     letter-spacing: 0.12em; text-transform: uppercase;
     margin-bottom: 3px;
   }
@@ -255,11 +255,11 @@
   .ex-label.solo { color: var(--muted); }
 
   .ex-name {
-    font-size: 15px; font-weight: 600; color: var(--text);
+    font-size: 17px; font-weight: 600; color: var(--text);
     line-height: 1.2;
   }
   .ex-cue {
-    font-size: 11px; color: var(--muted);
+    font-size: 13px; color: var(--muted);
     margin-top: 3px; line-height: 1.4;
     font-style: italic;
   }
@@ -270,7 +270,7 @@
     align-items: flex-end; gap: 4px; flex-shrink: 0;
   }
   .ex-reps {
-    font-family: var(--font-mono); font-size: 11px;
+    font-family: var(--font-mono); font-size: 13px;
     color: var(--muted); letter-spacing: 0.06em;
     white-space: nowrap;
   }
@@ -283,7 +283,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     color: var(--text);
-    font-family: var(--font-mono); font-size: 13px;
+    font-family: var(--font-mono); font-size: 15px;
     text-align: center; padding: 5px 6px;
     transition: border-color 0.15s;
     -moz-appearance: textfield;
@@ -296,7 +296,7 @@
     background: rgba(71,184,255,0.06);
   }
   .weight-unit {
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 12px;
     color: var(--muted); letter-spacing: 0.08em;
   }
 
@@ -372,17 +372,17 @@
     align-items: center; justify-content: center;
   }
   #rest-countdown {
-    font-family: var(--font-display); font-size: 52px;
+    font-family: var(--font-display); font-size: 54px;
     color: var(--text); line-height: 1;
   }
   .rest-label {
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 12px;
     color: var(--muted); letter-spacing: 0.14em;
     text-transform: uppercase; margin-top: 4px;
   }
   .rest-controls { display: flex; gap: 12px; }
   .rest-btn {
-    font-family: var(--font-mono); font-size: 11px;
+    font-family: var(--font-mono); font-size: 13px;
     letter-spacing: 0.1em; text-transform: uppercase;
     padding: 10px 20px; border-radius: 100px;
     border: 1px solid var(--border);
@@ -402,7 +402,7 @@
   }
   .action-btn {
     flex: 1; padding: 13px;
-    font-family: var(--font-mono); font-size: 11px;
+    font-family: var(--font-mono); font-size: 13px;
     letter-spacing: 0.12em; text-transform: uppercase;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border);
@@ -423,7 +423,7 @@
     transform: translateX(-50%) translateY(16px);
     background: var(--surface-2); border: 1px solid var(--border);
     border-radius: 100px; padding: 10px 20px;
-    font-family: var(--font-mono); font-size: 11px;
+    font-family: var(--font-mono); font-size: 13px;
     letter-spacing: 0.1em; color: var(--text);
     opacity: 0; transition: all 0.25s ease;
     pointer-events: none; white-space: nowrap; z-index: 200;
@@ -446,13 +446,13 @@
   /* Mobile */
   @media (max-width: 480px) {
     .stats-row { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .stat-box-value { font-size: 22px; }
+    .stat-box-value { font-size: 24px; }
   }
   /* ── Day Strip ── */
   .day-strip-wrap { margin-bottom: 28px; }
   .day-strip { display: flex; gap: 6px; flex-wrap: wrap; }
   .day-strip-pill {
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 12px;
     padding: 5px 11px; border-radius: 100px;
     border: 1px solid var(--border);
     background: transparent; color: var(--muted);
@@ -467,7 +467,7 @@
   }
   /* ── Dashboard pill ── */
   .week-pill-dash {
-    font-family: var(--font-mono); font-size: 11px;
+    font-family: var(--font-mono); font-size: 13px;
     padding: 4px 12px; border-radius: 100px;
     border: 1px solid rgba(255,255,255,0.18);
     background: transparent; color: #a0a0a0;
