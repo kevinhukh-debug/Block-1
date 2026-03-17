@@ -1008,35 +1008,33 @@ const DAYS = [
 /* ── FAQ Data ── */
 const FAQS = [
   {
-    q: 'How do I use the weight inputs — do I log actual or target weight?',
+    q: `How do I use the weight inputs — do I log actual or target weight?`,
     a: `Log the weight you actually lifted. The app pre-fills a target based on your week and the progressive overload formula, but if you went heavier or lighter, change it. What you save is your record. The target is a floor, not a ceiling.`
   },
   {
-    q: 'Why are there no rest days?',
-    a: `The program is structured so training stress is distributed — run days are active recovery relative to lift days, and Zone 2 on Sunday is low enough intensity that it aids recovery rather than adding fatigue. The variety is the rest.
-
-If a full 7-day schedule isn't sustainable, here's how to scale back without breaking the program's logic:`,
+    q: `Why are there no rest days?`,
+    a: `The program is structured so training stress is distributed — run days are active recovery relative to lift days, and Zone 2 on Sunday is low enough intensity that it aids recovery rather than adding fatigue. The variety is the rest. If a full 7-day schedule is not sustainable, see the options below.`,
     extra: [
-      { label: '6-Day Option — drop Thursday Tempo', text: 'Keep all 5 lift days and Sunday Zone 2. Thursday's lactate threshold work accelerates aerobic development but sits on top of a Zone 2 foundation. Zone 2 alone will still build your aerobic base, just more gradually.' },
-      { label: '5-Day Option (Fixed) — drop Thursday Tempo + Saturday Leg', text: 'Keeps the 4 core lift days (Mon, Tue, Wed, Fri) and Sunday Zone 2. Tuesday already covers posterior chain volume sufficiently. Aerobic base stays intact. Strength progresses normally.' },
-      { label: '5-Day Option (Rotating Leg) — alternate Tue & Sat by week', text: 'Keep Zone 2 every week. Rotate Tuesday Lower and Saturday Leg on alternating weeks — odd weeks run Tuesday (quad dominant), even weeks run Saturday (glute/hip dominant). Full anterior and posterior chain coverage maintained across the block.' },
-      { label: 'General Rule', text: 'Never cut Monday, the Tuesday/Saturday rotation, Wednesday, or Friday — those are the strength core. Never cut Sunday Zone 2 — aerobic base continuity is the long game.' },
+      { label: `6-Day Option — drop Thursday Tempo`, text: `Keep all 5 lift days and Sunday Zone 2. Thursday tempo accelerates aerobic development but sits on top of a Zone 2 foundation. Zone 2 alone will still build your aerobic base, just more gradually.` },
+      { label: `5-Day Option (Fixed) — drop Thursday Tempo and Saturday Leg`, text: `Keeps the 4 core lift days (Mon, Tue, Wed, Fri) and Sunday Zone 2. Tuesday already covers posterior chain volume sufficiently. Aerobic base stays intact. Strength progresses normally.` },
+      { label: `5-Day Option (Rotating Leg) — alternate Tue and Sat by week`, text: `Keep Zone 2 every week. Rotate Tuesday Lower and Saturday Leg on alternating weeks — odd weeks run Tuesday (quad dominant), even weeks run Saturday (glute and hip dominant). Full anterior and posterior chain coverage maintained across the block.` },
+      { label: `General Rule`, text: `Never cut Monday, the Tuesday/Saturday rotation, Wednesday, or Friday — those are the strength core. Never cut Sunday Zone 2 — aerobic base continuity is the long game.` },
     ]
   },
   {
-    q: 'What's the difference between Anchor and Flex exercises?',
+    q: `What is the difference between Anchor and Flex exercises?`,
     a: `Anchor exercises are fixed — they always appear at the top and never get reordered. They are the primary movers for that day (Back Squat on Tuesday, Hip Thrust on Saturday, Wide Grip Lat Pulldown on Friday). Flex exercises are everything else — drag them into any order to match equipment availability or how you are feeling that session.`
   },
   {
-    q: 'How does progressive overload work in this program?',
+    q: `How does progressive overload work in this program?`,
     a: `Each anchor and select flex exercise has a weekly weight delta built in. Every time you advance a week, the target weight auto-calculates. Week 2 adds one delta over Week 1, Week 3 adds two, and so on through Week 6. Week 7 holds at Week 6 weight as a deload — no new loading stress, just consolidation of the previous six weeks of work.`
   },
   {
-    q: 'What's the difference between the Tuesday and Saturday leg days?',
+    q: `What is the difference between the Tuesday and Saturday leg days?`,
     a: `Tuesday is quad and strength dominant — Back Squat leads, heavier loads, lower reps. The goal is strength accumulation on the primary compound movement. Saturday is glute and hip dominant — Hip Thrust leads, more volume, focused on posterior chain and hip health to support increasing run mileage. Running hard on a quad-fatigued base is how overuse injuries happen. Saturday exists to prevent that.`
   },
   {
-    q: 'What does Week 7 Deload look like?',
+    q: `What does Week 7 Deload look like?`,
     a: `All weights auto-set to Week 6 levels with no additional progression. Volume and intensity stay the same on paper — the deload is the absence of new loading stress. Your joints, connective tissue, and CNS get a full week to absorb and adapt to the previous six weeks of work. Do not skip it and do not add weight. The next block starts stronger because of it.`
   },
 ];
