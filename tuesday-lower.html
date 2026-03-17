@@ -58,11 +58,11 @@
   .stat-box-label { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px; }
   .section-label { font-family: var(--font-mono); font-size: 12px; color: var(--muted); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
   .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-  .exercise-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; position: relative; overflow: hidden; opacity: 0; animation: fadeUp 0.35s ease forwards; transition: border-color 0.2s; }
+  .exercise-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; position: relative; opacity: 0; animation: fadeUp 0.35s ease forwards; transition: border-color 0.2s; }
   .exercise-card:hover { border-color: rgba(255,255,255,0.12); }
   .exercise-card.anchor-card { --card-accent: var(--anchor-color); }
   .exercise-card.flex-card   { --card-accent: var(--flex-color); }
-  .exercise-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--card-accent); }
+  .exercise-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--card-accent); border-radius: var(--radius) var(--radius) 0 0; }
   .card-progress { height: 2px; background: var(--surface-2); overflow: hidden; }
   .card-progress-fill { height: 100%; background: var(--card-accent); transition: width 0.3s ease; width: 0%; }
   .card-inner { padding: 16px 18px; }
@@ -99,7 +99,8 @@
   .set-dot:hover { border-color: var(--card-accent); background: rgba(255,255,255,0.06); }
   .set-dot.done { background: var(--card-accent); border-color: var(--card-accent); }
   .set-dot.done::after { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%23000' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat; }
-  .drag-handle { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--subtle); cursor: grab; font-size: 16px; padding: 6px 4px; user-select: none; touch-action: none; z-index: 2; }
+  .drag-handle { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--subtle); cursor: grab; font-size: 16px; padding: 8px 6px; user-select: none; touch-action: none; z-index: 2; transition: color 0.15s; }
+  .drag-handle:hover { color: var(--accent); }
   .drag-handle:active { cursor: grabbing; }
   .exercise-card.anchor-card .drag-handle { display: none; }
   .exercise-card.dragging { opacity: 0.4; }
@@ -118,11 +119,9 @@
   .rest-btn:hover { border-color: var(--accent); color: var(--accent); }
   .rest-btn.primary { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
   .rest-btn.primary:hover { opacity: 0.9; }
-  .action-row { display: flex; gap: 10px; margin-top: 28px; }
-  .action-btn { flex: 1; padding: 13px; font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; transition: all 0.15s; }
-  .action-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .action-btn.save-btn { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
-  .action-btn.save-btn:hover { opacity: 0.9; }
+  .reset-link-wrap { text-align: center; margin-top: 32px; padding-bottom: 8px; }
+  .reset-link { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--subtle); background: none; border: none; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; transition: color 0.15s; padding: 0; }
+  .reset-link:hover { color: var(--muted); }
   #toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px); background: var(--surface-2); border: 1px solid var(--border); border-radius: 100px; padding: 10px 20px; font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.1em; color: var(--text); opacity: 0; transition: all 0.25s ease; pointer-events: none; white-space: nowrap; z-index: 200; }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .drag-clone { position: fixed; pointer-events: none; z-index: 999; opacity: 0.85; border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0,0,0,0.6); transform: rotate(1.5deg); }
@@ -208,9 +207,8 @@
   <div id="anchor-zone"></div>
   <div class="section-label">Flex</div>
   <div id="flex-zone"></div>
-  <div class="action-row">
-    <button class="action-btn" id="reset-btn">Reset</button>
-    <button class="action-btn save-btn" id="save-btn">Save Session</button>
+  <div class="reset-link-wrap">
+    <button class="reset-link" id="reset-btn">Reset session</button>
   </div>
 </div>
 
@@ -282,7 +280,9 @@ function sanitiseState(raw) {
 }
 
 function loadState() { try { const raw = JSON.parse(localStorage.getItem(STORAGE_KEY)); return sanitiseState(raw) || defaultState(); } catch { return defaultState(); } }
-function saveState() { state.week = currentWeek; state.flexOrder = flexOrder; localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); showToast('Session saved ✓'); }
+function saveState(silent) { state.week = currentWeek; state.flexOrder = flexOrder; localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); if (!silent) showToast('✓ Saved'); }
+let autoSaveTimer = null;
+function autoSave() { clearTimeout(autoSaveTimer); autoSaveTimer = setTimeout(() => saveState(false), 400); }
 
 function renderAll() {
   renderZone('anchor-zone', EXERCISES.filter(e => e.type === 'anchor'));
@@ -337,7 +337,7 @@ function renderZone(zoneId, exercises) {
     const repsEl = document.createElement('div'); repsEl.className = 'card-reps'; repsEl.textContent = `${ex.sets}×${ex.reps}`; rightTop.appendChild(repsEl);
     const wrap = document.createElement('div'); wrap.className = 'weight-wrap';
     const input = document.createElement('input'); input.type = 'number'; input.className = 'weight-input'; input.value = exState.weight; input.min = 0; input.max = 999; input.step = 2.5;
-    input.addEventListener('change', () => { const v = parseFloat(input.value); if (isNaN(v) || v < 0 || v > 999 || !isFinite(v)) { input.value = exState.weight; return; } state.exercises[ex.id].weight = v; });
+    input.addEventListener('change', () => { const v = parseFloat(input.value); if (isNaN(v) || v < 0 || v > 999 || !isFinite(v)) { input.value = exState.weight; return; } state.exercises[ex.id].weight = v; autoSave(); });
     const unit = document.createElement('span'); unit.className = 'weight-unit'; unit.textContent = 'lbs';
     wrap.appendChild(input); wrap.appendChild(unit); rightTop.appendChild(wrap);
     right.appendChild(rightTop);
@@ -346,7 +346,7 @@ function renderZone(zoneId, exercises) {
     const dots = document.createElement('div'); dots.className = 'set-dots';
     exState.sets.forEach((done, si) => {
       const dot = document.createElement('button'); dot.className = 'set-dot' + (done ? ' done' : ''); dot.setAttribute('aria-label', `Set ${si + 1}`);
-      dot.addEventListener('click', () => { const nd = !state.exercises[ex.id].sets[si]; state.exercises[ex.id].sets[si] = nd; dot.classList.toggle('done', nd); updateCardProgress(ex); updateStats(); if (nd) startRest(ex.restSeconds); });
+      dot.addEventListener('click', () => { const nd = !state.exercises[ex.id].sets[si]; state.exercises[ex.id].sets[si] = nd; dot.classList.toggle('done', nd); updateCardProgress(ex); updateStats(); if (nd) startRest(ex.restSeconds); autoSave(); });
       dots.appendChild(dot);
     });
     inner.appendChild(dots);
@@ -386,7 +386,7 @@ function tickRest() { countdown.textContent = restRemaining; circle.style.stroke
 function endRest() { clearInterval(restInterval); overlay.classList.remove('active'); }
 document.getElementById('rest-skip').addEventListener('click', endRest);
 document.getElementById('rest-add').addEventListener('click', () => { restRemaining += 30; restTotal = Math.max(restTotal, restRemaining); tickRest(); });
-document.getElementById('save-btn').addEventListener('click', saveState);
+/* ── Reset ── */
 document.getElementById('reset-btn').addEventListener('click', () => { if (confirm('Reset all sets and weights for this session?')) { state = defaultState(); localStorage.removeItem(STORAGE_KEY); renderAll(); showToast('Session reset'); } });
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200); }
 

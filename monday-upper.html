@@ -18,6 +18,7 @@
     --muted:     #666;
     --subtle:    #333;
     --accent:    #47b8ff;
+    --accent-rgb: 71,184,255;
     --anchor:    #47b8ff;
     --flex:      rgba(71,184,255,0.55);
 
@@ -167,7 +168,6 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     margin-bottom: 12px;
-    overflow: hidden;
     position: relative;
     opacity: 0;
     animation: fadeUp 0.35s ease forwards;
@@ -176,6 +176,7 @@
     content: '';
     position: absolute; top: 0; left: 0; right: 0;
     height: 2px; background: var(--accent);
+    border-radius: var(--radius) var(--radius) 0 0;
   }
 
   /* Card header */
@@ -210,8 +211,9 @@
   }
   .card-drag-handle {
     color: var(--subtle); cursor: grab; font-size: 16px;
-    padding: 2px 4px; user-select: none;
+    padding: 6px 8px; user-select: none;
     touch-action: none; transition: color 0.15s;
+    flex-shrink: 0;
   }
   .card-drag-handle:active { cursor: grabbing; }
   .card-drag-handle:hover  { color: var(--accent); }
@@ -396,26 +398,22 @@
   }
   .rest-btn.primary:hover { opacity: 0.9; }
 
-  /* ── Save / Reset row ── */
-  .action-row {
-    display: flex; gap: 10px; margin-top: 28px;
+  /* ── Muscle tags ── */
+  .muscle-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 5px; }
+  .muscle-tag { font-family: var(--font-mono); font-size: 11px; padding: 2px 7px; border-radius: 4px; border: 0.5px solid; }
+  .muscle-tag.primary { background: rgba(var(--accent-rgb), 0.12); color: var(--accent); border-color: rgba(var(--accent-rgb), 0.3); }
+  .muscle-tag.secondary { background: rgba(255,255,255,0.04); color: var(--muted); border-color: var(--border); }
+
+  /* ── Reset link ── */
+  .reset-link-wrap { text-align: center; margin-top: 32px; padding-bottom: 8px; }
+  .reset-link {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--subtle); background: none; border: none;
+    cursor: pointer; text-decoration: underline;
+    text-underline-offset: 3px; transition: color 0.15s; padding: 0;
   }
-  .action-btn {
-    flex: 1; padding: 13px;
-    font-family: var(--font-mono); font-size: 13px;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-    background: var(--surface); color: var(--muted);
-    cursor: pointer; transition: all 0.15s;
-    position: relative;
-  }
-  .action-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .action-btn.save-btn {
-    background: var(--accent); border-color: var(--accent);
-    color: #000; font-weight: 600;
-  }
-  .action-btn.save-btn:hover { opacity: 0.9; }
+  .reset-link:hover { color: var(--muted); }
 
   /* Toast */
   #toast {
@@ -544,9 +542,8 @@
   <div class="section-label">Supersets</div>
   <div id="cards-container"></div>
 
-  <div class="action-row">
-    <button class="action-btn" id="reset-btn">Reset</button>
-    <button class="action-btn save-btn" id="save-btn">Save Session</button>
+  <div class="reset-link-wrap">
+    <button class="reset-link" id="reset-btn">Reset session</button>
   </div>
 
 </div>
@@ -601,6 +598,7 @@ const WORKOUT = [
         cue: 'Superset with Seated Cable Row — upper chest when freshest',
         baseWeight: 60,
         delta: 2.5,
+        muscles: { primary: 'Upper Chest', secondary: ['Front Delt'] },
       },
       {
         id: 'ss1b',
@@ -611,6 +609,7 @@ const WORKOUT = [
         cue: 'Full scapular retraction at end — chest stays tall',
         baseWeight: 70,
         delta: 2.5,
+        muscles: { primary: 'Mid Back', secondary: ['Biceps'] },
       },
     ],
   },
@@ -629,6 +628,7 @@ const WORKOUT = [
         cue: 'Superset with Rear Delt Fly — shoulder balance',
         baseWeight: 45,
         delta: 2.5,
+        muscles: { primary: 'Front Delt', secondary: ['Triceps', 'Upper Chest'] },
       },
       {
         id: 'ss2b',
@@ -639,6 +639,7 @@ const WORKOUT = [
         cue: 'Pinch at top — rotator cuff health, never skip',
         baseWeight: 20,
         delta: 0,
+        muscles: { primary: 'Rear Delt', secondary: ['Rotator Cuff'] },
       },
     ],
   },
@@ -657,6 +658,7 @@ const WORKOUT = [
         cue: 'Superset with Hammer Curl — elbows in, tricep long head',
         baseWeight: 40,
         delta: 2.5,
+        muscles: { primary: 'Triceps', secondary: [] },
       },
       {
         id: 'ss3b',
@@ -667,6 +669,7 @@ const WORKOUT = [
         cue: 'Brachialis + long head — slow negative',
         baseWeight: 35,
         delta: 2.5,
+        muscles: { primary: 'Brachialis', secondary: ['Biceps'] },
       },
     ],
   },
@@ -685,6 +688,7 @@ const WORKOUT = [
         cue: 'Constant tension vs dumbbell — medial delt isolation',
         baseWeight: 15,
         delta: 0,
+        muscles: { primary: 'Medial Delt', secondary: [] },
       },
     ],
   },
@@ -703,6 +707,7 @@ const WORKOUT = [
         cue: 'Hip flexor + core — finish strong, controlled descent',
         baseWeight: 0,
         delta: 0,
+        muscles: { primary: 'Hip Flexors', secondary: ['Abs'] },
       },
     ],
   },
@@ -757,11 +762,17 @@ function loadState() {
   } catch { return defaultState(); }
 }
 
-function saveState() {
+function saveState(silent) {
   state.week = currentWeek;
   state.blockOrder = blockOrder;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  showToast('Session saved ✓');
+  if (!silent) showToast('✓ Saved');
+}
+
+let autoSaveTimer = null;
+function autoSave() {
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(() => saveState(false), 400);
 }
 
 function resetState() {
@@ -846,6 +857,24 @@ function renderCards() {
 
       const weightBlock = document.createElement('div');
       weightBlock.className = 'ex-weight-block';
+
+      // Muscle tags
+      if (ex.muscles) {
+        const tagsWrap = document.createElement('div');
+        tagsWrap.className = 'muscle-tags';
+        const pt = document.createElement('span');
+        pt.className = 'muscle-tag primary';
+        pt.textContent = ex.muscles.primary;
+        tagsWrap.appendChild(pt);
+        ex.muscles.secondary.forEach(m => {
+          const t = document.createElement('span');
+          t.className = 'muscle-tag secondary';
+          t.textContent = m;
+          tagsWrap.appendChild(t);
+        });
+        weightBlock.appendChild(tagsWrap);
+      }
+
       const repsEl = document.createElement('div');
       repsEl.className = 'ex-reps';
       repsEl.textContent = ex.reps + ' reps';
@@ -862,6 +891,7 @@ function renderCards() {
           const val = parseFloat(input.value);
           if (isNaN(val) || val < 0 || val > 999) { input.value = exState.weight; return; }
           state.exercises[ex.id].weight = val;
+          autoSave();
         });
         const unit = document.createElement('span');
         unit.className = 'weight-unit';
@@ -892,6 +922,7 @@ function renderCards() {
               state.exercises[bex.id].sets[si] = newDone;
             });
             if (newDone) startRest(block.restSeconds);
+            autoSave();
             renderAll();
           });
           dotsWrap.appendChild(dot);
@@ -1073,8 +1104,7 @@ document.getElementById('rest-add').addEventListener('click', () => {
   tickRest();
 });
 
-/* ── Save / Reset ── */
-document.getElementById('save-btn').addEventListener('click', saveState);
+/* ── Reset ── */
 document.getElementById('reset-btn').addEventListener('click', () => {
   if (confirm('Reset all sets and weights for this session?')) resetState();
 });

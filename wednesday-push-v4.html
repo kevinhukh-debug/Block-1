@@ -18,6 +18,7 @@
     --muted:     #666;
     --subtle:    #333;
     --accent:    #f5c518;
+    --accent-rgb: 245,197,24;
     --anchor-color: #ff6b35;
     --flex-color:   #47b8ff;
     --font-display: 'Bebas Neue', sans-serif;
@@ -145,7 +146,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     margin-bottom: 10px;
-    position: relative; overflow: hidden;
+    position: relative;
     opacity: 0; animation: fadeUp 0.35s ease forwards;
     transition: border-color 0.2s, background 0.2s;
   }
@@ -155,6 +156,7 @@
   .exercise-card::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0;
     height: 3px; background: var(--card-accent);
+    border-radius: var(--radius) var(--radius) 0 0;
   }
 
   /* Per-card progress bar — NEW */
@@ -252,12 +254,25 @@
     position: absolute; right: 14px; top: 50%;
     transform: translateY(-50%);
     color: var(--subtle); cursor: grab; font-size: 16px;
-    padding: 6px 4px; user-select: none; touch-action: none; z-index: 2;
+    padding: 8px 6px; user-select: none; touch-action: none; z-index: 2;
+    transition: color 0.15s;
   }
+  .drag-handle:hover { color: var(--accent); }
   .drag-handle:active { cursor: grabbing; }
   .exercise-card.anchor-card .drag-handle { display: none; }
   .exercise-card.dragging { opacity: 0.4; }
   .exercise-card.drag-over { border-color: var(--flex-color); background: rgba(71,184,255,0.05); }
+
+  /* Muscle tags */
+  .muscle-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
+  .muscle-tag { font-family: var(--font-mono); font-size: 11px; padding: 2px 7px; border-radius: 4px; border: 0.5px solid; }
+  .muscle-tag.primary { background: rgba(var(--accent-rgb), 0.12); color: var(--accent); border-color: rgba(var(--accent-rgb), 0.3); }
+  .muscle-tag.secondary { background: rgba(255,255,255,0.04); color: var(--muted); border-color: var(--border); }
+
+  /* Reset link */
+  .reset-link-wrap { text-align: center; margin-top: 32px; padding-bottom: 8px; }
+  .reset-link { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--subtle); background: none; border: none; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; transition: color 0.15s; padding: 0; }
+  .reset-link:hover { color: var(--muted); }
 
   /* ── Rest Timer ── */
   #rest-overlay {
@@ -304,24 +319,6 @@
     color: #000; font-weight: 600;
   }
   .rest-btn.primary:hover { opacity: 0.9; }
-
-  /* ── Actions ── */
-  .action-row { display: flex; gap: 10px; margin-top: 28px; }
-  .action-btn {
-    flex: 1; padding: 13px;
-    font-family: var(--font-mono); font-size: 13px;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-    background: var(--surface); color: var(--muted);
-    cursor: pointer; transition: all 0.15s;
-  }
-  .action-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .action-btn.save-btn {
-    background: var(--accent); border-color: var(--accent);
-    color: #000; font-weight: 600;
-  }
-  .action-btn.save-btn:hover { opacity: 0.9; }
 
   /* Toast */
   #toast {
@@ -449,9 +446,8 @@
   <div class="section-label" id="flex-label">Flex</div>
   <div id="flex-zone"></div>
 
-  <div class="action-row">
-    <button class="action-btn" id="reset-btn">Reset</button>
-    <button class="action-btn save-btn" id="save-btn">Save Session</button>
+  <div class="reset-link-wrap">
+    <button class="reset-link" id="reset-btn">Reset session</button>
   </div>
 </div>
 
@@ -485,14 +481,14 @@ const REST_DEFAULT  = 90;
 
 /* ── Exercise data ── */
 const EXERCISES = [
-  { id:'ex1', name:'Incline DB Press',        type:'anchor', typeLabel:'PRIMARY · ANCHOR',  sets:4, reps:'8–10',  baseWeight:65,  delta:2.5,  cue:'Leads every Push day — upper chest freshest = fastest gains' },
-  { id:'ex2', name:'Flat DB Press',           type:'anchor', typeLabel:'PRIMARY · ANCHOR',  sets:4, reps:'8–10',  baseWeight:80,  delta:2.5,  cue:'Progressive overload — target 105–110 lbs within 8 weeks' },
-  { id:'ex3', name:'Cable Crossover',         type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'12–15', baseWeight:30,  delta:0,    cue:'Full stretch at bottom — highest hypertrophy stimulus' },
-  { id:'ex4', name:'Pec Deck Fly',            type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'12–15', baseWeight:50,  delta:0,    cue:'Mind-muscle connection — squeeze, do not just move weight' },
-  { id:'ex5', name:'Tricep Pushdown',         type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:4, reps:'12–15', baseWeight:45,  delta:2.5,  cue:'After all pressing — straight bar, elbows locked at sides' },
-  { id:'ex6', name:'Overhead Tricep Ext.',    type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'10–12', baseWeight:35,  delta:2.5,  cue:'Long head stretch — keep elbows in tight' },
-  { id:'ex7', name:'Lateral Raise',           type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'15',    baseWeight:20,  delta:0,    cue:'Medial delt — light weight, full arc, lead with elbow' },
-  { id:'ex8', name:'Chest Dips',              type:'flex',   typeLabel:'COMPOUND+ · FLEX',  sets:3, reps:'8–10',  baseWeight:0,   delta:0,    cue:'Burnout finisher only — lean forward for chest emphasis' },
+  { id:'ex1', name:'Incline DB Press',        type:'anchor', typeLabel:'PRIMARY · ANCHOR',  sets:4, reps:'8–10',  baseWeight:65,  delta:2.5,  cue:'Leads every Push day — upper chest freshest = fastest gains', muscles:{ primary:'Upper Chest', secondary:['Front Delt'] } },
+  { id:'ex2', name:'Flat DB Press',           type:'anchor', typeLabel:'PRIMARY · ANCHOR',  sets:4, reps:'8–10',  baseWeight:80,  delta:2.5,  cue:'Progressive overload — target 105–110 lbs within 8 weeks',   muscles:{ primary:'Chest', secondary:['Front Delt','Triceps'] } },
+  { id:'ex3', name:'Cable Crossover',         type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'12–15', baseWeight:30,  delta:0,    cue:'Full stretch at bottom — highest hypertrophy stimulus',       muscles:{ primary:'Inner Chest', secondary:[] } },
+  { id:'ex4', name:'Pec Deck Fly',            type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'12–15', baseWeight:50,  delta:0,    cue:'Mind-muscle connection — squeeze, do not just move weight',   muscles:{ primary:'Chest', secondary:[] } },
+  { id:'ex5', name:'Tricep Pushdown',         type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:4, reps:'12–15', baseWeight:45,  delta:2.5,  cue:'After all pressing — straight bar, elbows locked at sides',   muscles:{ primary:'Triceps', secondary:[] } },
+  { id:'ex6', name:'Overhead Tricep Ext.',    type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'10–12', baseWeight:35,  delta:2.5,  cue:'Long head stretch — keep elbows in tight',                   muscles:{ primary:'Triceps Long Head', secondary:[] } },
+  { id:'ex7', name:'Lateral Raise',           type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'15',    baseWeight:20,  delta:0,    cue:'Medial delt — light weight, full arc, lead with elbow',       muscles:{ primary:'Medial Delt', secondary:[] } },
+  { id:'ex8', name:'Chest Dips',              type:'flex',   typeLabel:'COMPOUND+ · FLEX',  sets:3, reps:'8–10',  baseWeight:0,   delta:0,    cue:'Burnout finisher only — lean forward for chest emphasis',     muscles:{ primary:'Lower Chest', secondary:['Triceps'] } },
 ];
 
 let currentWeek = 2;
@@ -545,12 +541,14 @@ function loadState() {
   } catch { return defaultState(); }
 }
 
-function saveState() {
+function saveState(silent) {
   state.week = currentWeek;
   state.flexOrder = flexOrder;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  showToast('Session saved ✓');
+  if (!silent) showToast('✓ Saved');
 }
+let autoSaveTimer = null;
+function autoSave() { clearTimeout(autoSaveTimer); autoSaveTimer = setTimeout(() => saveState(false), 400); }
 
 /* ── Render ── */
 function renderAll() {
@@ -615,9 +613,27 @@ function renderZone(zoneId, exercises) {
     left.appendChild(nameRow);
     left.appendChild(cue);
 
-    /* Right: reps + weight */
+    /* Right: muscle tags + reps + weight */
     const right = document.createElement('div');
     right.className = 'card-right';
+
+    // Muscle tags
+    if (ex.muscles) {
+      const tagsWrap = document.createElement('div');
+      tagsWrap.className = 'muscle-tags';
+      const pt = document.createElement('span');
+      pt.className = 'muscle-tag primary';
+      pt.textContent = ex.muscles.primary;
+      tagsWrap.appendChild(pt);
+      ex.muscles.secondary.forEach(m => {
+        const t = document.createElement('span');
+        t.className = 'muscle-tag secondary';
+        t.textContent = m;
+        tagsWrap.appendChild(t);
+      });
+      right.appendChild(tagsWrap);
+    }
+
     const repsEl = document.createElement('div');
     repsEl.className = 'card-reps';
     repsEl.textContent = `${ex.sets}×${ex.reps}`;
@@ -635,6 +651,7 @@ function renderZone(zoneId, exercises) {
         const v = parseFloat(input.value);
         if (isNaN(v) || v < 0 || v > 999 || !isFinite(v)) { input.value = exState.weight; return; }
         state.exercises[ex.id].weight = v;
+        autoSave();
       });
       const unit = document.createElement('span');
       unit.className = 'weight-unit';
@@ -662,6 +679,7 @@ function renderZone(zoneId, exercises) {
         updateCardProgress(ex);
         updateStats();
         if (newDone) startRest(REST_DEFAULT);
+        autoSave();
       });
       dots.appendChild(dot);
     });
@@ -843,8 +861,7 @@ document.getElementById('rest-add').addEventListener('click', () => {
   tickRest();
 });
 
-/* ── Save / Reset ── */
-document.getElementById('save-btn').addEventListener('click', saveState);
+/* ── Reset ── */
 document.getElementById('reset-btn').addEventListener('click', () => {
   if (confirm('Reset all sets and weights for this session?')) {
     state = defaultState();
