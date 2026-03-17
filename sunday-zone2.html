@@ -124,10 +124,11 @@
   </header>
 
   <div class="week-bar">
-    <div class="week-bar-label">Week</div>
     <div class="week-pills" id="week-pills">
+      <a href="index.html" class="week-pill-dash">Dashboard</a>
+      <div class="week-divider"></div>
       <button class="week-pill" data-week="1">WK 1</button>
-      <button class="week-pill active" data-week="2">WK 2</button>
+      <button class="week-pill" data-week="2">WK 2</button>
       <button class="week-pill" data-week="3">WK 3</button>
       <button class="week-pill" data-week="4">WK 4</button>
       <button class="week-pill" data-week="5">WK 5</button>
@@ -217,11 +218,27 @@
 
 <script>
 'use strict';
+function initWeekSync() {
+  try {
+    const w = parseInt(localStorage.getItem('forge_week_v1'));
+    if (w >= 1 && w <= 7) {
+      document.querySelectorAll('.week-pill').forEach(b => b.classList.remove('active'));
+      const p = document.querySelector(`.week-pill[data-week="${w}"]`);
+      if (p) p.classList.add('active');
+      if (typeof updateWeek === 'function') updateWeek(w);
+    } else { setDefaultActive(); }
+  } catch { setDefaultActive(); }
+}
+function setDefaultActive() {
+  const first = document.querySelector('.week-pill[data-week="1"]');
+  if (first) first.classList.add('active');
+}
 document.getElementById('week-pills').addEventListener('click', e => {
   const btn = e.target.closest('.week-pill');
   if (!btn) return;
   document.querySelectorAll('.week-pill').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  try { localStorage.setItem('forge_week_v1', parseInt(btn.dataset.week)); } catch {}
 });
 </script>
 </body>

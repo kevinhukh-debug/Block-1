@@ -1112,9 +1112,6 @@ function renderDayGrid() {
     card.className = classes.join(' ');
     if (day.built && day.href) card.href = day.href;
 
-    if (day.built) {
-      card.innerHTML += `<div class="built-badge">✓ Live</div>`;
-    }
 
     card.innerHTML += `
       <div class="card-day-name"><span>${day.short}</span>${day.rest}</div>

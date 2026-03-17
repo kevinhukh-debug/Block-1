@@ -153,10 +153,11 @@
     </div>
   </header>
   <div class="week-bar">
-    <div class="week-bar-label">Week</div>
     <div class="week-pills" id="week-pills">
+      <a href="index.html" class="week-pill-dash">Dashboard</a>
+      <div class="week-divider"></div>
       <button class="week-pill" data-week="1">WK 1</button>
-      <button class="week-pill active" data-week="2">WK 2</button>
+      <button class="week-pill" data-week="2">WK 2</button>
       <button class="week-pill" data-week="3">WK 3</button>
       <button class="week-pill" data-week="4">WK 4</button>
       <button class="week-pill" data-week="5">WK 5</button>
@@ -322,7 +323,8 @@ function initCardDrag(card,handle){
   handle.addEventListener('touchend',()=>{if(dragClone){dragClone.remove();dragClone=null;}const over=document.querySelector('.exercise-card.drag-over');if(over&&dragSrcId){const tid=over.dataset.exId;if(tid&&tid!==dragSrcId){const si=flexOrder.indexOf(dragSrcId),ti=flexOrder.indexOf(tid);if(si!==-1&&ti!==-1){flexOrder.splice(si,1);flexOrder.splice(ti,0,dragSrcId);}}}document.querySelectorAll('.drag-over').forEach(c=>c.classList.remove('drag-over'));document.querySelectorAll('.dragging').forEach(c=>c.classList.remove('dragging'));dragSrcId=null;renderAll();});
 }
 
-document.getElementById('week-pills').addEventListener('click',e=>{const btn=e.target.closest('.week-pill');if(!btn)return;currentWeek=parseInt(btn.dataset.week);document.querySelectorAll('.week-pill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');EXERCISES.forEach(ex=>{if(!state.exercises[ex.id]){state.exercises[ex.id]={weight:calcWeight(ex,currentWeek),sets:new Array(ex.sets).fill(false)};}else{state.exercises[ex.id].weight=calcWeight(ex,currentWeek);}});renderAll();});
+document.getElementById('week-pills').addEventListener('click',e=>{const btn=e.target.closest('.week-pill');if(!btn)return;currentWeek=parseInt(btn.dataset.week);
+  try{localStorage.setItem('forge_week_v1',currentWeek);}catch{}document.querySelectorAll('.week-pill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');EXERCISES.forEach(ex=>{if(!state.exercises[ex.id]){state.exercises[ex.id]={weight:calcWeight(ex,currentWeek),sets:new Array(ex.sets).fill(false)};}else{state.exercises[ex.id].weight=calcWeight(ex,currentWeek);}});renderAll();});
 
 let restInterval=null,restRemaining=90,restTotal=90;
 const overlay=document.getElementById('rest-overlay'),countdown=document.getElementById('rest-countdown'),circle=document.getElementById('rest-circle');
@@ -337,7 +339,7 @@ document.getElementById('reset-btn').addEventListener('click',()=>{if(confirm('R
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 
 state=loadState();
-currentWeek=state.week||2;
+currentWeek=(()=>{try{const w=parseInt(localStorage.getItem('forge_week_v1'));return(w>=1&&w<=7)?w:(state.week||1);}catch{return state.week||1;}})();
 flexOrder=state.flexOrder||EXERCISES.filter(e=>e.type==='flex').map(e=>e.id);
 document.querySelectorAll('.week-pill').forEach(b=>b.classList.remove('active'));
 document.querySelector(`.week-pill[data-week="${currentWeek}"]`)?.classList.add('active');
