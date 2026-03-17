@@ -605,11 +605,11 @@ let state       = {};
 
 /* ── State helpers ── */
 function calcWeight(ex, week) {
-  const effectiveWeek = week === 7 ? 6 : week; return ex.baseWeight + ex.delta * (effectiveWeek - 1);
+  const effectiveWeek = week === 7 ? 6 : week; const base = (state.baseWeights && state.baseWeights[ex.id] != null) ? state.baseWeights[ex.id] : ex.baseWeight; return base + ex.delta * (effectiveWeek - 1);
 }
 
 function defaultState() {
-  const s = { week: currentWeek, flexOrder: [...flexOrder], exercises: {} };
+  const s = { week: currentWeek, flexOrder: [...flexOrder], baseWeights: {}, exercises: {} };
   EXERCISES.forEach(ex => {
     s.exercises[ex.id] = {
       weight: calcWeight(ex, currentWeek),
@@ -629,7 +629,10 @@ function sanitiseState(raw) {
       ? raw.flexOrder.filter(id => validIds.has(id) && EXERCISES.find(e => e.id === id)?.type === 'flex')
       : null;
     if (!fo || fo.length !== flexIds.length) return null;
-    const out = { week: raw.week, flexOrder: fo, exercises: {} };
+    const out = { week: raw.week, flexOrder: fo, baseWeights: {}, exercises: {} };
+    if (raw.baseWeights && typeof raw.baseWeights === 'object') {
+      EXERCISES.forEach(ex => { const bw = parseFloat(raw.baseWeights[ex.id]); if (!isNaN(bw) && bw >= 0 && bw <= 1000 && isFinite(bw)) out.baseWeights[ex.id] = bw; });
+    }
     EXERCISES.forEach(ex => {
       const e = raw.exercises?.[ex.id];
       if (!e) return;
@@ -653,6 +656,7 @@ function loadState() {
 function saveState(silent) {
   state.week      = currentWeek;
   state.flexOrder = flexOrder;
+  state.baseWeights = state.baseWeights || {};
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   if (!silent) showToast('✓ Saved');
 }
@@ -759,11 +763,15 @@ function renderZone(zoneId, exercises) {
       const input = document.createElement('input');
       input.type = 'number';
       input.className = 'weight-input';
+      input.dataset.exid = ex.id;
       input.value = exState.weight;
       input.min = 0; input.max = 999; input.step = 2.5;
-      input.addEventListener('change', () => {
+      input.addEventListener('input', () => {
         const v = parseFloat(input.value);
-        if (isNaN(v) || v < 0 || v > 999 || !isFinite(v)) { input.value = exState.weight; return; }
+        if (isNaN(v) || v < 0 || v > 999 || !isFinite(v)) return;
+        const effectiveWeek = currentWeek === 7 ? 6 : currentWeek;
+        state.baseWeights = state.baseWeights || {};
+        state.baseWeights[ex.id] = v - ex.delta * (effectiveWeek - 1);
         state.exercises[ex.id].weight = v;
         autoSave();
       });
@@ -988,6 +996,7 @@ function showToast(msg) {
 
 /* ── Init ── */
 state = loadState();
+state.baseWeights = state.baseWeights || {};
 currentWeek = (() => { try { const w = parseInt(localStorage.getItem('forge_week_v1')); return (w >= 1 && w <= 7) ? w : (state.week || 1); } catch { return state.week || 1; } })();
 flexOrder   = state.flexOrder || EXERCISES.filter(e => e.type === 'flex').map(e => e.id);
 const activePill = document.querySelector(`.week-pill[data-week="${currentWeek}"]`);
