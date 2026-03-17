@@ -106,6 +106,38 @@
   .drag-clone{position:fixed;pointer-events:none;z-index:999;opacity:0.85;border-radius:var(--radius);box-shadow:0 8px 32px rgba(0,0,0,0.6);transform:rotate(1.5deg);}
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
   @media(max-width:480px){.stats-row{gap:8px;}.stat-box-value{font-size:22px;}.card-name{font-size:15px;}.muscle-tags{display:none;}}
+  /* ── Day Strip ── */
+  .day-strip-wrap { margin-bottom: 28px; }
+  .day-strip { display: flex; gap: 6px; flex-wrap: wrap; }
+  .day-strip-pill {
+    font-family: var(--font-mono); font-size: 10px;
+    padding: 5px 11px; border-radius: 100px;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--muted);
+    text-decoration: none; display: inline-block;
+    transition: all 0.15s; letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  .day-strip-pill:hover { border-color: var(--accent); color: var(--accent); }
+  .day-strip-pill.current {
+    background: var(--accent); border-color: var(--accent);
+    color: #000; font-weight: 600; pointer-events: none;
+  }
+  /* ── Dashboard pill ── */
+  .week-pill-dash {
+    font-family: var(--font-mono); font-size: 11px;
+    padding: 4px 12px; border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.18);
+    background: transparent; color: #a0a0a0;
+    text-decoration: none; letter-spacing: 0.06em;
+    transition: all 0.15s; display: inline-block; cursor: pointer;
+  }
+  .week-pill-dash:hover { border-color: var(--accent); color: var(--accent); }
+  .week-divider {
+    width: 1px; height: 16px;
+    background: rgba(255,255,255,0.12);
+    flex-shrink: 0; align-self: center;
+  }
 </style>
 </head>
 <body>
@@ -132,6 +164,18 @@
       <button class="week-pill" data-week="7">WK 7 — Deload</button>
     </div>
   </div>
+  <div class="day-strip-wrap">
+    <div class="day-strip">
+    <a href="monday-upper.html" class="day-strip-pill">MON</a>
+    <a href="tuesday-lower.html" class="day-strip-pill">TUE</a>
+    <a href="wednesday-push-v4.html" class="day-strip-pill">WED</a>
+    <a href="thursday-tempo.html" class="day-strip-pill">THU</a>
+    <a href="friday-pull.html" class="day-strip-pill">FRI</a>
+    <span class="day-strip-pill current">SAT</span>
+    <a href="sunday-zone2.html" class="day-strip-pill">SUN</a>
+    </div>
+  </div>
+
   <div class="stats-row">
     <div class="stat-box"><div class="stat-box-value" id="stat-sets">0</div><div class="stat-box-label">Sets Done</div></div>
     <div class="stat-box"><div class="stat-box-value">8</div><div class="stat-box-label">Exercises</div></div>

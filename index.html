@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>FORGE — Hybrid Training</title>
+<title>FORGE — Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
 <style>
+
   /* ── Tokens ── */
   :root {
     --bg:          #0d0d0d;
@@ -644,35 +645,156 @@
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.5; transform: scale(0.8); }
   }
+
+  /* ── Dashboard pill ── */
+  .week-pill-dash {
+    font-family: var(--font-mono); font-size: 11px;
+    padding: 5px 14px; border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.18);
+    background: transparent; color: #a0a0a0;
+    text-decoration: none; letter-spacing: 0.08em;
+    transition: all 0.15s; display: inline-block; cursor: default;
+    font-weight: 600;
+  }
+  .week-divider {
+    width: 1px; height: 16px;
+    background: rgba(255,255,255,0.12);
+    flex-shrink: 0; align-self: center;
+  }
+
+  /* ── About section ── */
+  .about-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 28px 24px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.4s ease forwards;
+    animation-delay: 0.5s;
+  }
+  .about-header {
+    display: flex; align-items: flex-end;
+    justify-content: space-between; gap: 16px;
+    margin-bottom: 20px; flex-wrap: wrap;
+  }
+  .about-title {
+    font-family: var(--font-display); font-size: 22px;
+    color: var(--text); line-height: 1;
+  }
+  .about-tag {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--yellow); background: rgba(245,197,24,0.1);
+    border: 1px solid rgba(245,197,24,0.2);
+    padding: 3px 10px; border-radius: 100px;
+  }
+  .about-body {
+    font-size: 13px; color: var(--muted);
+    line-height: 1.7; margin-bottom: 20px;
+  }
+  .about-pillars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+  }
+  .about-pillar {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+  }
+  .about-pillar-label {
+    font-family: var(--font-mono); font-size: 9px;
+    color: var(--yellow); letter-spacing: 0.14em;
+    text-transform: uppercase; margin-bottom: 6px;
+  }
+  .about-pillar-text {
+    font-size: 12px; color: var(--muted); line-height: 1.55;
+  }
+
+  /* ── FAQ ── */
+  .faq-section {
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.4s ease forwards;
+    animation-delay: 0.55s;
+  }
+  .faq-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .faq-item.open { border-color: rgba(245,197,24,0.3); }
+  .faq-question {
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 12px;
+    padding: 16px 20px; cursor: pointer;
+    user-select: none;
+  }
+  .faq-question:hover .faq-q-text { color: var(--text); }
+  .faq-q-text {
+    font-size: 13px; font-weight: 600;
+    color: var(--muted); transition: color 0.15s;
+    line-height: 1.4;
+  }
+  .faq-item.open .faq-q-text { color: var(--text); }
+  .faq-chevron {
+    width: 18px; height: 18px; flex-shrink: 0;
+    border: 1px solid var(--border); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; color: var(--muted); font-size: 10px;
+  }
+  .faq-item.open .faq-chevron {
+    background: var(--yellow); border-color: var(--yellow);
+    color: #000; transform: rotate(180deg);
+  }
+  .faq-answer {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.2s ease;
+    padding: 0 20px;
+  }
+  .faq-item.open .faq-answer {
+    max-height: 900px;
+    padding: 0 20px 18px;
+  }
+  .faq-answer-text {
+    font-size: 13px; color: var(--muted);
+    line-height: 1.7; border-top: 1px solid var(--border);
+    padding-top: 14px;
+  }
+  .faq-answer-text strong {
+    display: block; color: var(--text);
+    font-size: 12px; font-weight: 600;
+    margin: 12px 0 4px;
+    font-family: var(--font-mono); letter-spacing: 0.06em;
+    text-transform: uppercase; font-size: 10px;
+  }
+  .faq-answer-text strong:first-child { margin-top: 0; }
 </style>
 </head>
 <body>
 <div class="wrapper">
 
-  <!-- ── Header ── -->
+  <!-- Header -->
   <header>
     <div class="header-inner">
       <div class="logo-block">
         <h1><span>FOR</span>GE<br>DASHBOARD</h1>
-        <p class="tagline">Hybrid Strength & Endurance · 7-Week Block</p>
-      </div>
-      <div class="header-stats">
-        <div class="stat-item">
-          <div class="stat-value" id="days-trained">7</div>
-          <div class="stat-label">Days / Week</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">7</div>
-          <div class="stat-label">Week Block</div>
-        </div>
+        <p class="tagline">Strength & Endurance · 7-Week Block</p>
       </div>
     </div>
   </header>
 
-  <!-- ── Week Selector ── -->
+  <!-- Week Selector -->
   <div class="week-bar">
     <div class="week-bar-label">Week</div>
-    <div class="week-pills">
+    <div class="week-pills" id="week-pills">
+      <span class="week-pill-dash">Dashboard</span>
+      <div class="week-divider"></div>
       <button class="week-pill" data-week="1">WK 1</button>
       <button class="week-pill active" data-week="2">WK 2</button>
       <button class="week-pill" data-week="3">WK 3</button>
@@ -683,11 +805,11 @@
     </div>
   </div>
 
-  <!-- ── Day Grid ── -->
+  <!-- Day Grid -->
   <div class="section-label">This Week</div>
   <div class="day-grid" id="day-grid"></div>
 
-  <!-- ── Block Progress ── -->
+  <!-- Block Progress -->
   <div class="section-label">Block Progress</div>
   <div class="block-progress">
     <div class="block-header">
@@ -702,9 +824,51 @@
     <div class="week-track" id="week-track"></div>
   </div>
 
-  <!-- ── Footer ── -->
+  <!-- About This Program -->
+  <div class="section-label">About This Program</div>
+  <div class="about-section">
+    <div class="about-header">
+      <div class="about-title">FORGE — 7-WEEK BLOCK</div>
+      <span class="about-tag">7 Days · No Rest Days</span>
+    </div>
+    <p class="about-body">
+      FORGE is a 7-day-a-week strength and endurance program built around a single principle: consistent, measurable progress across both lifting and running — in the same block, at the same time. Every day has a purpose. Nothing is filler.
+    </p>
+    <div class="about-pillars">
+      <div class="about-pillar">
+        <div class="about-pillar-label">Block Structure</div>
+        <div class="about-pillar-text">6 weeks of progressive loading followed by a Week 7 deload. Weights auto-calculate each week — you show up and lift.</div>
+      </div>
+      <div class="about-pillar">
+        <div class="about-pillar-label">Anchor vs Flex</div>
+        <div class="about-pillar-text">Anchor exercises are fixed and always lead. Flex exercises are draggable — reorder them to match equipment or energy on any given day.</div>
+      </div>
+      <div class="about-pillar">
+        <div class="about-pillar-label">Progressive Overload</div>
+        <div class="about-pillar-text">Key lifts add load every week via a built-in delta. The app tracks it automatically — no spreadsheet needed.</div>
+      </div>
+      <div class="about-pillar">
+        <div class="about-pillar-label">Aerobic Base</div>
+        <div class="about-pillar-text">Zone 2 on Sunday builds mitochondrial density over time. Thursday tempo develops lactate threshold on top of that base.</div>
+      </div>
+      <div class="about-pillar">
+        <div class="about-pillar-label">Leg Balance</div>
+        <div class="about-pillar-text">Tuesday is quad dominant (Back Squat leads). Saturday is glute and hip dominant (Hip Thrust leads). Both days protect joint health as run mileage increases.</div>
+      </div>
+      <div class="about-pillar">
+        <div class="about-pillar-label">Deload Week</div>
+        <div class="about-pillar-text">Week 7 holds at Week 6 weights with no new loading stress. The block is designed so the deload is earned, not optional.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section-label">FAQ</div>
+  <div class="faq-section" id="faq-section"></div>
+
+  <!-- Footer -->
   <footer>
-    <div class="footer-left">FORGE · HYBRID TRAINING · BLOCK 1</div>
+    <div class="footer-left">FORGE · BLOCK 1</div>
     <div class="footer-right" id="last-updated">Updated —</div>
   </footer>
 
@@ -713,7 +877,8 @@
 <script>
 'use strict';
 
-/* ── Day Data ── */
+const WEEK_SYNC_KEY = 'forge_week_v1';
+
 const DAYS = [
   {
     short: 'MON',
@@ -840,98 +1005,174 @@ const DAYS = [
   },
 ];
 
-/* ── Today ── */
-const TODAY_INDEX = new Date().getDay(); // 0=Sun, 1=Mon, ...6=Sat
-const DAY_MAP = [6, 0, 1, 2, 3, 4, 5]; // Maps JS day to our array index
+/* ── FAQ Data ── */
+const FAQS = [
+  {
+    q: 'How do I use the weight inputs — do I log actual or target weight?',
+    a: `Log the weight you actually lifted. The app pre-fills a target based on your week and the progressive overload formula, but if you went heavier or lighter, change it. What you save is your record. The target is a floor, not a ceiling.`
+  },
+  {
+    q: 'Why are there no rest days?',
+    a: `The program is structured so training stress is distributed — run days are active recovery relative to lift days, and Zone 2 on Sunday is low enough intensity that it aids recovery rather than adding fatigue. The variety is the rest.
+
+If a full 7-day schedule isn't sustainable, here's how to scale back without breaking the program's logic:`,
+    extra: [
+      { label: '6-Day Option — drop Thursday Tempo', text: 'Keep all 5 lift days and Sunday Zone 2. Thursday's lactate threshold work accelerates aerobic development but sits on top of a Zone 2 foundation. Zone 2 alone will still build your aerobic base, just more gradually.' },
+      { label: '5-Day Option (Fixed) — drop Thursday Tempo + Saturday Leg', text: 'Keeps the 4 core lift days (Mon, Tue, Wed, Fri) and Sunday Zone 2. Tuesday already covers posterior chain volume sufficiently. Aerobic base stays intact. Strength progresses normally.' },
+      { label: '5-Day Option (Rotating Leg) — alternate Tue & Sat by week', text: 'Keep Zone 2 every week. Rotate Tuesday Lower and Saturday Leg on alternating weeks — odd weeks run Tuesday (quad dominant), even weeks run Saturday (glute/hip dominant). Full anterior and posterior chain coverage maintained across the block.' },
+      { label: 'General Rule', text: 'Never cut Monday, the Tuesday/Saturday rotation, Wednesday, or Friday — those are the strength core. Never cut Sunday Zone 2 — aerobic base continuity is the long game.' },
+    ]
+  },
+  {
+    q: 'What's the difference between Anchor and Flex exercises?',
+    a: `Anchor exercises are fixed — they always appear at the top and never get reordered. They are the primary movers for that day (Back Squat on Tuesday, Hip Thrust on Saturday, Wide Grip Lat Pulldown on Friday). Flex exercises are everything else — drag them into any order to match equipment availability or how you are feeling that session.`
+  },
+  {
+    q: 'How does progressive overload work in this program?',
+    a: `Each anchor and select flex exercise has a weekly weight delta built in. Every time you advance a week, the target weight auto-calculates. Week 2 adds one delta over Week 1, Week 3 adds two, and so on through Week 6. Week 7 holds at Week 6 weight as a deload — no new loading stress, just consolidation of the previous six weeks of work.`
+  },
+  {
+    q: 'What's the difference between the Tuesday and Saturday leg days?',
+    a: `Tuesday is quad and strength dominant — Back Squat leads, heavier loads, lower reps. The goal is strength accumulation on the primary compound movement. Saturday is glute and hip dominant — Hip Thrust leads, more volume, focused on posterior chain and hip health to support increasing run mileage. Running hard on a quad-fatigued base is how overuse injuries happen. Saturday exists to prevent that.`
+  },
+  {
+    q: 'What does Week 7 Deload look like?',
+    a: `All weights auto-set to Week 6 levels with no additional progression. Volume and intensity stay the same on paper — the deload is the absence of new loading stress. Your joints, connective tissue, and CNS get a full week to absorb and adapt to the previous six weeks of work. Do not skip it and do not add weight. The next block starts stronger because of it.`
+  },
+];
+
+/* ── Render FAQ ── */
+function renderFAQ() {
+  const container = document.getElementById('faq-section');
+  container.innerHTML = '';
+  FAQS.forEach((faq, i) => {
+    const item = document.createElement('div');
+    item.className = 'faq-item';
+
+    const question = document.createElement('div');
+    question.className = 'faq-question';
+    const qText = document.createElement('div');
+    qText.className = 'faq-q-text';
+    qText.textContent = faq.q;
+    const chevron = document.createElement('div');
+    chevron.className = 'faq-chevron';
+    chevron.textContent = '▾';
+    question.appendChild(qText);
+    question.appendChild(chevron);
+
+    const answer = document.createElement('div');
+    answer.className = 'faq-answer';
+    const answerText = document.createElement('div');
+    answerText.className = 'faq-answer-text';
+
+    const mainP = document.createElement('p');
+    mainP.style.margin = '0';
+    mainP.textContent = faq.a;
+    answerText.appendChild(mainP);
+
+    if (faq.extra) {
+      faq.extra.forEach(ex => {
+        const lbl = document.createElement('strong');
+        lbl.textContent = ex.label;
+        const p = document.createElement('p');
+        p.style.margin = '0 0 8px';
+        p.textContent = ex.text;
+        answerText.appendChild(lbl);
+        answerText.appendChild(p);
+      });
+    }
+
+    answer.appendChild(answerText);
+    item.appendChild(question);
+    item.appendChild(answer);
+
+    question.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+
+    container.appendChild(item);
+  });
+}
+
+/* ── Today (no dot, just for day grid logic) ── */
+const TODAY_INDEX = new Date().getDay();
+const DAY_MAP = [6, 0, 1, 2, 3, 4, 5];
 const todayCardIndex = DAY_MAP[TODAY_INDEX];
 
 /* ── Render Day Grid ── */
 function renderDayGrid() {
   const grid = document.getElementById('day-grid');
   grid.innerHTML = '';
-
   DAYS.forEach((day, i) => {
-    const isToday = i === todayCardIndex;
     const isRun = day.type === 'run';
-
     const card = document.createElement(day.href && day.built ? 'a' : 'div');
     card.style.setProperty('--card-accent', day.accent);
-
     const classes = ['day-card'];
     if (isRun) classes.push('run-card');
     card.className = classes.join(' ');
+    if (day.built && day.href) card.href = day.href;
 
-    if (day.built && day.href) {
-      card.href = day.href;
-    }
-
-    // Built badge
     if (day.built) {
       card.innerHTML += `<div class="built-badge">✓ Live</div>`;
     }
 
-    // Day name
     card.innerHTML += `
-      <div class="card-day-name">
-        <span>${day.short}</span>${day.rest}${isToday ? `<span class="today-dot"></span>` : ''}
-      </div>
+      <div class="card-day-name"><span>${day.short}</span>${day.rest}</div>
       <div class="card-session-type">${day.session}</div>
     `;
 
-    // Content
     if (isRun) {
       let zonesHTML = day.zones.map(z => `
         <div class="run-zone-row">
           <div class="run-zone-label">${z.label}</div>
           <div class="run-zone-hr">${z.hr} bpm</div>
-        </div>
-      `).join('');
+        </div>`).join('');
       card.innerHTML += `
-        <div class="run-zones">
-          ${zonesHTML}
-        </div>
+        <div class="run-zones">${zonesHTML}</div>
         <div>
           <div class="run-distance">${day.distance}</div>
           <div class="run-distance-label">Target Distance</div>
-        </div>
-      `;
+        </div>`;
     } else {
       const anchors = day.exercises.filter(e => e.anchor);
-      const flex = day.exercises.filter(e => !e.anchor);
-      const showCount = 4;
-      const shown = [...anchors, ...flex].slice(0, showCount);
-      const remaining = day.exercises.length - showCount;
-
-      let exHTML = shown.map(e => `
-        <div class="card-ex-item ${e.anchor ? 'anchor-ex' : ''}">${e.name}</div>
-      `).join('');
-
-      if (remaining > 0) {
-        exHTML += `<div class="card-ex-more">+${remaining} more</div>`;
-      }
-
+      const flex    = day.exercises.filter(e => !e.anchor);
+      const shown   = [...anchors, ...flex].slice(0, 4);
+      const remaining = day.exercises.length - 4;
+      let exHTML = shown.map(e => `<div class="card-ex-item ${e.anchor ? 'anchor-ex' : ''}">${e.name}</div>`).join('');
+      if (remaining > 0) exHTML += `<div class="card-ex-more">+${remaining} more</div>`;
       card.innerHTML += `<div class="card-exercises">${exHTML}</div>`;
     }
-
     grid.appendChild(card);
   });
 }
 
 /* ── Week Selector ── */
-let currentWeek = 2;
+let currentWeek = 1;
 
-function renderWeekPills() {
-  document.querySelectorAll('.week-pill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentWeek = parseInt(btn.dataset.week);
-      document.querySelectorAll('.week-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('current-week-display').innerHTML =
-        `${currentWeek}<span>Current Week</span>`;
-      renderWeekTrack();
-    });
-  });
+function initWeek() {
+  try {
+    const stored = parseInt(localStorage.getItem(WEEK_SYNC_KEY));
+    if (stored >= 1 && stored <= 7) currentWeek = stored;
+  } catch {}
+  document.querySelectorAll('.week-pill').forEach(b => b.classList.remove('active'));
+  const active = document.querySelector(`.week-pill[data-week="${currentWeek}"]`);
+  if (active) active.classList.add('active');
+  document.getElementById('current-week-display').innerHTML = `${currentWeek}<span>Current Week</span>`;
+  renderWeekTrack();
 }
+
+document.getElementById('week-pills').addEventListener('click', e => {
+  const btn = e.target.closest('.week-pill');
+  if (!btn) return;
+  currentWeek = parseInt(btn.dataset.week);
+  try { localStorage.setItem(WEEK_SYNC_KEY, currentWeek); } catch {}
+  document.querySelectorAll('.week-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('current-week-display').innerHTML = `${currentWeek}<span>Current Week</span>`;
+  renderWeekTrack();
+});
 
 /* ── Block Progress ── */
 function renderWeekTrack() {
@@ -943,8 +1184,7 @@ function renderWeekTrack() {
     node.className = 'week-node' + (w < currentWeek ? ' completed' : '') + (w === currentWeek ? ' active' : '');
     node.innerHTML = `
       <div class="week-node-label">${isDeload ? 'DL' : `WK ${w}`}</div>
-      <div class="week-node-sub">${w < currentWeek ? '✓ Done' : w === currentWeek ? 'Active' : isDeload ? 'Deload' : 'Upcoming'}</div>
-    `;
+      <div class="week-node-sub">${w < currentWeek ? '✓ Done' : w === currentWeek ? 'Active' : isDeload ? 'Deload' : 'Upcoming'}</div>`;
     track.appendChild(node);
   }
 }
@@ -958,8 +1198,8 @@ function updateTimestamp() {
 
 /* ── Init ── */
 renderDayGrid();
-renderWeekPills();
-renderWeekTrack();
+initWeek();
+renderFAQ();
 updateTimestamp();
 </script>
 </body>
