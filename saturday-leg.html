@@ -77,10 +77,16 @@
   .set-dot:hover{border-color:var(--card-accent);background:rgba(255,255,255,0.06);}
   .set-dot.done{background:var(--card-accent);border-color:var(--card-accent);}
   .set-dot.done::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%23000' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat;}
-  .drag-handle{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--subtle);cursor:grab;font-size:16px;padding:8px 6px;user-select:none;touch-action:none;z-index:2;transition:color 0.15s;}
-  .drag-handle:hover{color:var(--accent);}
-  .drag-handle:active{cursor:grabbing;}
-  .exercise-card.anchor-card .drag-handle{display:none;}
+  .drag-handle {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; padding: 6px 0 2px;
+    color: var(--subtle); cursor: grab; font-size: 18px;
+    user-select: none; touch-action: none; z-index: 2;
+    letter-spacing: 3px; transition: color 0.15s;
+  }
+  .drag-handle:hover { color: var(--muted); }
+  .drag-handle:active { cursor: grabbing; }
+  .exercise-card.anchor-card .drag-handle { display: none; }
   .exercise-card.dragging{opacity:0.4;}
   .exercise-card.drag-over{border-color:var(--accent);background:rgba(244,114,182,0.05);}
   #rest-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;opacity:0;pointer-events:none;transition:opacity 0.2s ease;}
@@ -214,14 +220,14 @@ const STORAGE_KEY='forge_saturday_v1';
 const CIRCUMFERENCE=2*Math.PI*88;
 
 const EXERCISES=[
-  {id:'ex1',name:'Hip Thrust',        type:'anchor',typeLabel:'PRIMARY · ANCHOR', sets:4,reps:'10–12',baseWeight:135,delta:2.5,restSeconds:120,cue:'LEADS — chin tucked, full hip extension at top',       muscles:{primary:'Glutes',secondary:['Hamstrings']}},
-  {id:'ex2',name:'Romanian Deadlift', type:'anchor',typeLabel:'COMPOUND · ANCHOR',sets:3,reps:'10–12',baseWeight:115,delta:0,  restSeconds:120,cue:'Lighter than Tuesday — glute/ham focus, feel the stretch',muscles:{primary:'Hamstrings',secondary:['Glutes']}},
-  {id:'ex3',name:'Walking Lunge',     type:'flex',  typeLabel:'COMPOUND · FLEX',  sets:3,reps:'12 ea', baseWeight:40, delta:0,  restSeconds:120,cue:'Drive through heel — torso upright',                    muscles:{primary:'Quads',secondary:['Glutes','Balance']}},
-  {id:'ex4',name:'Good Morning',      type:'flex',  typeLabel:'COMPOUND · FLEX',  sets:3,reps:'10–12',baseWeight:65, delta:0,  restSeconds:120,cue:'Hip hinge with load — hamstring stretch under tension',   muscles:{primary:'Hamstrings',secondary:['Lower Back']}},
-  {id:'ex5',name:'Leg Extension',     type:'flex',  typeLabel:'ISOLATION · FLEX', sets:2,reps:'15',    baseWeight:60, delta:0,  restSeconds:60, cue:'Maintenance only — quads already hit Tuesday',           muscles:{primary:'Inner Quad',secondary:['Quads']}},
-  {id:'ex6',name:'Calf Press Machine',type:'flex',  typeLabel:'ISOLATION · FLEX', sets:4,reps:'15–20',baseWeight:90, delta:0,  restSeconds:60, cue:'Full ROM — pause at bottom stretch',                     muscles:{primary:'Calves',secondary:['Soleus']}},
-  {id:'ex7',name:'Side Lunge',        type:'flex',  typeLabel:'MOBILITY · FLEX',  sets:3,reps:'10 ea', baseWeight:0,  delta:0,  restSeconds:60, cue:'Adductor work — control the lateral push',               muscles:{primary:'Adductors',secondary:['Glutes']}},
-  {id:'ex8',name:'Ab Crunch',         type:'flex',  typeLabel:'CORE · FLEX',      sets:3,reps:'20',    baseWeight:0,  delta:0,  restSeconds:60, cue:'Bodyweight — high rep, squeeze at top',                  muscles:{primary:'Abs',secondary:[]}},
+  {id:'ex1',name:'Hip Thrust',        type:'anchor',typeLabel:'PRIMARY · ANCHOR', sets:4,reps:'10–12',baseWeight:135,delta:2.5,restSeconds:120,cue:'LEADS — chin tucked, full hip extension at top',       muscles:{primary:'Glutes',secondary:'Hamstrings'}},
+  {id:'ex2',name:'Romanian Deadlift', type:'anchor',typeLabel:'COMPOUND · ANCHOR',sets:3,reps:'10–12',baseWeight:115,delta:0,  restSeconds:120,cue:'Lighter than Tuesday — glute/ham focus, feel the stretch',muscles:{primary:'Hamstrings',secondary:'Glutes'}},
+  {id:'ex3',name:'Walking Lunge',     type:'flex',  typeLabel:'COMPOUND · FLEX',  sets:3,reps:'12 ea', baseWeight:40, delta:0,  restSeconds:120,cue:'Drive through heel — torso upright',                    muscles:{primary:'Quads',secondary:'Glutes · Balance'}},
+  {id:'ex4',name:'Good Morning',      type:'flex',  typeLabel:'COMPOUND · FLEX',  sets:3,reps:'10–12',baseWeight:65, delta:0,  restSeconds:120,cue:'Hip hinge with load — hamstring stretch under tension',   muscles:{primary:'Hamstrings',secondary:'Lower Back'}},
+  {id:'ex5',name:'Leg Extension',     type:'flex',  typeLabel:'ISOLATION · FLEX', sets:2,reps:'15',    baseWeight:60, delta:0,  restSeconds:60, cue:'Maintenance only — quads already hit Tuesday',           muscles:{primary:'Inner Quad',secondary:'Quads'}},
+  {id:'ex6',name:'Calf Press Machine',type:'flex',  typeLabel:'ISOLATION · FLEX', sets:4,reps:'15–20',baseWeight:90, delta:0,  restSeconds:60, cue:'Full ROM — pause at bottom stretch',                     muscles:{primary:'Calves',secondary:'Soleus'}},
+  {id:'ex7',name:'Side Lunge',        type:'flex',  typeLabel:'MOBILITY · FLEX',  sets:3,reps:'10 ea', baseWeight:0,  delta:0,  restSeconds:60, cue:'Adductor work — control the lateral push',               muscles:{primary:'Adductors',secondary:'Glutes'}},
+  {id:'ex8',name:'Ab Crunch',         type:'flex',  typeLabel:'CORE · FLEX',      sets:3,reps:'20',    baseWeight:0,  delta:0,  restSeconds:60, cue:'Bodyweight — high rep, squeeze at top',                  muscles:{primary:'Abs',secondary:''}},
 ];
 
 let currentWeek=2;
@@ -284,7 +290,7 @@ function renderZone(zoneId,exercises){
     const rt=document.createElement('div');rt.className='card-right-top';
     const tw=document.createElement('div');tw.className='muscle-tags';
     const pt=document.createElement('span');pt.className='muscle-tag primary';pt.textContent=ex.muscles.primary;tw.appendChild(pt);
-    ex.muscles.secondary.forEach(m=>{const t=document.createElement('span');t.className='muscle-tag secondary';t.textContent=m;tw.appendChild(t);});
+    if (ex.muscles.secondary) { const t = document.createElement('span'); t.className = 'muscle-tag secondary'; t.textContent = ex.muscles.secondary; tagsWrap.appendChild(t); }
     rt.appendChild(tw);
     const re=document.createElement('div');re.className='card-reps';re.textContent=`${ex.sets}×${ex.reps}`;rt.appendChild(re);
     const ww=document.createElement('div');ww.className='weight-wrap';
@@ -303,7 +309,7 @@ function renderZone(zoneId,exercises){
     });
     inner.appendChild(dots);
 
-    if(ex.type==='flex'){const h=document.createElement('div');h.className='drag-handle';h.textContent='⠿';h.setAttribute('aria-label','Drag to reorder');card.appendChild(h);initCardDrag(card,h);}
+    if(ex.type==='flex'){const h=document.createElement('div');h.className='drag-handle';h.textContent='⠿';h.setAttribute('aria-label','Drag to reorder');card.insertBefore(h, card.firstChild);initCardDrag(card,h);}
     card.appendChild(inner);zone.appendChild(card);
   });
 }

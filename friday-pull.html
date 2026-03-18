@@ -269,13 +269,13 @@
 
   /* Drag handle */
   .drag-handle {
-    position: absolute; right: 14px; top: 50%;
-    transform: translateY(-50%);
-    color: var(--subtle); cursor: grab; font-size: 16px;
-    padding: 8px 6px; user-select: none; touch-action: none; z-index: 2;
-    transition: color 0.15s;
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; padding: 6px 0 2px;
+    color: var(--subtle); cursor: grab; font-size: 18px;
+    user-select: none; touch-action: none; z-index: 2;
+    letter-spacing: 3px; transition: color 0.15s;
   }
-  .drag-handle:hover { color: var(--accent); }
+  .drag-handle:hover { color: var(--muted); }
   .drag-handle:active { cursor: grabbing; }
   .exercise-card.anchor-card .drag-handle { display: none; }
   .exercise-card.dragging { opacity: 0.4; }
@@ -504,7 +504,7 @@ const EXERCISES = [
     delta: 2.5,
     restSeconds: 120,
     cue: 'Elbows driving to hips — squeeze lats at bottom',
-    muscles: { primary: 'Lats', secondary: ['Biceps', 'Rear Delt'] },
+    muscles: { primary: 'Lats', secondary: 'Biceps · Rear Delt' },
   },
   {
     id: 'ex2',
@@ -517,7 +517,7 @@ const EXERCISES = [
     delta: 2.5,
     restSeconds: 120,
     cue: 'Chest tall — full scapular retraction at end',
-    muscles: { primary: 'Mid Back', secondary: ['Lats', 'Biceps'] },
+    muscles: { primary: 'Mid Back', secondary: 'Lats · Biceps' },
   },
   {
     id: 'ex3',
@@ -530,7 +530,7 @@ const EXERCISES = [
     delta: 2.5,
     restSeconds: 120,
     cue: 'Unilateral — eliminates dominant side compensation',
-    muscles: { primary: 'Lats', secondary: ['Mid Back'] },
+    muscles: { primary: 'Lats', secondary: 'Mid Back' },
   },
   {
     id: 'ex4',
@@ -543,7 +543,7 @@ const EXERCISES = [
     delta: 0,
     restSeconds: 60,
     cue: 'External rotation — shoulder health, never skip',
-    muscles: { primary: 'Rear Delt', secondary: ['Rotator Cuff'] },
+    muscles: { primary: 'Rear Delt', secondary: 'Rotator Cuff' },
   },
   {
     id: 'ex5',
@@ -556,7 +556,7 @@ const EXERCISES = [
     delta: 0,
     restSeconds: 60,
     cue: 'Upper trap — hold 1 sec at top',
-    muscles: { primary: 'Upper Traps', secondary: [] },
+    muscles: { primary: 'Upper Traps', secondary: '' },
   },
   {
     id: 'ex6',
@@ -569,7 +569,7 @@ const EXERCISES = [
     delta: 2.5,
     restSeconds: 60,
     cue: 'Short head — full stretch at bottom',
-    muscles: { primary: 'Biceps Short Head', secondary: [] },
+    muscles: { primary: 'Biceps Short Head', secondary: '' },
   },
   {
     id: 'ex7',
@@ -582,7 +582,7 @@ const EXERCISES = [
     delta: 2.5,
     restSeconds: 60,
     cue: 'Long head stretch — better than concentration curl',
-    muscles: { primary: 'Biceps Long Head', secondary: ['Brachialis'] },
+    muscles: { primary: 'Biceps Long Head', secondary: 'Brachialis' },
   },
   {
     id: 'ex8',
@@ -595,7 +595,7 @@ const EXERCISES = [
     delta: 2.5,
     restSeconds: 60,
     cue: 'Weighted core — progressive load weekly',
-    muscles: { primary: 'Abs', secondary: ['Hip Flexors'] },
+    muscles: { primary: 'Abs', secondary: 'Hip Flexors' },
   },
 ];
 
@@ -741,12 +741,7 @@ function renderZone(zoneId, exercises) {
     primaryTag.className = 'muscle-tag primary';
     primaryTag.textContent = ex.muscles.primary;
     tagsWrap.appendChild(primaryTag);
-    ex.muscles.secondary.forEach(m => {
-      const t = document.createElement('span');
-      t.className = 'muscle-tag secondary';
-      t.textContent = m;
-      tagsWrap.appendChild(t);
-    });
+    if (ex.muscles.secondary) { const t = document.createElement('span'); t.className = 'muscle-tag secondary'; t.textContent = ex.muscles.secondary; tagsWrap.appendChild(t); }
 
     const rightTop = document.createElement('div');
     rightTop.className = 'card-right-top';
@@ -814,7 +809,7 @@ function renderZone(zoneId, exercises) {
       handle.className = 'drag-handle';
       handle.textContent = '⠿';
       handle.setAttribute('aria-label', 'Drag to reorder');
-      card.appendChild(handle);
+      card.insertBefore(handle, card.firstChild);
       initCardDrag(card, handle);
     }
 
