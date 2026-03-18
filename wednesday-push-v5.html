@@ -57,13 +57,13 @@
   }
   .back-link {
     display: inline-flex; align-items: center; gap: 6px;
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 12px;
     letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--muted); text-decoration: none;
     margin-bottom: 20px; transition: color 0.15s;
   }
   .back-link:hover { color: var(--accent); }
-  .back-link::before { content: '←'; font-size: 12px; }
+  .back-link::before { content: '←'; font-size: 14px; }
   .header-top {
     display: flex; align-items: flex-end;
     justify-content: space-between; gap: 16px; flex-wrap: wrap;
@@ -76,7 +76,7 @@
   h1 span { color: var(--accent); }
   .session-meta { text-align: right; padding-bottom: 4px; }
   .session-tag {
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 12px;
     letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--accent);
     background: rgba(245,197,24,0.1);
@@ -85,7 +85,7 @@
     display: inline-block; margin-bottom: 8px;
   }
   .session-goal {
-    font-size: 11px; color: var(--muted);
+    font-size: 13px; color: var(--muted);
     font-family: var(--font-mono); letter-spacing: 0.08em; display: block;
   }
 
@@ -95,13 +95,13 @@
     margin-bottom: 28px; flex-wrap: wrap;
   }
   .week-bar-label {
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 12px;
     color: var(--muted); letter-spacing: 0.15em;
     text-transform: uppercase; white-space: nowrap;
   }
   .week-pills { display: flex; gap: 5px; flex-wrap: wrap; }
   .week-pill {
-    font-family: var(--font-mono); font-size: 11px;
+    font-family: var(--font-mono); font-size: 13px;
     padding: 4px 12px; border-radius: 100px;
     border: 1px solid var(--border);
     background: transparent; color: var(--muted);
@@ -120,18 +120,18 @@
     border-radius: var(--radius-sm); padding: 12px 14px;
   }
   .stat-box-value {
-    font-family: var(--font-display); font-size: 26px;
+    font-family: var(--font-display); font-size: 28px;
     color: var(--accent); line-height: 1;
   }
   .stat-box-label {
-    font-family: var(--font-mono); font-size: 9px;
+    font-family: var(--font-mono); font-size: 11px;
     color: var(--muted); letter-spacing: 0.12em;
     text-transform: uppercase; margin-top: 4px;
   }
 
   /* ── Section label ── */
   .section-label {
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 12px;
     color: var(--muted); letter-spacing: 0.18em;
     text-transform: uppercase; margin-bottom: 12px;
     display: flex; align-items: center; gap: 8px;
@@ -146,7 +146,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     margin-bottom: 10px;
-    position: relative; overflow: hidden;
+    position: relative;
     opacity: 0; animation: fadeUp 0.35s ease forwards;
     transition: border-color 0.2s, background 0.2s;
   }
@@ -156,12 +156,13 @@
   .exercise-card::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0;
     height: 3px; background: var(--card-accent);
+    border-radius: var(--radius) var(--radius) 0 0;
   }
 
   /* Per-card progress bar — NEW */
   .card-progress {
     height: 2px; background: var(--surface-2);
-    position: relative; overflow: hidden;
+    position: relative;
   }
   .card-progress-fill {
     height: 100%; background: var(--card-accent);
@@ -180,7 +181,7 @@
 
   /* Type label — NEW */
   .ex-type-label {
-    font-family: var(--font-mono); font-size: 9px;
+    font-family: var(--font-mono); font-size: 11px;
     letter-spacing: 0.14em; text-transform: uppercase;
     margin-bottom: 4px;
   }
@@ -188,17 +189,17 @@
   .flex-card   .ex-type-label { color: var(--flex-color); }
 
   .card-number {
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 12px;
     color: var(--muted); margin-bottom: 4px; letter-spacing: 0.06em;
     display: inline-block; margin-right: 6px;
   }
   .card-name {
-    font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.2;
+    font-size: 18px; font-weight: 600; color: var(--text); line-height: 1.2;
   }
 
   /* Coaching cue — NEW (always visible, was tooltip-only before) */
   .card-cue {
-    font-size: 11px; color: var(--muted);
+    font-size: 13px; color: var(--muted);
     margin-top: 5px; line-height: 1.45; font-style: italic;
   }
 
@@ -208,14 +209,14 @@
     align-items: flex-end; gap: 5px; flex-shrink: 0;
   }
   .card-reps {
-    font-family: var(--font-mono); font-size: 11px;
+    font-family: var(--font-mono); font-size: 13px;
     color: var(--muted); letter-spacing: 0.06em; white-space: nowrap;
   }
   .weight-wrap { display: flex; align-items: center; gap: 5px; }
   .weight-input {
     width: 68px; background: var(--surface-2);
     border: 1px solid var(--border); border-radius: var(--radius-sm);
-    color: var(--text); font-family: var(--font-mono); font-size: 13px;
+    color: var(--text); font-family: var(--font-mono); font-size: 15px;
     text-align: center; padding: 5px 6px; transition: border-color 0.15s;
     -moz-appearance: textfield;
   }
@@ -226,7 +227,7 @@
     background: rgba(255,255,255,0.04);
   }
   .weight-unit {
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 12px;
     color: var(--muted); letter-spacing: 0.08em;
   }
 
@@ -248,23 +249,6 @@
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%23000' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat;
   }
 
-  /* Muscle tags */
-  .muscle-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
-  .muscle-tag {
-    font-family: var(--font-mono); font-size: 11px;
-    padding: 2px 7px; border-radius: 4px; border: 0.5px solid;
-  }
-  .muscle-tag.primary {
-    background: rgba(var(--accent-rgb), 0.12);
-    color: var(--accent);
-    border-color: rgba(var(--accent-rgb), 0.3);
-  }
-  .muscle-tag.secondary {
-    background: rgba(255,255,255,0.04);
-    color: var(--muted);
-    border-color: var(--border);
-  }
-
   /* Drag handle */
   .drag-handle {
     display: flex; align-items: center; justify-content: center;
@@ -278,6 +262,17 @@
   .exercise-card.anchor-card .drag-handle { display: none; }
   .exercise-card.dragging { opacity: 0.4; }
   .exercise-card.drag-over { border-color: var(--flex-color); background: rgba(71,184,255,0.05); }
+
+  /* Muscle tags */
+  .muscle-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
+  .muscle-tag { font-family: var(--font-mono); font-size: 11px; padding: 2px 7px; border-radius: 4px; border: 0.5px solid; }
+  .muscle-tag.primary { background: rgba(var(--accent-rgb), 0.12); color: var(--accent); border-color: rgba(var(--accent-rgb), 0.3); }
+  .muscle-tag.secondary { background: rgba(255,255,255,0.04); color: var(--muted); border-color: var(--border); }
+
+  /* Reset link */
+  .reset-link-wrap { text-align: center; margin-top: 32px; padding-bottom: 8px; }
+  .reset-link { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--subtle); background: none; border: none; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; transition: color 0.15s; padding: 0; }
+  .reset-link:hover { color: var(--muted); }
 
   /* ── Rest Timer ── */
   #rest-overlay {
@@ -301,17 +296,17 @@
     align-items: center; justify-content: center;
   }
   #rest-countdown {
-    font-family: var(--font-display); font-size: 52px;
+    font-family: var(--font-display); font-size: 54px;
     color: var(--text); line-height: 1;
   }
   .rest-lbl {
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 12px;
     color: var(--muted); letter-spacing: 0.14em;
     text-transform: uppercase; margin-top: 4px;
   }
   .rest-controls { display: flex; gap: 12px; }
   .rest-btn {
-    font-family: var(--font-mono); font-size: 11px;
+    font-family: var(--font-mono); font-size: 13px;
     letter-spacing: 0.1em; text-transform: uppercase;
     padding: 10px 20px; border-radius: 100px;
     border: 1px solid var(--border);
@@ -325,24 +320,13 @@
   }
   .rest-btn.primary:hover { opacity: 0.9; }
 
-  /* ── Reset link ── */
-  .reset-link-wrap { text-align: center; margin-top: 32px; padding-bottom: 8px; }
-  .reset-link {
-    font-family: var(--font-mono); font-size: 11px;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--subtle); background: none; border: none;
-    cursor: pointer; text-decoration: underline;
-    text-underline-offset: 3px; transition: color 0.15s; padding: 0;
-  }
-  .reset-link:hover { color: var(--muted); }
-
   /* Toast */
   #toast {
     position: fixed; bottom: 28px; left: 50%;
     transform: translateX(-50%) translateY(16px);
     background: var(--surface-2); border: 1px solid var(--border);
     border-radius: 100px; padding: 10px 20px;
-    font-family: var(--font-mono); font-size: 11px;
+    font-family: var(--font-mono); font-size: 13px;
     letter-spacing: 0.1em; color: var(--text);
     opacity: 0; transition: all 0.25s ease;
     pointer-events: none; white-space: nowrap; z-index: 200;
@@ -364,8 +348,40 @@
 
   @media (max-width: 480px) {
     .stats-row { gap: 8px; }
-    .stat-box-value { font-size: 22px; }
-    .card-name { font-size: 15px; }
+    .stat-box-value { font-size: 24px; }
+    .card-name { font-size: 17px; }
+  }
+  /* ── Day Strip ── */
+  .day-strip-wrap { margin-bottom: 28px; }
+  .day-strip { display: flex; gap: 6px; flex-wrap: wrap; }
+  .day-strip-pill {
+    font-family: var(--font-mono); font-size: 12px;
+    padding: 5px 11px; border-radius: 100px;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--muted);
+    text-decoration: none; display: inline-block;
+    transition: all 0.15s; letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  .day-strip-pill:hover { border-color: var(--accent); color: var(--accent); }
+  .day-strip-pill.current {
+    background: var(--accent); border-color: var(--accent);
+    color: #000; font-weight: 600; pointer-events: none;
+  }
+  /* ── Dashboard pill ── */
+  .week-pill-dash {
+    font-family: var(--font-mono); font-size: 13px;
+    padding: 4px 12px; border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.18);
+    background: transparent; color: #a0a0a0;
+    text-decoration: none; letter-spacing: 0.06em;
+    transition: all 0.15s; display: inline-block; cursor: pointer;
+  }
+  .week-pill-dash:hover { border-color: var(--accent); color: var(--accent); }
+  .week-divider {
+    width: 1px; height: 16px;
+    background: rgba(255,255,255,0.12);
+    flex-shrink: 0; align-self: center;
   }
 </style>
 </head>
@@ -378,21 +394,34 @@
       <h1><span>WED</span>NESDAY<br>PUSH</h1>
       <div class="session-meta">
         <span class="session-tag">Chest Priority</span>
-        <span class="session-goal">Chest · Delt · Tricep</span>
+        <span class="session-goal">Incline ALWAYS leads</span>
       </div>
     </div>
   </header>
 
   <div class="week-bar">
-    <div class="week-bar-label">Week</div>
     <div class="week-pills" id="week-pills">
+      <a href="index.html" class="week-pill-dash">Dashboard</a>
+      <div class="week-divider"></div>
       <button class="week-pill" data-week="1">WK 1</button>
-      <button class="week-pill active" data-week="2">WK 2</button>
+      <button class="week-pill" data-week="2">WK 2</button>
       <button class="week-pill" data-week="3">WK 3</button>
       <button class="week-pill" data-week="4">WK 4</button>
       <button class="week-pill" data-week="5">WK 5</button>
       <button class="week-pill" data-week="6">WK 6</button>
       <button class="week-pill" data-week="7">WK 7 — Deload</button>
+    </div>
+  </div>
+
+  <div class="day-strip-wrap">
+    <div class="day-strip">
+    <a href="monday-upper.html" class="day-strip-pill">MON</a>
+    <a href="tuesday-lower.html" class="day-strip-pill">TUE</a>
+    <span class="day-strip-pill current">WED</span>
+    <a href="thursday-tempo.html" class="day-strip-pill">THU</a>
+    <a href="friday-pull.html" class="day-strip-pill">FRI</a>
+    <a href="saturday-leg.html" class="day-strip-pill">SAT</a>
+    <a href="sunday-zone2.html" class="day-strip-pill">SUN</a>
     </div>
   </div>
 
@@ -453,13 +482,13 @@ const REST_DEFAULT  = 90;
 /* ── Exercise data ── */
 const EXERCISES = [
   { id:'ex1', name:'Incline DB Press',        type:'anchor', typeLabel:'PRIMARY · ANCHOR',  sets:4, reps:'8–10',  baseWeight:65,  delta:2.5,  cue:'Leads every Push day — upper chest freshest = fastest gains', muscles:{ primary:'Upper Chest', secondary:'Front Delt' } },
-  { id:'ex2', name:'Flat DB Press',           type:'anchor', typeLabel:'PRIMARY · ANCHOR',  sets:4, reps:'8–10',  baseWeight:80,  delta:2.5,  cue:'Full range of motion — control the descent, explode up',      muscles:{ primary:'Chest', secondary:'Front Delt · Triceps' } },
-  { id:'ex3', name:'Cable Crossover',         type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'12–15', baseWeight:30,  delta:0,    cue:'Full stretch at bottom — highest hypertrophy stimulus',        muscles:{ primary:'Inner Chest', secondary:'' } },
-  { id:'ex4', name:'Pec Deck Fly',            type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'12–15', baseWeight:50,  delta:0,    cue:'Mind-muscle connection — squeeze, do not just move weight',    muscles:{ primary:'Chest', secondary:'' } },
+  { id:'ex2', name:'Flat DB Press',           type:'anchor', typeLabel:'PRIMARY · ANCHOR',  sets:4, reps:'8–10',  baseWeight:80,  delta:2.5,  cue:'Full range of motion — control the descent, explode up',   muscles:{ primary:'Chest', secondary:'Front Delt · Triceps' } },
+  { id:'ex3', name:'Cable Crossover',         type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'12–15', baseWeight:30,  delta:0,    cue:'Full stretch at bottom — highest hypertrophy stimulus',       muscles:{ primary:'Inner Chest', secondary:'' } },
+  { id:'ex4', name:'Pec Deck Fly',            type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'12–15', baseWeight:50,  delta:0,    cue:'Mind-muscle connection — squeeze, do not just move weight',   muscles:{ primary:'Chest', secondary:'' } },
   { id:'ex5', name:'Tricep Pushdown',         type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:4, reps:'12–15', baseWeight:45,  delta:2.5,  cue:'After all pressing — straight bar, elbows locked at sides',   muscles:{ primary:'Triceps', secondary:'' } },
-  { id:'ex6', name:'Overhead Tricep Ext.',    type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'10–12', baseWeight:35,  delta:2.5,  cue:'Long head stretch — keep elbows in tight',                    muscles:{ primary:'Triceps Long Head', secondary:'' } },
-  { id:'ex7', name:'Lateral Raise',           type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'15',    baseWeight:20,  delta:0,    cue:'Medial delt — light weight, full arc, lead with elbow',        muscles:{ primary:'Medial Delt', secondary:'' } },
-  { id:'ex8', name:'Chest Dips',              type:'flex',   typeLabel:'COMPOUND+ · FLEX',  sets:3, reps:'8–10',  baseWeight:0,   delta:0,    cue:'Burnout finisher only — lean forward for chest emphasis',      muscles:{ primary:'Lower Chest', secondary:'Triceps' } },
+  { id:'ex6', name:'Overhead Tricep Ext.',    type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'10–12', baseWeight:35,  delta:2.5,  cue:'Long head stretch — keep elbows in tight',                   muscles:{ primary:'Triceps Long Head', secondary:'' } },
+  { id:'ex7', name:'Lateral Raise',           type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'15',    baseWeight:20,  delta:0,    cue:'Medial delt — light weight, full arc, lead with elbow',       muscles:{ primary:'Medial Delt', secondary:'' } },
+  { id:'ex8', name:'Chest Dips',              type:'flex',   typeLabel:'COMPOUND+ · FLEX',  sets:3, reps:'8–10',  baseWeight:0,   delta:0,    cue:'Burnout finisher only — lean forward for chest emphasis',     muscles:{ primary:'Lower Chest', secondary:'Triceps' } },
 ];
 
 let currentWeek = 2;
@@ -468,11 +497,11 @@ let state       = {};
 
 /* ── State helpers ── */
 function calcWeight(ex, week) {
-  return ex.baseWeight + ex.delta * (week - 1);
+  const effectiveWeek = week === 7 ? 6 : week; const base = (state.baseWeights && state.baseWeights[ex.id] != null) ? state.baseWeights[ex.id] : ex.baseWeight; return base + ex.delta * (effectiveWeek - 1);
 }
 
 function defaultState() {
-  const s = { week: currentWeek, flexOrder, exercises: {} };
+  const s = { week: currentWeek, flexOrder, baseWeights: {}, exercises: {} };
   EXERCISES.forEach(ex => {
     s.exercises[ex.id] = {
       weight: calcWeight(ex, currentWeek),
@@ -491,7 +520,10 @@ function sanitiseState(raw) {
       ? raw.flexOrder.filter(id => validIds.has(id) && EXERCISES.find(e => e.id === id)?.type === 'flex')
       : null;
     if (!fo || fo.length !== EXERCISES.filter(e => e.type === 'flex').length) return null;
-    const out = { week: raw.week, flexOrder: fo, exercises: {} };
+    const out = { week: raw.week, flexOrder: fo, baseWeights: {}, exercises: {} };
+    if (raw.baseWeights && typeof raw.baseWeights === 'object') {
+      EXERCISES.forEach(ex => { const bw = parseFloat(raw.baseWeights[ex.id]); if (!isNaN(bw) && bw >= 0 && bw <= 1000 && isFinite(bw)) out.baseWeights[ex.id] = bw; });
+    }
     EXERCISES.forEach(ex => {
       const e = raw.exercises?.[ex.id];
       if (!e) return;
@@ -512,17 +544,20 @@ function loadState() {
   } catch { return defaultState(); }
 }
 
-function saveState() {
+function saveState(silent) {
   state.week = currentWeek;
   state.flexOrder = flexOrder;
+  state.baseWeights = state.baseWeights || {};
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  showToast('Session saved ✓');
+  if (!silent) showToast('✓ Saved');
 }
+let autoSaveTimer = null;
+function autoSave() { clearTimeout(autoSaveTimer); autoSaveTimer = setTimeout(() => saveState(false), 400); }
 
 /* ── Render ── */
 function renderAll() {
   renderZone('anchor-zone', EXERCISES.filter(e => e.type === 'anchor'));
-  renderZone('flex-zone',   flexOrder.map(id => EXERCISES.find(e => e.id === id)).filter(Boolean));
+  renderZone('flex-zone',   flexOrder.map(id => EXERCISES.find(e => e.id === id)));
   updateStats();
 }
 
@@ -586,20 +621,20 @@ function renderZone(zoneId, exercises) {
     const right = document.createElement('div');
     right.className = 'card-right';
 
-    /* Muscle tags */
+    // Muscle tags
     if (ex.muscles) {
       const tagsWrap = document.createElement('div');
       tagsWrap.className = 'muscle-tags';
-      const pTag = document.createElement('span');
-      pTag.className = 'muscle-tag primary';
-      pTag.textContent = ex.muscles.primary;
-      tagsWrap.appendChild(pTag);
-      if (ex.muscles.secondary) {
-        const sTag = document.createElement('span');
-        sTag.className = 'muscle-tag secondary';
-        sTag.textContent = ex.muscles.secondary;
-        tagsWrap.appendChild(sTag);
-      }
+      const pt = document.createElement('span');
+      pt.className = 'muscle-tag primary';
+      pt.textContent = ex.muscles.primary;
+      tagsWrap.appendChild(pt);
+      ex.muscles.secondary.forEach(m => {
+        const t = document.createElement('span');
+        t.className = 'muscle-tag secondary';
+        t.textContent = m;
+        tagsWrap.appendChild(t);
+      });
       right.appendChild(tagsWrap);
     }
 
@@ -608,18 +643,23 @@ function renderZone(zoneId, exercises) {
     repsEl.textContent = `${ex.sets}×${ex.reps}`;
     right.appendChild(repsEl);
 
-    if (ex.baseWeight > 0) {
+    if (ex.baseWeight > 0 || ex.baseWeight === 0) {
       const wrap = document.createElement('div');
       wrap.className = 'weight-wrap';
       const input = document.createElement('input');
       input.type = 'number';
       input.className = 'weight-input';
+      input.dataset.exid = ex.id;
       input.value = exState.weight;
       input.min = 0; input.max = 999; input.step = 2.5;
-      input.addEventListener('change', () => {
+      input.addEventListener('input', () => {
         const v = parseFloat(input.value);
-        if (isNaN(v) || v < 0 || v > 999 || !isFinite(v)) { input.value = exState.weight; return; }
+        if (isNaN(v) || v < 0 || v > 999 || !isFinite(v)) return;
+        const effectiveWeek = currentWeek === 7 ? 6 : currentWeek;
+        state.baseWeights = state.baseWeights || {};
+        state.baseWeights[ex.id] = v - ex.delta * (effectiveWeek - 1);
         state.exercises[ex.id].weight = v;
+        autoSave();
       });
       const unit = document.createElement('span');
       unit.className = 'weight-unit';
@@ -647,18 +687,19 @@ function renderZone(zoneId, exercises) {
         updateCardProgress(ex);
         updateStats();
         if (newDone) startRest(REST_DEFAULT);
+        autoSave();
       });
       dots.appendChild(dot);
     });
     inner.appendChild(dots);
 
-    /* Drag handle (flex only) — top center */
+    /* Drag handle (flex only) */
     if (ex.type === 'flex') {
       const handle = document.createElement('div');
       handle.className = 'drag-handle';
       handle.textContent = '⠿';
       handle.setAttribute('aria-label', 'Drag to reorder');
-      card.insertBefore(handle, card.firstChild);
+      card.appendChild(handle);
       initCardDrag(card, handle);
     }
 
@@ -781,16 +822,16 @@ document.getElementById('week-pills').addEventListener('click', e => {
   const btn = e.target.closest('.week-pill');
   if (!btn) return;
   currentWeek = parseInt(btn.dataset.week);
+  try { localStorage.setItem('forge_week_v1', currentWeek); } catch {}
   document.querySelectorAll('.week-pill').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   EXERCISES.forEach(ex => {
-    if (!state.exercises[ex.id]) {
-      state.exercises[ex.id] = { weight: calcWeight(ex, currentWeek), sets: new Array(ex.sets).fill(false) };
-    } else {
-      state.exercises[ex.id].weight = calcWeight(ex, currentWeek);
-    }
+    const newWeight = calcWeight(ex, currentWeek);
+    if (!state.exercises[ex.id]) { state.exercises[ex.id] = { weight: newWeight, sets: new Array(ex.sets).fill(false) }; }
+    else { state.exercises[ex.id].weight = newWeight; }
   });
   renderAll();
+});
 });
 
 /* ── Rest Timer ── */
@@ -847,7 +888,8 @@ function showToast(msg) {
 
 /* ── Init ── */
 state = loadState();
-currentWeek  = state.week || 2;
+state.baseWeights = state.baseWeights || {};
+currentWeek = (() => { try { const w = parseInt(localStorage.getItem('forge_week_v1')); return (w >= 1 && w <= 7) ? w : (state.week || 1); } catch { return state.week || 1; } })();
 flexOrder    = state.flexOrder || EXERCISES.filter(e => e.type === 'flex').map(e => e.id);
 const activePill = document.querySelector(`.week-pill[data-week="${currentWeek}"]`);
 document.querySelectorAll('.week-pill').forEach(b => b.classList.remove('active'));

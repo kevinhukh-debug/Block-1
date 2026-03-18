@@ -210,10 +210,10 @@
     color: var(--muted); letter-spacing: 0.08em;
   }
   .card-drag-handle {
-    color: var(--subtle); cursor: grab; font-size: 16px;
-    padding: 6px 8px; user-select: none;
+    color: var(--subtle); cursor: grab; font-size: 20px;
+    padding: 4px 10px; user-select: none;
     touch-action: none; transition: color 0.15s;
-    flex-shrink: 0;
+    letter-spacing: 3px;
   }
   .card-drag-handle:active { cursor: grabbing; }
   .card-drag-handle:hover  { color: var(--accent); }
@@ -598,6 +598,7 @@ const WORKOUT = [
         cue: 'Superset with Seated Cable Row — upper chest when freshest',
         baseWeight: 60,
         delta: 2.5,
+        muscles: { primary: 'Upper Chest', secondary: 'Front Delt' },
         muscles: { primary: 'Upper Chest', secondary: ['Front Delt'] },
       },
       {
@@ -609,6 +610,7 @@ const WORKOUT = [
         cue: 'Full scapular retraction at end — chest stays tall',
         baseWeight: 70,
         delta: 2.5,
+        muscles: { primary: 'Mid Back', secondary: 'Biceps' },
         muscles: { primary: 'Mid Back', secondary: ['Biceps'] },
       },
     ],
@@ -628,6 +630,7 @@ const WORKOUT = [
         cue: 'Superset with Rear Delt Fly — shoulder balance',
         baseWeight: 45,
         delta: 2.5,
+        muscles: { primary: 'Front Delt', secondary: 'Triceps · Upper Chest' },
         muscles: { primary: 'Front Delt', secondary: ['Triceps', 'Upper Chest'] },
       },
       {
@@ -639,6 +642,7 @@ const WORKOUT = [
         cue: 'Pinch at top — rotator cuff health, never skip',
         baseWeight: 20,
         delta: 0,
+        muscles: { primary: 'Rear Delt', secondary: 'Rotator Cuff' },
         muscles: { primary: 'Rear Delt', secondary: ['Rotator Cuff'] },
       },
     ],
@@ -658,6 +662,7 @@ const WORKOUT = [
         cue: 'Superset with Hammer Curl — elbows in, tricep long head',
         baseWeight: 40,
         delta: 2.5,
+        muscles: { primary: 'Triceps', secondary: '' },
         muscles: { primary: 'Triceps', secondary: [] },
       },
       {
@@ -669,6 +674,7 @@ const WORKOUT = [
         cue: 'Brachialis + long head — slow negative',
         baseWeight: 35,
         delta: 2.5,
+        muscles: { primary: 'Brachialis', secondary: 'Biceps' },
         muscles: { primary: 'Brachialis', secondary: ['Biceps'] },
       },
     ],
@@ -688,6 +694,7 @@ const WORKOUT = [
         cue: 'Constant tension vs dumbbell — medial delt isolation',
         baseWeight: 15,
         delta: 0,
+        muscles: { primary: 'Medial Delt', secondary: '' },
         muscles: { primary: 'Medial Delt', secondary: [] },
       },
     ],
@@ -707,6 +714,7 @@ const WORKOUT = [
         cue: 'Hip flexor + core — finish strong, controlled descent',
         baseWeight: 0,
         delta: 0,
+        muscles: { primary: 'Hip Flexors', secondary: 'Abs' },
         muscles: { primary: 'Hip Flexors', secondary: ['Abs'] },
       },
     ],

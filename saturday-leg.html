@@ -77,10 +77,16 @@
   .set-dot:hover{border-color:var(--card-accent);background:rgba(255,255,255,0.06);}
   .set-dot.done{background:var(--card-accent);border-color:var(--card-accent);}
   .set-dot.done::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%23000' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat;}
-  .drag-handle{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--subtle);cursor:grab;font-size:16px;padding:8px 6px;user-select:none;touch-action:none;z-index:2;transition:color 0.15s;}
-  .drag-handle:hover{color:var(--accent);}
-  .drag-handle:active{cursor:grabbing;}
-  .exercise-card.anchor-card .drag-handle{display:none;}
+  .drag-handle {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; padding: 6px 0 2px;
+    color: var(--subtle); cursor: grab; font-size: 18px;
+    user-select: none; touch-action: none; z-index: 2;
+    letter-spacing: 3px; transition: color 0.15s;
+  }
+  .drag-handle:hover { color: var(--muted); }
+  .drag-handle:active { cursor: grabbing; }
+  .exercise-card.anchor-card .drag-handle { display: none; }
   .exercise-card.dragging{opacity:0.4;}
   .exercise-card.drag-over{border-color:var(--accent);background:rgba(244,114,182,0.05);}
   #rest-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;opacity:0;pointer-events:none;transition:opacity 0.2s ease;}
@@ -303,7 +309,7 @@ function renderZone(zoneId,exercises){
     });
     inner.appendChild(dots);
 
-    if(ex.type==='flex'){const h=document.createElement('div');h.className='drag-handle';h.textContent='⠿';h.setAttribute('aria-label','Drag to reorder');card.appendChild(h);initCardDrag(card,h);}
+    if(ex.type==='flex'){const h=document.createElement('div');h.className='drag-handle';h.textContent='⠿';h.setAttribute('aria-label','Drag to reorder');card.insertBefore(h, card.firstChild);initCardDrag(card,h);}
     card.appendChild(inner);zone.appendChild(card);
   });
 }
