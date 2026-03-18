@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FORGE — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  :root{--bg:#0d0d0d;--surface:#141414;--surface-2:#1a1a1a;--border:rgba(255,255,255,0.07);--text:#f0f0f0;--muted:#666;--subtle:#333;--yellow:#f5c518;--blue:#47b8ff;--rose:#fb7185;--orange:#fb923c;--green:#4ade80;--pink:#f472b6;--mint:#6ee7b7;--font-display:'Bebas Neue',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;--radius:12px;--radius-sm:6px;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden;position:relative;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");opacity:0.03;pointer-events:none;z-index:0;}
+  .wrapper{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px 80px;}
+  header{padding:52px 0 40px;border-bottom:1px solid var(--border);margin-bottom:48px;}
+  .header-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  .logo-block h1{font-family:var(--font-display);font-size:clamp(52px,8vw,88px);line-height:0.9;letter-spacing:0.01em;}
+  .logo-block h1 span{color:var(--yellow);}
+  .tagline{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;margin-top:10px;}
+  .header-stats{display:flex;gap:32px;padding-bottom:6px;}
+  .stat-item{text-align:right;}
+  .stat-value{font-family:var(--font-display);font-size:32px;line-height:1;color:var(--yellow);}
+  .stat-label{font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-top:4px;font-family:var(--font-mono);}
+  .week-bar{display:flex;align-items:center;gap:12px;margin-bottom:36px;}
+  .week-bar-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;white-space:nowrap;margin-right:4px;}
+  .week-pills{display:flex;gap:6px;flex-wrap:wrap;}
+  .week-pill{font-family:var(--font-mono);font-size:11px;padding:5px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;letter-spacing:0.08em;}
+  .week-pill:hover{border-color:var(--yellow);color:var(--yellow);}
+  .week-pill.active{background:var(--yellow);border-color:var(--yellow);color:#000;font-weight:600;}
+  .section-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+  .day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-bottom:48px;}
+  @media(max-width:900px){.day-grid{grid-template-columns:repeat(4,1fr);}}
+  @media(max-width:560px){.day-grid{grid-template-columns:repeat(2,1fr);}}
+  .day-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 16px;cursor:pointer;transition:transform 0.2s,border-color 0.2s,background 0.2s;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:14px;text-decoration:none;color:inherit;min-height:220px;}
+  .day-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--card-accent);}
+  .day-card::after{content:'';position:absolute;bottom:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:var(--card-accent);opacity:0.04;transition:opacity 0.3s,transform 0.3s;}
+  .day-card:hover{transform:translateY(-3px);border-color:var(--card-accent);background:var(--surface-2);}
+  .day-card:hover::after{opacity:0.09;transform:scale(1.2);}
+  .card-day-name{font-family:var(--font-display);font-size:32px;line-height:1;}
+  .card-day-name span{color:var(--card-accent);}
+  .card-session-type{font-family:var(--font-mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--card-accent);background:rgba(0,0,0,0.3);padding:3px 8px;border-radius:100px;display:inline-block;border:1px solid var(--card-accent);opacity:0.85;}
+  .card-exercises{flex:1;display:flex;flex-direction:column;gap:5px;}
+  .card-ex-item{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;line-height:1.4;}
+  .card-ex-item::before{content:'';display:block;width:4px;height:4px;border-radius:50%;background:var(--border);flex-shrink:0;}
+  .card-ex-item.anchor-ex{color:var(--text);}
+  .card-ex-item.anchor-ex::before{background:var(--card-accent);}
+  .card-ex-more{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.06em;}
+  .run-zones{display:flex;flex-direction:column;gap:6px;}
+  .run-zone-row{display:flex;justify-content:space-between;align-items:center;}
+  .run-zone-label{font-size:11px;color:var(--muted);}
+  .run-zone-hr{font-family:var(--font-mono);font-size:11px;color:var(--card-accent);}
+  .run-distance{font-family:var(--font-display);font-size:28px;color:var(--card-accent);line-height:1;}
+  .run-distance-label{font-family:var(--font-mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:3px;}
+  .block-progress{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:48px;}
+  .block-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+  .block-title{font-family:var(--font-display);font-size:24px;color:var(--text);line-height:1;}
+  .block-subtitle{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-top:4px;}
+  .block-week-indicator{font-family:var(--font-display);font-size:36px;color:var(--yellow);line-height:1;text-align:right;}
+  .block-week-indicator span{display:block;font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;line-height:1;margin-top:4px;}
+  .week-track{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;}
+  @media(max-width:700px){.week-track{grid-template-columns:repeat(4,1fr);}}
+  @media(max-width:420px){.week-track{grid-template-columns:repeat(4,1fr);gap:6px;}}
+  .week-node{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 8px;text-align:center;}
+  .week-node.active{background:rgba(245,197,24,0.12);border-color:rgba(245,197,24,0.4);}
+  .week-node.completed{background:rgba(74,222,128,0.08);border-color:rgba(74,222,128,0.3);}
+  .week-node-label{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--muted);}
+  .week-node.active .week-node-label{color:var(--yellow);}
+  .week-node.completed .week-node-label{color:#4ade80;}
+  .week-node-sub{font-family:var(--font-mono);font-size:9px;color:var(--subtle);letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;}
+  .week-node.active .week-node-sub{color:rgba(245,197,24,0.7);}
+  .week-node.completed .week-node-sub{color:rgba(74,222,128,0.7);}
+  footer{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid var(--border);}
+  .footer-left{font-family:var(--font-mono);font-size:10px;color:var(--subtle);letter-spacing:0.12em;text-transform:uppercase;}
+  .footer-right{font-family:var(--font-mono);font-size:10px;color:var(--subtle);}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <header>
+    <div class="header-inner">
+      <div class="logo-block">
+        <h1><span>FOR</span>GE<br>DASHBOARD</h1>
+        <p class="tagline">Strength & Endurance · 7-Week Block</p>
+      </div>
+      <div class="header-stats">
+        <div class="stat-item"><div class="stat-value">7</div><div class="stat-label">Days / Week</div></div>
+        <div class="stat-item"><div class="stat-value">7</div><div class="stat-label">Week Block</div></div>
+      </div>
+    </div>
+  </header>
+  <div class="week-bar">
+    <div class="week-bar-label">Week</div>
+    <div class="week-pills" id="week-pills">
+      <button class="week-pill" data-week="1">WK 1</button>
+      <button class="week-pill" data-week="2">WK 2</button>
+      <button class="week-pill" data-week="3">WK 3</button>
+      <button class="week-pill" data-week="4">WK 4</button>
+      <button class="week-pill" data-week="5">WK 5</button>
+      <button class="week-pill" data-week="6">WK 6</button>
+      <button class="week-pill" data-week="7">WK 7 — Deload</button>
+    </div>
+  </div>
+  <div class="section-label">This Week</div>
+  <div class="day-grid" id="day-grid"></div>
+  <div class="section-label">Block Progress</div>
+  <div class="block-progress">
+    <div class="block-header">
+      <div><div class="block-title">7-WEEK BLOCK</div><div class="block-subtitle">Strength · Run · Deload</div></div>
+      <div class="block-week-indicator" id="week-display">1<span>Current Week</span></div>
+    </div>
+    <div class="week-track" id="week-track"></div>
+  </div>
+  <footer>
+    <div class="footer-left">FORGE · STRENGTH & ENDURANCE · BLOCK 1</div>
+    <div class="footer-right" id="last-updated"></div>
+  </footer>
+</div>
+<script>
+'use strict';
+var DAYS = [
+  {short:'MON',rest:'DAY',session:'Upper',type:'lift',accent:'#47b8ff',href:'forge-monday.html',
+   exercises:[{name:'Incline DB Press',anchor:true},{name:'Seated Cable Row',anchor:true},{name:'Overhead Press',anchor:false},{name:'Rear Delt Fly',anchor:false},{name:'Cable Lateral Raise',anchor:false},{name:'Skull Crusher',anchor:false},{name:'Hammer Curl',anchor:false},{name:'Hanging Knee Raise',anchor:false}]},
+  {short:'TUE',rest:'SDAY',session:'Lower',type:'lift',accent:'#fb7185',href:'forge-tuesday.html',
+   exercises:[{name:'Back Squat',anchor:true},{name:'Romanian Deadlift',anchor:true},{name:'Leg Press',anchor:false},{name:'Leg Extension',anchor:false},{name:'Lying Leg Curl',anchor:false},{name:'Seated Calf Raise',anchor:false},{name:'Cable Crunch',anchor:false}]},
+  {short:'WED',rest:'NESDAY',session:'Push',type:'lift',accent:'#f5c518',href:'forge-wednesday.html',
+   exercises:[{name:'Incline DB Press',anchor:true},{name:'Flat DB Press',anchor:true},{name:'Cable Crossover',anchor:false},{name:'Pec Deck Fly',anchor:false},{name:'Tricep Pushdown',anchor:false},{name:'Overhead Tricep Ext.',anchor:false},{name:'Lateral Raise',anchor:false},{name:'Chest Dips',anchor:false}]},
+  {short:'THU',rest:'RSDAY',session:'Tempo Run',type:'run',accent:'#4ade80',href:'forge-thursday.html',
+   zones:[{label:'Warmup (Z2)',hr:'133-145'},{label:'Tempo (Z3)',hr:'146-158'},{label:'Cooldown (Z2)',hr:'133-145'}],distance:'6+ mi'},
+  {short:'FRI',rest:'DAY',session:'Pull',type:'lift',accent:'#fb923c',href:'forge-friday.html',
+   exercises:[{name:'Wide Grip Lat Pulldown',anchor:true},{name:'Seated Cable Row',anchor:true},{name:'Single Arm DB Row',anchor:false},{name:'Face Pull',anchor:false},{name:'Shoulder Shrug',anchor:false},{name:'Preacher Curl',anchor:false},{name:'Incline DB Curl',anchor:false},{name:'Cable Crunch',anchor:false}]},
+  {short:'SAT',rest:'URDAY',session:'Leg',type:'lift',accent:'#f472b6',href:'forge-saturday.html',
+   exercises:[{name:'Hip Thrust',anchor:true},{name:'Romanian Deadlift',anchor:true},{name:'Walking Lunge',anchor:false},{name:'Good Morning',anchor:false},{name:'Leg Extension',anchor:false},{name:'Calf Press Machine',anchor:false},{name:'Side Lunge',anchor:false},{name:'Ab Crunch',anchor:false}]},
+  {short:'SUN',rest:'DAY',session:'Zone 2 Run',type:'run',accent:'#6ee7b7',href:'forge-sunday.html',
+   zones:[{label:'Zone 2',hr:'133-145'}],distance:'6-8 mi'},
+];
+
+var currentWeek = 1;
+try { var w = parseInt(localStorage.getItem('forge_week_v1')); if (w >= 1 && w <= 7) currentWeek = w; } catch(e) {}
+
+var TODAY_MAP = [6,0,1,2,3,4,5];
+var todayIdx = TODAY_MAP[new Date().getDay()];
+
+function renderGrid() {
+  var grid = document.getElementById('day-grid');
+  grid.innerHTML = '';
+  DAYS.forEach(function(day, i) {
+    var card = document.createElement('a');
+    card.href = day.href;
+    card.style.setProperty('--card-accent', day.accent);
+    card.className = 'day-card' + (day.type === 'run' ? ' run-card' : '');
+    var html = '<div class="card-day-name"><span>' + day.short + '</span>' + day.rest + (i === todayIdx ? ' <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' + day.accent + ';margin-left:4px;vertical-align:middle;"></span>' : '') + '</div>';
+    html += '<div class="card-session-type">' + day.session + '</div>';
+    if (day.type === 'run') {
+      html += '<div class="run-zones">';
+      day.zones.forEach(function(z) { html += '<div class="run-zone-row"><div class="run-zone-label">' + z.label + '</div><div class="run-zone-hr">' + z.hr + ' bpm</div></div>'; });
+      html += '</div><div><div class="run-distance">' + day.distance + '</div><div class="run-distance-label">Target Distance</div></div>';
+    } else {
+      var anchors = day.exercises.filter(function(e) { return e.anchor; });
+      var flex = day.exercises.filter(function(e) { return !e.anchor; });
+      var shown = anchors.concat(flex).slice(0, 4);
+      var remaining = day.exercises.length - 4;
+      html += '<div class="card-exercises">';
+      shown.forEach(function(e) { html += '<div class="card-ex-item' + (e.anchor ? ' anchor-ex' : '') + '">' + e.name + '</div>'; });
+      if (remaining > 0) html += '<div class="card-ex-more">+' + remaining + ' more</div>';
+      html += '</div>';
+    }
+    card.innerHTML = html;
+    grid.appendChild(card);
+  });
+}
+
+function renderTrack() {
+  var track = document.getElementById('week-track');
+  track.innerHTML = '';
+  for (var w = 1; w <= 7; w++) {
+    var node = document.createElement('div');
+    var cls = 'week-node';
+    if (w < currentWeek) cls += ' completed';
+    else if (w === currentWeek) cls += ' active';
+    node.className = cls;
+    var lbl = w === 7 ? 'DL' : 'WK ' + w;
+    var sub = w < currentWeek ? 'Done' : w === currentWeek ? 'Active' : w === 7 ? 'Deload' : 'Upcoming';
+    node.innerHTML = '<div class="week-node-label">' + lbl + '</div><div class="week-node-sub">' + sub + '</div>';
+    track.appendChild(node);
+  }
+  document.getElementById('week-display').innerHTML = currentWeek + '<span>Current Week</span>';
+}
+
+document.getElementById('week-pills').addEventListener('click', function(e) {
+  var btn = e.target.closest('.week-pill');
+  if (!btn) return;
+  currentWeek = parseInt(btn.getAttribute('data-week'));
+  try { localStorage.setItem('forge_week_v1', currentWeek); } catch(err) {}
+  document.querySelectorAll('.week-pill').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderTrack();
+});
+
+document.querySelectorAll('.week-pill').forEach(function(b) { b.classList.toggle('active', parseInt(b.getAttribute('data-week')) === currentWeek); });
+var now = new Date();
+document.getElementById('last-updated').textContent = 'Updated ' + now.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'});
+renderGrid();
+renderTrack();
+</script>
+</body>
+</html>

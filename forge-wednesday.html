@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FORGE — Wednesday Push</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0d0d0d; --surface: #141414; --surface-2: #1a1a1a;
+    --border: rgba(255,255,255,0.07); --text: #f0f0f0;
+    --muted: #666; --subtle: #333;
+    --accent: #f5c518; --accent-rgb: 245,197,24;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --radius: 12px; --radius-sm: 6px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; overflow-x: hidden; position: relative; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E"); opacity: 0.03; pointer-events: none; z-index: 0; }
+  .wrapper { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 0 20px 100px; }
+  header { padding: 44px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+  .back-link { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); text-decoration: none; margin-bottom: 20px; transition: color 0.15s; }
+  .back-link:hover { color: var(--accent); }
+  .back-link::before { content: '←'; font-size: 12px; }
+  .header-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  h1 { font-family: var(--font-display); font-size: clamp(52px, 10vw, 80px); line-height: 0.9; letter-spacing: 0.01em; }
+  h1 span { color: var(--accent); }
+  .session-meta { text-align: right; padding-bottom: 4px; }
+  .session-tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); background: rgba(var(--accent-rgb),0.1); border: 1px solid rgba(var(--accent-rgb),0.2); padding: 4px 10px; border-radius: 100px; display: inline-block; margin-bottom: 8px; }
+  .session-goal { font-size: 11px; color: var(--muted); font-family: var(--font-mono); letter-spacing: 0.08em; display: block; }
+  .week-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .week-bar-label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; white-space: nowrap; }
+  .week-pills { display: flex; gap: 5px; flex-wrap: wrap; }
+  .week-pill { font-family: var(--font-mono); font-size: 11px; padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; letter-spacing: 0.06em; }
+  .week-pill:hover { border-color: var(--accent); color: var(--accent); }
+  .week-pill.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
+  .week-pill-dash { font-family: var(--font-mono); font-size: 11px; padding: 4px 12px; border-radius: 100px; border: 1px solid rgba(var(--accent-rgb),0.4); background: transparent; color: var(--accent); text-decoration: none; letter-spacing: 0.06em; transition: all 0.15s; }
+  .week-pill-dash:hover { background: rgba(var(--accent-rgb),0.1); }
+  .day-strip-wrap { margin-bottom: 28px; }
+  .day-strip { display: flex; gap: 6px; flex-wrap: wrap; }
+  .day-strip-pill { font-family: var(--font-mono); font-size: 11px; padding: 4px 10px; border-radius: 100px; border: 1px solid var(--border); color: var(--muted); text-decoration: none; transition: all 0.15s; letter-spacing: 0.06em; }
+  .day-strip-pill:hover { border-color: var(--accent); color: var(--accent); }
+  .day-strip-pill.current { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; pointer-events: none; }
+  .stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 28px; }
+  .stat-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; }
+  .stat-box-value { font-family: var(--font-display); font-size: 26px; color: var(--accent); line-height: 1; }
+  .stat-box-label { font-family: var(--font-mono); font-size: 9px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px; }
+  .section-label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .exercise-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; position: relative; opacity: 0; animation: fadeUp 0.35s ease forwards; transition: border-color 0.2s; }
+  .exercise-card:hover { border-color: rgba(255,255,255,0.12); }
+  .exercise-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--card-accent); border-radius: var(--radius) var(--radius) 0 0; }
+  .exercise-card.anchor-card { --card-accent: var(--accent); }
+  .exercise-card.flex-card { --card-accent: rgba(var(--accent-rgb),0.5); }
+  .drag-handle { display: flex; align-items: center; justify-content: center; width: 100%; padding: 6px 0 2px; color: var(--subtle); cursor: grab; font-size: 18px; user-select: none; touch-action: none; z-index: 2; letter-spacing: 3px; transition: color 0.15s; }
+  .drag-handle:hover { color: var(--muted); }
+  .drag-handle:active { cursor: grabbing; }
+  .exercise-card.anchor-card .drag-handle { display: none; }
+  .card-progress { height: 2px; background: var(--surface-2); overflow: hidden; }
+  .card-progress-fill { height: 100%; background: var(--card-accent); transition: width 0.3s ease; width: 0%; }
+  .card-inner { padding: 16px 18px; }
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+  .card-left { flex: 1; min-width: 0; }
+  .ex-type-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 4px; color: var(--card-accent); }
+  .card-number { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-right: 4px; }
+  .card-name { font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.2; }
+  .card-cue { font-size: 11px; color: var(--muted); margin-top: 5px; line-height: 1.45; font-style: italic; }
+  .card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
+  .muscle-tags { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; margin-bottom: 4px; }
+  .muscle-tag { font-family: var(--font-mono); font-size: 10px; padding: 2px 7px; border-radius: 4px; border: 0.5px solid; }
+  .muscle-tag.primary { background: rgba(var(--accent-rgb),0.12); color: var(--accent); border-color: rgba(var(--accent-rgb),0.3); }
+  .muscle-tag.secondary { background: rgba(255,255,255,0.04); color: var(--muted); border-color: var(--border); }
+  .card-reps { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.06em; white-space: nowrap; }
+  .weight-wrap { display: flex; align-items: center; gap: 5px; }
+  .weight-input { width: 68px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-family: var(--font-mono); font-size: 13px; text-align: center; padding: 5px 6px; transition: border-color 0.15s; -moz-appearance: textfield; }
+  .weight-input::-webkit-outer-spin-button, .weight-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .weight-input:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,0.04); }
+  .weight-unit { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
+  .set-dots { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+  .set-dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(var(--accent-rgb),0.3); background: transparent; cursor: pointer; transition: all 0.15s ease; position: relative; flex-shrink: 0; }
+  .set-dot:hover { border-color: var(--accent); background: rgba(255,255,255,0.06); }
+  .set-dot.done { background: var(--accent); border-color: var(--accent); }
+  .set-dot.done::after { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%23000' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat; }
+  .exercise-card.dragging { opacity: 0.4; }
+  .exercise-card.drag-over { border-color: var(--accent); background: rgba(var(--accent-rgb),0.04); }
+  .drag-clone { position: fixed; pointer-events: none; z-index: 999; opacity: 0.85; border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0,0,0,0.6); transform: rotate(1.5deg); }
+  #rest-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+  #rest-overlay.active { opacity: 1; pointer-events: all; }
+  .rest-ring-wrap { position: relative; width: 200px; height: 200px; }
+  #rest-svg { transform: rotate(-90deg); }
+  #rest-circle-bg { fill: none; stroke: var(--surface-2); stroke-width: 8; }
+  #rest-circle { fill: none; stroke: var(--accent); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+  .rest-time-display { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  #rest-countdown { font-family: var(--font-display); font-size: 52px; color: var(--text); line-height: 1; }
+  .rest-lbl { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 4px; }
+  .rest-controls { display: flex; gap: 12px; }
+  .rest-btn { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 20px; border-radius: 100px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+  .rest-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .rest-btn.primary { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
+  .rest-btn.primary:hover { opacity: 0.9; }
+  .reset-link-wrap { text-align: center; margin-top: 32px; padding-bottom: 8px; }
+  .reset-link { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--subtle); background: none; border: none; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; transition: color 0.15s; padding: 0; }
+  .reset-link:hover { color: var(--muted); }
+  #toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px); background: var(--surface-2); border: 1px solid var(--border); border-radius: 100px; padding: 10px 20px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--text); opacity: 0; transition: all 0.25s ease; pointer-events: none; white-space: nowrap; z-index: 200; }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 480px) { .stats-row { gap: 8px; } .stat-box-value { font-size: 22px; } .card-name { font-size: 15px; } .muscle-tags { display: none; } }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <header>
+    <a href="forge-index.html" class="back-link">FORGE Dashboard</a>
+    <div class="header-top">
+      <h1><span>WED</span>NESDAY<br>PUSH</h1>
+      <div class="session-meta">
+        <span class="session-tag">Chest Priority</span>
+        <span class="session-goal">Chest · Delt · Tricep</span>
+      </div>
+    </div>
+  </header>
+  <div class="week-bar">
+    <div class="week-bar-label">Week</div>
+    <div class="week-pills" id="week-pills">
+      <a href="forge-index.html" class="week-pill-dash">Dashboard</a>
+      <button class="week-pill" data-week="1">WK 1</button>
+      <button class="week-pill" data-week="2">WK 2</button>
+      <button class="week-pill" data-week="3">WK 3</button>
+      <button class="week-pill" data-week="4">WK 4</button>
+      <button class="week-pill" data-week="5">WK 5</button>
+      <button class="week-pill" data-week="6">WK 6</button>
+      <button class="week-pill" data-week="7">WK 7 — Deload</button>
+    </div>
+  </div>
+  <div class="day-strip-wrap">
+    <div class="day-strip">
+    <a href="forge-monday.html" class="day-strip-pill">MON</a>
+    <a href="forge-tuesday.html" class="day-strip-pill">TUE</a>
+    <span class="day-strip-pill current">WED</span>
+    <a href="forge-thursday.html" class="day-strip-pill">THU</a>
+    <a href="forge-friday.html" class="day-strip-pill">FRI</a>
+    <a href="forge-saturday.html" class="day-strip-pill">SAT</a>
+    <a href="forge-sunday.html" class="day-strip-pill">SUN</a>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-box-value" id="stat-sets">0</div><div class="stat-box-label">Sets Done</div></div>
+    <div class="stat-box"><div class="stat-box-value">8</div><div class="stat-box-label">Exercises</div></div>
+    <div class="stat-box"><div class="stat-box-value" id="stat-pct">0%</div><div class="stat-box-label">Complete</div></div>
+  </div>
+  <div class="section-label">Anchor</div>
+  <div id="anchor-zone"></div>
+  <div class="section-label">Flex</div>
+  <div id="flex-zone"></div>
+  <div class="reset-link-wrap"><button class="reset-link" id="reset-btn">Reset session</button></div>
+</div>
+<div id="rest-overlay">
+  <div class="rest-ring-wrap">
+    <svg id="rest-svg" width="200" height="200" viewBox="0 0 200 200">
+      <circle id="rest-circle-bg" cx="100" cy="100" r="88"/>
+      <circle id="rest-circle" cx="100" cy="100" r="88" stroke-dasharray="553" stroke-dashoffset="0"/>
+    </svg>
+    <div class="rest-time-display">
+      <div id="rest-countdown">90</div>
+      <div class="rest-lbl">Rest</div>
+    </div>
+  </div>
+  <div class="rest-controls">
+    <button class="rest-btn" id="rest-add">+30s</button>
+    <button class="rest-btn primary" id="rest-skip">Skip</button>
+  </div>
+</div>
+<div id="toast"></div>
+<script>
+'use strict';
+const STORAGE_KEY = 'forge_wednesday_v1';
+const CIRCUMFERENCE = 2 * Math.PI * 88;
+const REST_DEFAULT = 90;
+
+const EXERCISES = [
+  { id:'ex1', name:'Incline DB Press', type:'anchor', typeLabel:'PRIMARY · ANCHOR', sets:4, reps:'8-10', baseWeight:65, delta:2.5, restSecs:120, cue:'Leads every Push day — upper chest freshest means fastest gains', musclePrimary:'Upper Chest', muscleSecondary:'Front Delt' },
+  { id:'ex2', name:'Flat DB Press', type:'anchor', typeLabel:'PRIMARY · ANCHOR', sets:4, reps:'8-10', baseWeight:80, delta:2.5, restSecs:120, cue:'Full range of motion — control the descent, explode up', musclePrimary:'Chest', muscleSecondary:'Front Delt · Triceps' },
+  { id:'ex3', name:'Cable Crossover', type:'flex', typeLabel:'ISOLATION · FLEX', sets:3, reps:'12-15', baseWeight:30, delta:0, restSecs:60, cue:'Full stretch at bottom — highest hypertrophy stimulus', musclePrimary:'Inner Chest', muscleSecondary:'' },
+  { id:'ex4', name:'Pec Deck Fly', type:'flex', typeLabel:'ISOLATION · FLEX', sets:3, reps:'12-15', baseWeight:50, delta:0, restSecs:60, cue:'Mind-muscle connection — squeeze, do not just move weight', musclePrimary:'Chest', muscleSecondary:'' },
+  { id:'ex5', name:'Tricep Pushdown', type:'flex', typeLabel:'ISOLATION · FLEX', sets:4, reps:'12-15', baseWeight:45, delta:2.5, restSecs:60, cue:'Straight bar, elbows locked at sides — after all pressing', musclePrimary:'Triceps', muscleSecondary:'' },
+  { id:'ex6', name:'Overhead Tricep Ext.', type:'flex', typeLabel:'ISOLATION · FLEX', sets:3, reps:'10-12', baseWeight:35, delta:2.5, restSecs:60, cue:'Long head stretch — keep elbows in tight', musclePrimary:'Triceps Long Head', muscleSecondary:'' },
+  { id:'ex7', name:'Lateral Raise', type:'flex', typeLabel:'ISOLATION · FLEX', sets:3, reps:'15', baseWeight:20, delta:0, restSecs:60, cue:'Light weight, full arc — lead with elbow not wrist', musclePrimary:'Medial Delt', muscleSecondary:'' },
+  { id:'ex8', name:'Chest Dips', type:'flex', typeLabel:'COMPOUND+ · FLEX', sets:3, reps:'8-10', baseWeight:0, delta:0, restSecs:60, cue:'Burnout finisher — lean forward for chest emphasis', musclePrimary:'Lower Chest', muscleSecondary:'Triceps' }
+];
+
+let currentWeek = 1;
+let flexOrder = ['ex3','ex4','ex5','ex6','ex7','ex8'];
+let state = {};
+
+function calcWeight(ex, week) {
+  const w = week === 7 ? 6 : week;
+  const base = (state.baseWeights && state.baseWeights[ex.id] != null) ? state.baseWeights[ex.id] : ex.baseWeight;
+  return base + ex.delta * (w - 1);
+}
+
+function defaultState() {
+  const s = { week: currentWeek, flexOrder: [...flexOrder], baseWeights: {}, exercises: {} };
+  EXERCISES.forEach(function(ex) {
+    s.exercises[ex.id] = { weight: calcWeight(ex, currentWeek), sets: new Array(ex.sets).fill(false) };
+  });
+  return s;
+}
+
+function sanitiseState(raw) {
+  try {
+    if (!raw || typeof raw !== 'object') return null;
+    if (typeof raw.week !== 'number' || raw.week < 1 || raw.week > 7) return null;
+    const flexExIds = EXERCISES.filter(function(e) { return e.type === 'flex'; }).map(function(e) { return e.id; });
+    const fo = Array.isArray(raw.flexOrder) ? raw.flexOrder.filter(function(id) { return flexExIds.indexOf(id) !== -1; }) : null;
+    if (!fo || fo.length !== flexExIds.length) return null;
+    const out = { week: raw.week, flexOrder: fo, baseWeights: {}, exercises: {} };
+    if (raw.baseWeights && typeof raw.baseWeights === 'object') {
+      EXERCISES.forEach(function(ex) { const bw = parseFloat(raw.baseWeights[ex.id]); if (!isNaN(bw) && bw >= 0 && bw <= 1000) out.baseWeights[ex.id] = bw; });
+    }
+    EXERCISES.forEach(function(ex) {
+      const e = raw.exercises && raw.exercises[ex.id];
+      if (!e) return;
+      const w = parseFloat(e.weight);
+      if (isNaN(w) || w < 0 || w > 1000) return;
+      const sets = Array.isArray(e.sets) ? e.sets.slice(0, ex.sets).map(function(v) { return !!v; }) : [];
+      if (sets.length !== ex.sets) return;
+      out.exercises[ex.id] = { weight: w, sets: sets };
+    });
+    return out;
+  } catch(err) { return null; }
+}
+
+function loadState() {
+  try { return sanitiseState(JSON.parse(localStorage.getItem(STORAGE_KEY))) || defaultState(); }
+  catch(err) { return defaultState(); }
+}
+
+function saveState(silent) {
+  state.week = currentWeek;
+  state.flexOrder = flexOrder;
+  state.baseWeights = state.baseWeights || {};
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  if (!silent) showToast('Saved');
+}
+
+var autoSaveTimer = null;
+function autoSave() { clearTimeout(autoSaveTimer); autoSaveTimer = setTimeout(function() { saveState(true); }, 400); }
+
+function renderAll() {
+  renderZone('anchor-zone', EXERCISES.filter(function(e) { return e.type === 'anchor'; }));
+  renderZone('flex-zone', flexOrder.map(function(id) { return EXERCISES.filter(function(e) { return e.id === id; })[0]; }).filter(function(e) { return !!e; }));
+  updateStats();
+}
+
+function renderZone(zoneId, exercises) {
+  var zone = document.getElementById(zoneId);
+  zone.innerHTML = '';
+  exercises.forEach(function(ex, idx) {
+    var exState = (state.exercises && state.exercises[ex.id]) || { weight: calcWeight(ex, currentWeek), sets: new Array(ex.sets).fill(false) };
+
+    var card = document.createElement('div');
+    card.className = 'exercise-card ' + ex.type + '-card';
+    card.setAttribute('data-ex-id', ex.id);
+    card.style.animationDelay = (idx * 0.05 + 0.05) + 's';
+
+    // Drag handle at top for flex cards
+    if (ex.type === 'flex') {
+      var handle = document.createElement('div');
+      handle.className = 'drag-handle';
+      handle.textContent = '⠿';
+      handle.setAttribute('aria-label', 'Drag to reorder');
+      card.appendChild(handle);
+      initCardDrag(card, handle);
+    }
+
+    // Progress bar
+    var progWrap = document.createElement('div');
+    progWrap.className = 'card-progress';
+    var progFill = document.createElement('div');
+    progFill.className = 'card-progress-fill';
+    progFill.id = 'prog-' + ex.id;
+    var doneSets = exState.sets.filter(function(v) { return !!v; }).length;
+    progFill.style.width = Math.round((doneSets / ex.sets) * 100) + '%';
+    progWrap.appendChild(progFill);
+    card.appendChild(progWrap);
+
+    // Card inner
+    var inner = document.createElement('div');
+    inner.className = 'card-inner';
+
+    var top = document.createElement('div');
+    top.className = 'card-top';
+
+    // Left: type label, name, cue
+    var left = document.createElement('div');
+    left.className = 'card-left';
+
+    var typeLabel = document.createElement('div');
+    typeLabel.className = 'ex-type-label';
+    typeLabel.textContent = ex.typeLabel;
+
+    var nameRow = document.createElement('div');
+    var num = document.createElement('span');
+    num.className = 'card-number';
+    num.textContent = (idx + 1 < 10 ? '0' : '') + (idx + 1) + ' ·';
+    var nameEl = document.createElement('span');
+    nameEl.className = 'card-name';
+    nameEl.textContent = ex.name;
+    nameRow.appendChild(num);
+    nameRow.appendChild(nameEl);
+
+    var cueEl = document.createElement('div');
+    cueEl.className = 'card-cue';
+    cueEl.textContent = ex.cue;
+
+    left.appendChild(typeLabel);
+    left.appendChild(nameRow);
+    left.appendChild(cueEl);
+
+    // Right: muscle tags, reps, weight
+    var right = document.createElement('div');
+    right.className = 'card-right';
+
+    // Muscle tags
+    var tagsWrap = document.createElement('div');
+    tagsWrap.className = 'muscle-tags';
+    var ptag = document.createElement('span');
+    ptag.className = 'muscle-tag primary';
+    ptag.textContent = ex.musclePrimary;
+    tagsWrap.appendChild(ptag);
+    if (ex.muscleSecondary && ex.muscleSecondary.length > 0) {
+      var stag = document.createElement('span');
+      stag.className = 'muscle-tag secondary';
+      stag.textContent = ex.muscleSecondary;
+      tagsWrap.appendChild(stag);
+    }
+    right.appendChild(tagsWrap);
+
+    var repsEl = document.createElement('div');
+    repsEl.className = 'card-reps';
+    repsEl.textContent = ex.sets + 'x' + ex.reps;
+    right.appendChild(repsEl);
+
+    if (ex.baseWeight > 0) {
+      var wrap = document.createElement('div');
+      wrap.className = 'weight-wrap';
+      var input = document.createElement('input');
+      input.type = 'number';
+      input.className = 'weight-input';
+      input.value = exState.weight;
+      input.min = 0; input.max = 999; input.step = 2.5;
+      (function(capturedEx, capturedInput) {
+        capturedInput.addEventListener('change', function() {
+          var v = parseFloat(capturedInput.value);
+          if (isNaN(v) || v < 0 || v > 999) { capturedInput.value = state.exercises[capturedEx.id] ? state.exercises[capturedEx.id].weight : capturedEx.baseWeight; return; }
+          var ew = currentWeek === 7 ? 6 : currentWeek;
+          state.baseWeights = state.baseWeights || {};
+          state.baseWeights[capturedEx.id] = v - capturedEx.delta * (ew - 1);
+          if (state.exercises[capturedEx.id]) state.exercises[capturedEx.id].weight = v;
+          autoSave();
+        });
+      })(ex, input);
+      var unit = document.createElement('span');
+      unit.className = 'weight-unit';
+      unit.textContent = 'lbs';
+      wrap.appendChild(input);
+      wrap.appendChild(unit);
+      right.appendChild(wrap);
+    }
+
+    top.appendChild(left);
+    top.appendChild(right);
+    inner.appendChild(top);
+
+    // Set dots
+    var dots = document.createElement('div');
+    dots.className = 'set-dots';
+    exState.sets.forEach(function(done, si) {
+      var dot = document.createElement('button');
+      dot.className = 'set-dot' + (done ? ' done' : '');
+      dot.setAttribute('aria-label', 'Set ' + (si + 1));
+      (function(capturedEx, capturedDot, capturedSi) {
+        capturedDot.addEventListener('click', function() {
+          if (!state.exercises[capturedEx.id]) {
+            state.exercises[capturedEx.id] = { weight: calcWeight(capturedEx, currentWeek), sets: new Array(capturedEx.sets).fill(false) };
+          }
+          var newDone = !state.exercises[capturedEx.id].sets[capturedSi];
+          state.exercises[capturedEx.id].sets[capturedSi] = newDone;
+          capturedDot.classList.toggle('done', newDone);
+          var fill = document.getElementById('prog-' + capturedEx.id);
+          if (fill) {
+            var d = state.exercises[capturedEx.id].sets.filter(function(v) { return !!v; }).length;
+            fill.style.width = Math.round((d / capturedEx.sets) * 100) + '%';
+          }
+          updateStats();
+          if (newDone) startRest(capturedEx.restSecs || REST_DEFAULT);
+          autoSave();
+        });
+      })(ex, dot, si);
+      dots.appendChild(dot);
+    });
+    inner.appendChild(dots);
+
+    card.appendChild(inner);
+    zone.appendChild(card);
+  });
+}
+
+function updateStats() {
+  var total = 0, done = 0;
+  EXERCISES.forEach(function(ex) {
+    var es = state.exercises && state.exercises[ex.id];
+    if (!es) return;
+    total += ex.sets;
+    done += es.sets.filter(function(v) { return !!v; }).length;
+  });
+  var sEl = document.getElementById('stat-sets');
+  var pEl = document.getElementById('stat-pct');
+  if (sEl) sEl.textContent = done;
+  if (pEl) pEl.textContent = total ? Math.round((done / total) * 100) + '%' : '0%';
+}
+
+// Drag & drop
+var dragSrcId = null, dragClone = null, dragOffX = 0, dragOffY = 0;
+
+function initCardDrag(card, handle) {
+  card.setAttribute('draggable', 'true');
+  card.addEventListener('dragstart', function(e) {
+    if (!e.target.closest('.drag-handle')) { e.preventDefault(); return; }
+    dragSrcId = card.getAttribute('data-ex-id');
+    setTimeout(function() { card.classList.add('dragging'); }, 0);
+  });
+  card.addEventListener('dragend', function() { card.classList.remove('dragging'); });
+  card.addEventListener('dragover', function(e) { e.preventDefault(); card.classList.add('drag-over'); });
+  card.addEventListener('dragleave', function() { card.classList.remove('drag-over'); });
+  card.addEventListener('drop', function(e) {
+    e.preventDefault(); card.classList.remove('drag-over');
+    var targetId = card.getAttribute('data-ex-id');
+    if (dragSrcId && targetId && dragSrcId !== targetId) {
+      var si = flexOrder.indexOf(dragSrcId), ti = flexOrder.indexOf(targetId);
+      if (si !== -1 && ti !== -1) { flexOrder.splice(si, 1); flexOrder.splice(ti, 0, dragSrcId); renderAll(); }
+    }
+    dragSrcId = null;
+  });
+  handle.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    dragSrcId = card.getAttribute('data-ex-id');
+    var touch = e.touches[0], rect = card.getBoundingClientRect();
+    dragOffX = touch.clientX - rect.left; dragOffY = touch.clientY - rect.top;
+    dragClone = card.cloneNode(true);
+    dragClone.className = card.className + ' drag-clone';
+    dragClone.style.width = rect.width + 'px';
+    dragClone.style.left = (touch.clientX - dragOffX) + 'px';
+    dragClone.style.top = (touch.clientY - dragOffY) + 'px';
+    document.body.appendChild(dragClone);
+    card.classList.add('dragging');
+  }, { passive: false });
+  handle.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    if (!dragClone) return;
+    var touch = e.touches[0];
+    dragClone.style.left = (touch.clientX - dragOffX) + 'px';
+    dragClone.style.top = (touch.clientY - dragOffY) + 'px';
+    document.querySelectorAll('.exercise-card.flex-card:not(.dragging)').forEach(function(c) {
+      var r = c.getBoundingClientRect();
+      c.classList.toggle('drag-over', touch.clientY >= r.top && touch.clientY <= r.bottom);
+    });
+  }, { passive: false });
+  handle.addEventListener('touchend', function() {
+    if (dragClone) { dragClone.remove(); dragClone = null; }
+    var over = document.querySelector('.exercise-card.drag-over');
+    if (over && dragSrcId) {
+      var targetId = over.getAttribute('data-ex-id');
+      if (targetId && targetId !== dragSrcId) {
+        var si = flexOrder.indexOf(dragSrcId), ti = flexOrder.indexOf(targetId);
+        if (si !== -1 && ti !== -1) { flexOrder.splice(si, 1); flexOrder.splice(ti, 0, dragSrcId); }
+      }
+    }
+    document.querySelectorAll('.drag-over').forEach(function(c) { c.classList.remove('drag-over'); });
+    document.querySelectorAll('.dragging').forEach(function(c) { c.classList.remove('dragging'); });
+    dragSrcId = null;
+    renderAll();
+  });
+}
+
+// Week pills
+document.getElementById('week-pills').addEventListener('click', function(e) {
+  var btn = e.target.closest('.week-pill');
+  if (!btn) return;
+  currentWeek = parseInt(btn.getAttribute('data-week'));
+  try { localStorage.setItem('forge_week_v1', currentWeek); } catch(err) {}
+  document.querySelectorAll('.week-pill').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  EXERCISES.forEach(function(ex) {
+    if (state.exercises[ex.id]) {
+      state.exercises[ex.id].weight = calcWeight(ex, currentWeek);
+    }
+  });
+  renderAll();
+});
+
+// Rest timer
+var restInterval = null, restRemaining = REST_DEFAULT, restTotal = REST_DEFAULT;
+var overlay = document.getElementById('rest-overlay');
+var countdown = document.getElementById('rest-countdown');
+var circle = document.getElementById('rest-circle');
+circle.style.strokeDasharray = CIRCUMFERENCE;
+circle.style.strokeDashoffset = 0;
+
+function startRest(secs) {
+  clearInterval(restInterval);
+  restTotal = restRemaining = secs;
+  overlay.classList.add('active');
+  tickRest();
+  restInterval = setInterval(function() {
+    restRemaining--;
+    if (restRemaining <= 0) { endRest(); return; }
+    tickRest();
+  }, 1000);
+}
+function tickRest() {
+  countdown.textContent = restRemaining;
+  circle.style.strokeDashoffset = CIRCUMFERENCE * (1 - restRemaining / restTotal);
+}
+function endRest() { clearInterval(restInterval); overlay.classList.remove('active'); }
+document.getElementById('rest-skip').addEventListener('click', endRest);
+document.getElementById('rest-add').addEventListener('click', function() {
+  restRemaining += 30; restTotal = Math.max(restTotal, restRemaining); tickRest();
+});
+
+// Reset
+document.getElementById('reset-btn').addEventListener('click', function() {
+  if (confirm('Reset all sets and weights for this session?')) {
+    state = defaultState(); localStorage.removeItem(STORAGE_KEY); renderAll(); showToast('Session reset');
+  }
+});
+
+// Toast
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2200);
+}
+
+// Init
+state = loadState();
+state.baseWeights = state.baseWeights || {};
+try { var w = parseInt(localStorage.getItem('forge_week_v1')); currentWeek = (w >= 1 && w <= 7) ? w : (state.week || 1); } catch(err) { currentWeek = state.week || 1; }
+flexOrder = (state.flexOrder && state.flexOrder.length > 0) ? state.flexOrder : ['ex3','ex4','ex5','ex6','ex7','ex8'];
+document.querySelectorAll('.week-pill').forEach(function(b) { b.classList.remove('active'); });
+var ap = document.querySelector('.week-pill[data-week="' + currentWeek + '"]');
+if (ap) ap.classList.add('active');
+renderAll();
+</script>
+</body>
+</html>
