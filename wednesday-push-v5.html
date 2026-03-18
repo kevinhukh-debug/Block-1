@@ -394,7 +394,7 @@
       <h1><span>WED</span>NESDAY<br>PUSH</h1>
       <div class="session-meta">
         <span class="session-tag">Chest Priority</span>
-        <span class="session-goal">Incline ALWAYS leads</span>
+        <span class="session-goal">Chest · Delt · Tricep</span>
       </div>
     </div>
   </header>
@@ -557,7 +557,7 @@ function autoSave() { clearTimeout(autoSaveTimer); autoSaveTimer = setTimeout(()
 /* ── Render ── */
 function renderAll() {
   renderZone('anchor-zone', EXERCISES.filter(e => e.type === 'anchor'));
-  renderZone('flex-zone',   flexOrder.map(id => EXERCISES.find(e => e.id === id)));
+  renderZone('flex-zone',   flexOrder.map(id => EXERCISES.find(e => e.id === id)).filter(Boolean));
   updateStats();
 }
 
@@ -693,13 +693,13 @@ function renderZone(zoneId, exercises) {
     });
     inner.appendChild(dots);
 
-    /* Drag handle (flex only) */
+    /* Drag handle (flex only) — top center */
     if (ex.type === 'flex') {
       const handle = document.createElement('div');
       handle.className = 'drag-handle';
       handle.textContent = '⠿';
       handle.setAttribute('aria-label', 'Drag to reorder');
-      card.appendChild(handle);
+      card.insertBefore(handle, card.firstChild);
       initCardDrag(card, handle);
     }
 
