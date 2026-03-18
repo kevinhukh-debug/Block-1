@@ -629,12 +629,12 @@ function renderZone(zoneId, exercises) {
       pt.className = 'muscle-tag primary';
       pt.textContent = ex.muscles.primary;
       tagsWrap.appendChild(pt);
-      ex.muscles.secondary.forEach(m => {
+      if (ex.muscles.secondary) {
         const t = document.createElement('span');
         t.className = 'muscle-tag secondary';
-        t.textContent = m;
+        t.textContent = ex.muscles.secondary;
         tagsWrap.appendChild(t);
-      });
+      }
       right.appendChild(tagsWrap);
     }
 

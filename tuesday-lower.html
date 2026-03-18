@@ -242,13 +242,13 @@ const STORAGE_KEY   = 'forge_tuesday_v1';
 const CIRCUMFERENCE = 2 * Math.PI * 88;
 
 const EXERCISES = [
-  { id:'ex1', name:'Back Squat',        type:'anchor', typeLabel:'STRENGTH · ANCHOR', sets:4, reps:'5–6',   baseWeight:185, delta:5,   restSeconds:120, cue:'Strength focus — add 2.5–5 lbs each week', tempo:null, muscles:{ primary:'Quads', secondary:['Glutes','Core'] } },
-  { id:'ex2', name:'Romanian Deadlift', type:'anchor', typeLabel:'COMPOUND · ANCHOR', sets:4, reps:'8–10',  baseWeight:135, delta:2.5, restSeconds:120, cue:'3-second negative — time under tension drives growth', tempo:{ down:3, pause:0, up:1 }, muscles:{ primary:'Hamstrings', secondary:['Glutes','Lower Back'] } },
-  { id:'ex3', name:'Leg Press',         type:'flex',   typeLabel:'COMPOUND · FLEX',   sets:3, reps:'12–15', baseWeight:180, delta:0,   restSeconds:120, cue:'Quad volume after squat — CNS less taxed than barbell', tempo:null, muscles:{ primary:'Quads', secondary:['Glutes'] } },
-  { id:'ex4', name:'Leg Extension',     type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'12–15', baseWeight:70,  delta:0,   restSeconds:60,  cue:'VMO isolation — AFTER compound work, not before', tempo:null, muscles:{ primary:'Inner Quad', secondary:['Quads'] } },
-  { id:'ex5', name:'Lying Leg Curl',    type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'10–12', baseWeight:65,  delta:0,   restSeconds:60,  cue:'Full ROM — plantarflex foot for extra hamstring range', tempo:null, muscles:{ primary:'Hamstrings', secondary:['Calves'] } },
-  { id:'ex6', name:'Seated Calf Raise', type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:4, reps:'15–20', baseWeight:45,  delta:0,   restSeconds:60,  cue:'Hits soleus — standing hits gastroc, you need BOTH', tempo:null, muscles:{ primary:'Soleus', secondary:[] } },
-  { id:'ex7', name:'Cable Crunch',      type:'flex',   typeLabel:'CORE · FLEX',       sets:3, reps:'15',    baseWeight:50,  delta:2.5, restSeconds:60,  cue:'Weighted — add load every week', tempo:null, muscles:{ primary:'Abs', secondary:['Hip Flexors'] } },
+  { id:'ex1', name:'Back Squat',        type:'anchor', typeLabel:'STRENGTH · ANCHOR', sets:4, reps:'5–6',   baseWeight:185, delta:5,   restSeconds:120, cue:'Strength focus — add 2.5–5 lbs each week', tempo:null, muscles:{ primary:'Quads', secondary:'Glutes · Core' } },
+  { id:'ex2', name:'Romanian Deadlift', type:'anchor', typeLabel:'COMPOUND · ANCHOR', sets:4, reps:'8–10',  baseWeight:135, delta:2.5, restSeconds:120, cue:'3-second negative — time under tension drives growth', tempo:{ down:3, pause:0, up:1 }, muscles:{ primary:'Hamstrings', secondary:'Glutes · Lower Back' } },
+  { id:'ex3', name:'Leg Press',         type:'flex',   typeLabel:'COMPOUND · FLEX',   sets:3, reps:'12–15', baseWeight:180, delta:0,   restSeconds:120, cue:'Quad volume after squat — CNS less taxed than barbell', tempo:null, muscles:{ primary:'Quads', secondary:'Glutes' } },
+  { id:'ex4', name:'Leg Extension',     type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'12–15', baseWeight:70,  delta:0,   restSeconds:60,  cue:'VMO isolation — AFTER compound work, not before', tempo:null, muscles:{ primary:'Inner Quad', secondary:'Quads' } },
+  { id:'ex5', name:'Lying Leg Curl',    type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:3, reps:'10–12', baseWeight:65,  delta:0,   restSeconds:60,  cue:'Full ROM — plantarflex foot for extra hamstring range', tempo:null, muscles:{ primary:'Hamstrings', secondary:'Calves' } },
+  { id:'ex6', name:'Seated Calf Raise', type:'flex',   typeLabel:'ISOLATION · FLEX',  sets:4, reps:'15–20', baseWeight:45,  delta:0,   restSeconds:60,  cue:'Hits soleus — standing hits gastroc, you need BOTH', tempo:null, muscles:{ primary:'Soleus', secondary:'' } },
+  { id:'ex7', name:'Cable Crunch',      type:'flex',   typeLabel:'CORE · FLEX',       sets:3, reps:'15',    baseWeight:50,  delta:2.5, restSeconds:60,  cue:'Weighted — add load every week', tempo:null, muscles:{ primary:'Abs', secondary:'Hip Flexors' } },
 ];
 
 let currentWeek = 2;
@@ -344,7 +344,7 @@ function renderZone(zoneId, exercises) {
     const rightTop = document.createElement('div'); rightTop.className = 'card-right-top';
     const tagsWrap = document.createElement('div'); tagsWrap.className = 'muscle-tags';
     const pt = document.createElement('span'); pt.className = 'muscle-tag primary'; pt.textContent = ex.muscles.primary; tagsWrap.appendChild(pt);
-    ex.muscles.secondary.forEach(m => { const t = document.createElement('span'); t.className = 'muscle-tag secondary'; t.textContent = m; tagsWrap.appendChild(t); });
+    if (ex.muscles.secondary) { const t = document.createElement('span'); t.className = 'muscle-tag secondary'; t.textContent = ex.muscles.secondary; tagsWrap.appendChild(t); }
     rightTop.appendChild(tagsWrap);
     const repsEl = document.createElement('div'); repsEl.className = 'card-reps'; repsEl.textContent = `${ex.sets}×${ex.reps}`; rightTop.appendChild(repsEl);
     const wrap = document.createElement('div'); wrap.className = 'weight-wrap';

@@ -741,12 +741,7 @@ function renderZone(zoneId, exercises) {
     primaryTag.className = 'muscle-tag primary';
     primaryTag.textContent = ex.muscles.primary;
     tagsWrap.appendChild(primaryTag);
-    ex.muscles.secondary.forEach(m => {
-      const t = document.createElement('span');
-      t.className = 'muscle-tag secondary';
-      t.textContent = m;
-      tagsWrap.appendChild(t);
-    });
+    if (ex.muscles.secondary) { const t = document.createElement('span'); t.className = 'muscle-tag secondary'; t.textContent = ex.muscles.secondary; tagsWrap.appendChild(t); }
 
     const rightTop = document.createElement('div');
     rightTop.className = 'card-right-top';

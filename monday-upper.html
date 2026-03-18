@@ -885,12 +885,12 @@ function renderCards() {
         pt.className = 'muscle-tag primary';
         pt.textContent = ex.muscles.primary;
         tagsWrap.appendChild(pt);
-        ex.muscles.secondary.forEach(m => {
-          const t = document.createElement('span');
-          t.className = 'muscle-tag secondary';
-          t.textContent = m;
-          tagsWrap.appendChild(t);
-        });
+        if (ex.muscles.secondary) {
+          const sTag = document.createElement('span');
+          sTag.className = 'muscle-tag secondary';
+          sTag.textContent = ex.muscles.secondary;
+          tagsWrap.appendChild(sTag);
+        }
         weightBlock.appendChild(tagsWrap);
       }
 
