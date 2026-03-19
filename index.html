@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>FORGE — Dashboard</title>
+<title>FORGE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
@@ -13,23 +13,40 @@
   body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden;position:relative;}
   body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");opacity:0.03;pointer-events:none;z-index:0;}
   .wrapper{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px 80px;}
-  header{padding:52px 0 40px;border-bottom:1px solid var(--border);margin-bottom:48px;}
-  .header-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;}
-  .logo-block h1{font-family:var(--font-display);font-size:clamp(52px,8vw,88px);line-height:0.9;letter-spacing:0.01em;}
-  .logo-block h1 span{color:var(--yellow);}
+  header{padding:52px 0 0;border-bottom:1px solid var(--border);margin-bottom:36px;}
+  .header-inner{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:32px;}
+  .logo-block h1{font-family:var(--font-display);font-size:clamp(60px,8vw,96px);line-height:0.9;letter-spacing:0.01em;color:var(--yellow);}
   .tagline{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;margin-top:10px;}
-  .header-stats{display:flex;gap:32px;padding-bottom:6px;}
-  .stat-item{text-align:right;}
-  .stat-value{font-family:var(--font-display);font-size:32px;line-height:1;color:var(--yellow);}
-  .stat-label{font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-top:4px;font-family:var(--font-mono);}
+  /* About toggle in header */
+  .about-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:0;padding-top:8px;}
+  .about-toggle-btn{font-family:var(--font-mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:8px 16px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.15s;}
+  .about-toggle-btn:hover{border-color:var(--yellow);color:var(--yellow);}
+  .about-toggle-btn .arrow{font-size:10px;transition:transform 0.2s;}
+  .about-toggle-btn.open .arrow{transform:rotate(180deg);}
+  .about-body{overflow:hidden;max-height:0;transition:max-height 0.35s ease;width:100%;}
+  .about-body.open{max-height:600px;}
+  .about-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:20px 0 24px;}
+  @media(max-width:700px){.about-pillars{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:420px){.about-pillars{grid-template-columns:1fr;}}
+  .pillar-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;}
+  .pillar-title{font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--yellow);margin-bottom:6px;}
+  .pillar-text{font-size:12px;color:var(--muted);line-height:1.5;}
+  /* Week bar */
   .week-bar{display:flex;align-items:center;gap:12px;margin-bottom:36px;}
   .week-bar-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;white-space:nowrap;margin-right:4px;}
   .week-pills{display:flex;gap:6px;flex-wrap:wrap;}
-  .week-pill{font-family:var(--font-mono);font-size:11px;padding:5px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;letter-spacing:0.08em;}
+  .week-pill{font-family:var(--font-mono);font-size:11px;padding:5px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;letter-spacing:0.08em;position:relative;}
   .week-pill:hover{border-color:var(--yellow);color:var(--yellow);}
   .week-pill.active{background:var(--yellow);border-color:var(--yellow);color:#000;font-weight:600;}
+  .week-pill .active-dot{position:absolute;top:-3px;right:-3px;width:7px;height:7px;border-radius:50%;background:var(--yellow);border:2px solid var(--bg);display:none;}
+  .week-pill.is-current .active-dot{display:block;}
+  .week-pill.active .active-dot{display:none;}
+  /* Section label */
   .section-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
   .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+  .collapse-btn{font-family:var(--font-mono);font-size:10px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:100px;padding:3px 10px;cursor:pointer;letter-spacing:0.08em;transition:all 0.15s;flex-shrink:0;}
+  .collapse-btn:hover{color:var(--yellow);border-color:var(--yellow);}
+  /* Day grid */
   .day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-bottom:48px;}
   @media(max-width:900px){.day-grid{grid-template-columns:repeat(4,1fr);}}
   @media(max-width:560px){.day-grid{grid-template-columns:repeat(2,1fr);}}
@@ -53,13 +70,15 @@
   .run-zone-hr{font-family:var(--font-mono);font-size:11px;color:var(--card-accent);}
   .run-distance{font-family:var(--font-display);font-size:28px;color:var(--card-accent);line-height:1;}
   .run-distance-label{font-family:var(--font-mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:3px;}
-  .block-progress{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:48px;}
+  /* Block progress */
+  .block-progress-body{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:48px;overflow:hidden;max-height:600px;transition:max-height 0.35s ease,padding 0.35s ease;}
+  .block-progress-body.collapsed{max-height:0;padding-top:0;padding-bottom:0;border-color:transparent;margin-bottom:16px;}
   .block-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
   .block-title{font-family:var(--font-display);font-size:24px;color:var(--text);line-height:1;}
   .block-subtitle{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-top:4px;}
   .block-week-indicator{font-family:var(--font-display);font-size:36px;color:var(--yellow);line-height:1;text-align:right;}
   .block-week-indicator span{display:block;font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;line-height:1;margin-top:4px;}
-  .week-track{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;}
+  .week-track{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:16px;}
   @media(max-width:700px){.week-track{grid-template-columns:repeat(4,1fr);}}
   @media(max-width:420px){.week-track{grid-template-columns:repeat(4,1fr);gap:6px;}}
   .week-node{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 8px;text-align:center;}
@@ -71,6 +90,44 @@
   .week-node-sub{font-family:var(--font-mono);font-size:9px;color:var(--subtle);letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;}
   .week-node.active .week-node-sub{color:rgba(245,197,24,0.7);}
   .week-node.completed .week-node-sub{color:rgba(74,222,128,0.7);}
+  /* What changes box */
+  .week-changes-box{background:var(--surface-2);border:1px solid rgba(245,197,24,0.2);border-radius:var(--radius-sm);padding:14px 16px;}
+  .wcb-heading{font-family:var(--font-mono);font-size:10px;color:var(--yellow);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px;}
+  .wcb-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px;}
+  .wcb-row:last-child{margin-bottom:0;}
+  .wcb-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;border-radius:100px;padding:2px 8px;flex-shrink:0;margin-top:2px;}
+  .wcb-tag.lift{background:rgba(71,184,255,0.12);color:#47b8ff;border:1px solid rgba(71,184,255,0.25);}
+  .wcb-tag.run{background:rgba(74,222,128,0.12);color:#4ade80;border:1px solid rgba(74,222,128,0.25);}
+  .wcb-text{font-size:12px;color:var(--muted);line-height:1.5;}
+  /* Calendar */
+  .cal-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:48px;}
+  .streak-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+  .streak-box{background:var(--surface-2);border-radius:var(--radius-sm);padding:12px 10px;text-align:center;}
+  .streak-val{font-family:var(--font-display);font-size:28px;color:var(--yellow);line-height:1;}
+  .streak-lbl{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;}
+  .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .cal-month-label{font-family:var(--font-mono);font-size:11px;color:var(--text);letter-spacing:0.1em;text-transform:uppercase;}
+  .cal-nav-btn{font-family:var(--font-mono);font-size:11px;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:5px 12px;cursor:pointer;transition:all 0.15s;}
+  .cal-nav-btn:hover{color:var(--yellow);border-color:var(--yellow);}
+  .cal-dow-row{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;}
+  .cal-dow{font-family:var(--font-mono);font-size:9px;color:var(--muted);text-align:center;letter-spacing:0.06em;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+  .cal-cell{aspect-ratio:1;border-radius:var(--radius-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;font-weight:600;position:relative;}
+  .cal-cell.empty,.cal-cell.future{color:var(--subtle);}
+  .cal-cell.today{outline:1.5px solid var(--yellow);outline-offset:-1px;color:var(--yellow);}
+  .cal-cell.lift-done{background:rgba(74,222,128,0.1);color:#4ade80;}
+  .cal-cell.run-done{background:rgba(71,184,255,0.1);color:#47b8ff;}
+  .cal-cell.missed{background:rgba(251,113,133,0.1);color:#fb7185;}
+  .cal-cell-label{font-size:8px;opacity:0.7;margin-top:1px;letter-spacing:0.04em;}
+  /* FAQ */
+  .faq-wrap{margin-bottom:48px;}
+  .faq-item{border-bottom:1px solid var(--border);}
+  .faq-q{width:100%;background:none;border:none;color:var(--text);font-family:var(--font-body);font-size:14px;font-weight:500;text-align:left;padding:16px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;transition:color 0.15s;}
+  .faq-q:hover{color:var(--yellow);}
+  .faq-q .faq-arrow{font-family:var(--font-mono);font-size:12px;color:var(--muted);transition:transform 0.2s;flex-shrink:0;}
+  .faq-q.open .faq-arrow{transform:rotate(180deg);color:var(--yellow);}
+  .faq-a{font-size:13px;color:var(--muted);line-height:1.65;max-height:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.3s ease;padding:0;}
+  .faq-a.open{max-height:200px;padding-bottom:16px;}
   footer{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid var(--border);}
   .footer-left{font-family:var(--font-mono);font-size:10px;color:var(--subtle);letter-spacing:0.12em;text-transform:uppercase;}
   .footer-right{font-family:var(--font-mono);font-size:10px;color:var(--subtle);}
@@ -81,47 +138,80 @@
   <header>
     <div class="header-inner">
       <div class="logo-block">
-        <h1><span>FOR</span>GE<br>DASHBOARD</h1>
-        <p class="tagline">Strength & Endurance · 7-Week Block</p>
+        <h1>FORGE</h1>
+        <p class="tagline">Strength &amp; Endurance &middot; 7-Week Block</p>
       </div>
-      <div class="header-stats">
-        <div class="stat-item"><div class="stat-value">7</div><div class="stat-label">Days / Week</div></div>
-        <div class="stat-item"><div class="stat-value">7</div><div class="stat-label">Week Block</div></div>
+      <div class="about-wrap">
+        <button class="about-toggle-btn" id="about-toggle-btn">
+          About this program
+          <span class="arrow">&#9660;</span>
+        </button>
+      </div>
+    </div>
+    <div class="about-body" id="about-body">
+      <div class="about-pillars">
+        <div class="pillar-card"><div class="pillar-title">Block Structure</div><div class="pillar-text">7 weeks. Weeks 1&ndash;6 progressive overload. Week 7 is a mandatory deload at 50% volume &mdash; this is where adaptation locks in.</div></div>
+        <div class="pillar-card"><div class="pillar-title">Anchor vs Flex</div><div class="pillar-text">Anchor exercises are fixed &mdash; they drive the program&apos;s core stimulus. Flex exercises can be swapped for equipment or preference without breaking the system.</div></div>
+        <div class="pillar-card"><div class="pillar-title">Progressive Overload</div><div class="pillar-text">Weight auto-calculates each week using your entered base weight. You show up, execute the reps, log the work. The system drives the progression.</div></div>
+        <div class="pillar-card"><div class="pillar-title">Aerobic Base</div><div class="pillar-text">Zone 2 Sunday builds the aerobic engine (133&ndash;145 bpm). Thursday tempo builds lactate threshold (146&ndash;158 bpm). Both are non-negotiable.</div></div>
+        <div class="pillar-card"><div class="pillar-title">Leg Balance</div><div class="pillar-text">Tuesday is quad-dominant (Squat leads). Saturday is glute and hamstring dominant (Hip Thrust leads). Different stimulus, same legs.</div></div>
+        <div class="pillar-card"><div class="pillar-title">Deload Week</div><div class="pillar-text">Week 7 is not optional. The body adapts during recovery, not during stress. Skip deload and you plateau. Run it and you come back stronger.</div></div>
       </div>
     </div>
   </header>
   <div class="week-bar">
     <div class="week-bar-label">Week</div>
     <div class="week-pills" id="week-pills">
-      <button class="week-pill" data-week="1">WK 1</button>
-      <button class="week-pill" data-week="2">WK 2</button>
-      <button class="week-pill" data-week="3">WK 3</button>
-      <button class="week-pill" data-week="4">WK 4</button>
-      <button class="week-pill" data-week="5">WK 5</button>
-      <button class="week-pill" data-week="6">WK 6</button>
-      <button class="week-pill" data-week="7">WK 7 — Deload</button>
+      <button class="week-pill" data-week="1">WK 1<span class="active-dot"></span></button>
+      <button class="week-pill" data-week="2">WK 2<span class="active-dot"></span></button>
+      <button class="week-pill" data-week="3">WK 3<span class="active-dot"></span></button>
+      <button class="week-pill" data-week="4">WK 4<span class="active-dot"></span></button>
+      <button class="week-pill" data-week="5">WK 5<span class="active-dot"></span></button>
+      <button class="week-pill" data-week="6">WK 6<span class="active-dot"></span></button>
+      <button class="week-pill" data-week="7">WK 7 &mdash; Deload<span class="active-dot"></span></button>
     </div>
   </div>
   <div class="section-label">This Week</div>
   <div class="day-grid" id="day-grid"></div>
-  <div class="section-label">Block Progress</div>
-  <div class="block-progress">
+  <div class="section-label">Block Progress <button class="collapse-btn" id="bp-toggle">Hide &#9650;</button></div>
+  <div class="block-progress-body" id="block-progress-body">
     <div class="block-header">
-      <div><div class="block-title">7-WEEK BLOCK</div><div class="block-subtitle">Strength · Run · Deload</div></div>
+      <div><div class="block-title">7-WEEK BLOCK</div><div class="block-subtitle">Strength &middot; Run &middot; Deload</div></div>
       <div class="block-week-indicator" id="week-display">1<span>Current Week</span></div>
     </div>
     <div class="week-track" id="week-track"></div>
+    <div class="week-changes-box" id="week-changes-box"></div>
   </div>
+  <div class="section-label">Workout Calendar</div>
+  <div class="cal-card">
+    <div class="streak-row">
+      <div class="streak-box"><div class="streak-val" id="streak-cur">0</div><div class="streak-lbl">Current Streak</div></div>
+      <div class="streak-box"><div class="streak-val" id="streak-best">0</div><div class="streak-lbl">Best Streak</div></div>
+      <div class="streak-box"><div class="streak-val" id="days-done">0</div><div class="streak-lbl">Days Done</div></div>
+      <div class="streak-box"><div class="streak-val" id="pct-done">0%</div><div class="streak-lbl">Block %</div></div>
+    </div>
+    <div class="cal-nav">
+      <button class="cal-nav-btn" id="cal-prev">&#8592;</button>
+      <div class="cal-month-label" id="cal-month-label">March 2026</div>
+      <button class="cal-nav-btn" id="cal-next">&#8594;</button>
+    </div>
+    <div class="cal-dow-row">
+      <div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div><div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+  <div class="section-label">FAQ</div>
+  <div class="faq-wrap" id="faq-wrap"></div>
   <footer>
-    <div class="footer-left">FORGE · STRENGTH & ENDURANCE · BLOCK 1</div>
+    <div class="footer-left">FORGE &middot; STRENGTH &amp; ENDURANCE &middot; BLOCK 1</div>
     <div class="footer-right" id="last-updated"></div>
   </footer>
 </div>
 <script>
 'use strict';
-var DAYS = [
+var DAYS=[
   {short:'MON',rest:'DAY',session:'Upper',type:'lift',accent:'#47b8ff',href:'forge-monday.html',
-   exercises:[{name:'Incline DB Press',anchor:true},{name:'Seated Cable Row',anchor:true},{name:'Overhead Press',anchor:false},{name:'Rear Delt Fly',anchor:false},{name:'Cable Lateral Raise',anchor:false},{name:'Skull Crusher',anchor:false},{name:'Hammer Curl',anchor:false},{name:'Hanging Knee Raise',anchor:false}]},
+   exercises:[{name:'Incline DB Press',anchor:true},{name:'Seated Cable Row',anchor:true},{name:'Overhead Press',anchor:true},{name:'Rear Delt Fly',anchor:true},{name:'Skull Crusher',anchor:false},{name:'Hammer Curl',anchor:false},{name:'Cable Lateral Raise',anchor:false},{name:'Hanging Knee Raise',anchor:false}]},
   {short:'TUE',rest:'SDAY',session:'Lower',type:'lift',accent:'#fb7185',href:'forge-tuesday.html',
    exercises:[{name:'Back Squat',anchor:true},{name:'Romanian Deadlift',anchor:true},{name:'Leg Press',anchor:false},{name:'Leg Extension',anchor:false},{name:'Lying Leg Curl',anchor:false},{name:'Seated Calf Raise',anchor:false},{name:'Cable Crunch',anchor:false}]},
   {short:'WED',rest:'NESDAY',session:'Push',type:'lift',accent:'#f5c518',href:'forge-wednesday.html',
@@ -136,73 +226,218 @@ var DAYS = [
    zones:[{label:'Zone 2',hr:'133-145'}],distance:'6-8 mi'},
 ];
 
-var currentWeek = 1;
-try { var w = parseInt(localStorage.getItem('forge_week_v1')); if (w >= 1 && w <= 7) currentWeek = w; } catch(e) {}
+var WEEK_CHANGES={
+  1:{lift:'Establish your base weights &mdash; log every set, every rep. These numbers set your entire block trajectory.',run:'Zone 2 only. No tempo work. Building the aerobic floor this week.'},
+  2:{lift:'Same weights as WK 1 &mdash; quality over load. Lock in form on every compound before adding weight.',run:'Tempo extends to 3 &times; 10 min. Rest between intervals stays at 3 min.'},
+  3:{lift:'First weight increase &mdash; one delta step up on all progressive exercises.',run:'Tempo rest drops to 2 min. Less recovery, more lactate threshold adaptation.'},
+  4:{lift:'Second weight increase. Three hard lift days before Thursday tempo &mdash; manage that fatigue window carefully.',run:'Volume at its highest before the peak. Thursday is highest injury-risk day.'},
+  5:{lift:'Heaviest lift week so far. WK 5 weights on all compounds &mdash; execute every set clean.',run:'Tempo extends to 4 &times; 8 min. Highest run stimulus of the entire block.'},
+  6:{lift:'Peak week &mdash; heaviest weights of the entire block. No junk sets, no skipped reps.',run:'Final hard tempo before deload. Leave everything on the track.'},
+  7:{lift:'Deload &mdash; all weights drop to WK 1 loads. Full ROM, no grinding. Adaptation happens here.',run:'Two long 15 min tempo intervals with 3 min rest. Easy Zone 2 on Sunday.'}
+};
 
-var TODAY_MAP = [6,0,1,2,3,4,5];
-var todayIdx = TODAY_MAP[new Date().getDay()];
+var FAQ_ITEMS=[
+  {q:'What does anchor vs flex mean?',a:'Anchor exercises are fixed &mdash; they are the structural spine of the program and drive the primary stimulus for each muscle group. Flex exercises can be swapped via the exercise card for a different movement that targets the same muscle. Anchors never change. Flex exercises have three curated alternatives each.'},
+  {q:'How do I set my starting weights?',a:'Open any training day and enter the weight you can perform for the target reps with 1&ndash;2 reps in reserve (not to failure). The app will auto-calculate your weights for all 7 weeks from that base. Adjust at any time &mdash; the system back-calculates your base weight.'},
+  {q:'Can I change the order of exercises?',a:'Yes &mdash; flex exercises can be reordered by grabbing the drag handle at the top of each card. Anchor exercises always stay fixed at the top of each day because CNS-fresh compound work comes first.'},
+  {q:'What should I do if I miss a day?',a:'Skip it and pick up the next scheduled day. Do not try to make up missed sessions by doubling up &mdash; that stacks fatigue and creates a worse outcome than the missed day itself. The program is designed with built-in recovery.'},
+  {q:'How does progressive overload work here?',a:'Each exercise has a delta value (e.g., +2.5 lbs/week). The app adds that delta each week automatically. You enter WK 1 weights once, and WK 2 through WK 6 calculate themselves. Week 7 uses WK 6 weights at reduced volume.'},
+  {q:'Why is the deload mandatory &mdash; can I skip it?',a:'The deload is when your body actually adapts to the accumulated stimulus from weeks 1&ndash;6. The stress of training is the signal; sleep and recovery are when the signal gets processed. Skip deload and you start Block 2 under-recovered, which reduces the gains from the entire previous block.'}
+];
 
-function renderGrid() {
-  var grid = document.getElementById('day-grid');
-  grid.innerHTML = '';
-  DAYS.forEach(function(day, i) {
-    var card = document.createElement('a');
-    card.href = day.href;
-    card.style.setProperty('--card-accent', day.accent);
-    card.className = 'day-card' + (day.type === 'run' ? ' run-card' : '');
-    var html = '<div class="card-day-name"><span>' + day.short + '</span>' + day.rest + (i === todayIdx ? ' <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' + day.accent + ';margin-left:4px;vertical-align:middle;"></span>' : '') + '</div>';
-    html += '<div class="card-session-type">' + day.session + '</div>';
-    if (day.type === 'run') {
-      html += '<div class="run-zones">';
-      day.zones.forEach(function(z) { html += '<div class="run-zone-row"><div class="run-zone-label">' + z.label + '</div><div class="run-zone-hr">' + z.hr + ' bpm</div></div>'; });
-      html += '</div><div><div class="run-distance">' + day.distance + '</div><div class="run-distance-label">Target Distance</div></div>';
-    } else {
-      var anchors = day.exercises.filter(function(e) { return e.anchor; });
-      var flex = day.exercises.filter(function(e) { return !e.anchor; });
-      var shown = anchors.concat(flex).slice(0, 4);
-      var remaining = day.exercises.length - 4;
-      html += '<div class="card-exercises">';
-      shown.forEach(function(e) { html += '<div class="card-ex-item' + (e.anchor ? ' anchor-ex' : '') + '">' + e.name + '</div>'; });
-      if (remaining > 0) html += '<div class="card-ex-more">+' + remaining + ' more</div>';
-      html += '</div>';
+var BLOCK_START = new Date(2026,2,16);
+var DAY_TYPE_MAP={0:'run',1:'lift',2:'lift',3:'lift',4:'run',5:'lift',6:'lift'};
+var DAY_LABEL_MAP={0:'Z2',1:'Upper',2:'Lower',3:'Push',4:'Tempo',5:'Pull',6:'Leg'};
+
+var currentWeek=1;
+try{var _w=parseInt(localStorage.getItem('forge_week_v1'));if(_w>=1&&_w<=7)currentWeek=_w;}catch(e){}
+
+var TODAY_MAP=[6,0,1,2,3,4,5];
+var todayIdx=TODAY_MAP[new Date().getDay()];
+
+var calYear=2026,calMonth=2;
+
+// About toggle
+document.getElementById('about-toggle-btn').addEventListener('click',function(){
+  var btn=this;
+  var body=document.getElementById('about-body');
+  btn.classList.toggle('open');
+  body.classList.toggle('open');
+  btn.querySelector('.arrow').textContent=btn.classList.contains('open')?'▲':'▼';
+});
+
+// Block Progress collapse
+var bpCollapsed=false;
+document.getElementById('bp-toggle').addEventListener('click',function(){
+  bpCollapsed=!bpCollapsed;
+  var body=document.getElementById('block-progress-body');
+  body.classList.toggle('collapsed',bpCollapsed);
+  this.textContent=bpCollapsed?'Show ▼':'Hide ▲';
+});
+
+function renderGrid(){
+  var grid=document.getElementById('day-grid');
+  grid.innerHTML='';
+  DAYS.forEach(function(day,i){
+    var card=document.createElement('a');
+    card.href=day.href;
+    card.style.setProperty('--card-accent',day.accent);
+    card.className='day-card'+(day.type==='run'?' run-card':'');
+    var html='<div class="card-day-name"><span>'+day.short+'</span>'+day.rest+(i===todayIdx?' <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:'+day.accent+';margin-left:4px;vertical-align:middle;"></span>':'')+'</div>';
+    html+='<div class="card-session-type">'+day.session+'</div>';
+    if(day.type==='run'){
+      html+='<div class="run-zones">';
+      day.zones.forEach(function(z){html+='<div class="run-zone-row"><div class="run-zone-label">'+z.label+'</div><div class="run-zone-hr">'+z.hr+' bpm</div></div>';});
+      html+='</div><div><div class="run-distance">'+day.distance+'</div><div class="run-distance-label">Target Distance</div></div>';
+    }else{
+      var anchors=day.exercises.filter(function(e){return e.anchor;});
+      var flex=day.exercises.filter(function(e){return !e.anchor;});
+      var shown=anchors.concat(flex).slice(0,4);
+      var remaining=day.exercises.length-4;
+      html+='<div class="card-exercises">';
+      shown.forEach(function(e){html+='<div class="card-ex-item'+(e.anchor?' anchor-ex':'')+'">'+e.name+'</div>';});
+      if(remaining>0)html+='<div class="card-ex-more">+'+remaining+' more</div>';
+      html+='</div>';
     }
-    card.innerHTML = html;
+    card.innerHTML=html;
     grid.appendChild(card);
   });
 }
 
-function renderTrack() {
-  var track = document.getElementById('week-track');
-  track.innerHTML = '';
-  for (var w = 1; w <= 7; w++) {
-    var node = document.createElement('div');
-    var cls = 'week-node';
-    if (w < currentWeek) cls += ' completed';
-    else if (w === currentWeek) cls += ' active';
-    node.className = cls;
-    var lbl = w === 7 ? 'DL' : 'WK ' + w;
-    var sub = w < currentWeek ? 'Done' : w === currentWeek ? 'Active' : w === 7 ? 'Deload' : 'Upcoming';
-    node.innerHTML = '<div class="week-node-label">' + lbl + '</div><div class="week-node-sub">' + sub + '</div>';
+function renderTrack(){
+  var track=document.getElementById('week-track');
+  track.innerHTML='';
+  for(var w=1;w<=7;w++){
+    var node=document.createElement('div');
+    var cls='week-node';
+    if(w<currentWeek)cls+=' completed';
+    else if(w===currentWeek)cls+=' active';
+    node.className=cls;
+    var lbl=w===7?'DL':'WK '+w;
+    var sub=w<currentWeek?'Done':w===currentWeek?'Active':w===7?'Deload':'Upcoming';
+    node.innerHTML='<div class="week-node-label">'+lbl+'</div><div class="week-node-sub">'+sub+'</div>';
     track.appendChild(node);
   }
-  document.getElementById('week-display').innerHTML = currentWeek + '<span>Current Week</span>';
+  document.getElementById('week-display').innerHTML=currentWeek+'<span>Current Week</span>';
+  var wc=WEEK_CHANGES[currentWeek];
+  var box=document.getElementById('week-changes-box');
+  box.innerHTML='<div class="wcb-heading">WK '+currentWeek+' &mdash; What changes</div>'+
+    '<div class="wcb-row"><span class="wcb-tag lift">Lift</span><div class="wcb-text">'+wc.lift+'</div></div>'+
+    '<div class="wcb-row"><span class="wcb-tag run">Run</span><div class="wcb-text">'+wc.run+'</div></div>';
 }
 
-document.getElementById('week-pills').addEventListener('click', function(e) {
-  var btn = e.target.closest('.week-pill');
-  if (!btn) return;
-  currentWeek = parseInt(btn.getAttribute('data-week'));
-  try { localStorage.setItem('forge_week_v1', currentWeek); } catch(err) {}
-  document.querySelectorAll('.week-pill').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
+function syncPills(){
+  document.querySelectorAll('.week-pill').forEach(function(b){
+    var w=parseInt(b.getAttribute('data-week'));
+    b.classList.toggle('active',w===currentWeek);
+    b.classList.toggle('is-current',w===currentWeek);
+  });
+}
+
+document.getElementById('week-pills').addEventListener('click',function(e){
+  var btn=e.target.closest('.week-pill');
+  if(!btn)return;
+  currentWeek=parseInt(btn.getAttribute('data-week'));
+  try{localStorage.setItem('forge_week_v1',currentWeek);}catch(err){}
+  syncPills();
   renderTrack();
 });
 
-document.querySelectorAll('.week-pill').forEach(function(b) { b.classList.toggle('active', parseInt(b.getAttribute('data-week')) === currentWeek); });
-var now = new Date();
-document.getElementById('last-updated').textContent = 'Updated ' + now.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'});
+// Calendar
+function getCompletions(){
+  try{return JSON.parse(localStorage.getItem('forge_completions_v1'))||{};}catch(e){return{};}
+}
+
+function dateKey(y,m,d){
+  return y+'-'+(m<9?'0':'')+(m+1)+'-'+(d<10?'0':'')+d;
+}
+
+function renderCalendar(){
+  var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('cal-month-label').textContent=MONTHS[calMonth]+' '+calYear;
+  var completions=getCompletions();
+  var grid=document.getElementById('cal-grid');
+  grid.innerHTML='';
+  var today=new Date();
+  var first=new Date(calYear,calMonth,1);
+  var startDow=first.getDay();
+  var daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  for(var i=0;i<startDow;i++){var ec=document.createElement('div');ec.className='cal-cell empty';grid.appendChild(ec);}
+  for(var d=1;d<=daysInMonth;d++){
+    var dt=new Date(calYear,calMonth,d);
+    var k=dateKey(calYear,calMonth,d);
+    var isToday=(dt.toDateString()===today.toDateString());
+    var isFuture=dt>today;
+    var inBlock=dt>=BLOCK_START;
+    var cell=document.createElement('div');
+    var cls='cal-cell';
+    var dow=dt.getDay();
+    var lbl=DAY_LABEL_MAP[dow]||'';
+    if(isToday)cls+=' today';
+    else if(isFuture||!inBlock)cls+=' future';
+    else if(completions[k]==='lift')cls+=' lift-done';
+    else if(completions[k]==='run')cls+=' run-done';
+    else if(inBlock)cls+=' missed';
+    cell.className=cls;
+    cell.innerHTML=d+(inBlock&&!isFuture?'<div class="cal-cell-label">'+lbl+'</div>':'');
+    grid.appendChild(cell);
+  }
+  // Stats
+  var allKeys=Object.keys(completions);
+  var liftDone=allKeys.filter(function(k){return completions[k]==='lift';}).length;
+  var runDone=allKeys.filter(function(k){return completions[k]==='run';}).length;
+  var total=liftDone+runDone;
+  document.getElementById('days-done').textContent=total;
+  // Block days = days from block start to today
+  var blockDays=Math.max(0,Math.floor((today-BLOCK_START)/(1000*60*60*24))+1);
+  document.getElementById('pct-done').textContent=blockDays>0?Math.round((total/blockDays)*100)+'%':'0%';
+  // Streak
+  var streak=0,best=0,cur=0;
+  var check=new Date(today);
+  for(var s=0;s<60;s++){
+    var sk=dateKey(check.getFullYear(),check.getMonth(),check.getDate());
+    if(completions[sk]==='lift'||completions[sk]==='run'){cur++;best=Math.max(best,cur);if(s===0||streak===s)streak=cur;}
+    else{if(s<streak||streak===0)streak=cur;cur=0;}
+    check.setDate(check.getDate()-1);
+  }
+  document.getElementById('streak-cur').textContent=streak;
+  document.getElementById('streak-best').textContent=best;
+}
+
+document.getElementById('cal-prev').addEventListener('click',function(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();});
+document.getElementById('cal-next').addEventListener('click',function(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();});
+
+// FAQ
+function renderFAQ(){
+  var wrap=document.getElementById('faq-wrap');
+  FAQ_ITEMS.forEach(function(item,i){
+    var div=document.createElement('div');
+    div.className='faq-item';
+    var btn=document.createElement('button');
+    btn.className='faq-q';
+    btn.innerHTML=item.q+'<span class="faq-arrow">&#9660;</span>';
+    var ans=document.createElement('div');
+    ans.className='faq-a';
+    ans.innerHTML=item.a;
+    btn.addEventListener('click',function(){
+      var isOpen=btn.classList.contains('open');
+      document.querySelectorAll('.faq-q').forEach(function(b){b.classList.remove('open');});
+      document.querySelectorAll('.faq-a').forEach(function(a){a.classList.remove('open');});
+      if(!isOpen){btn.classList.add('open');ans.classList.add('open');}
+    });
+    div.appendChild(btn);
+    div.appendChild(ans);
+    wrap.appendChild(div);
+  });
+}
+
+syncPills();
 renderGrid();
 renderTrack();
+renderCalendar();
+renderFAQ();
+var now=new Date();
+document.getElementById('last-updated').textContent='Updated '+now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
 </script>
 </body>
 </html>
