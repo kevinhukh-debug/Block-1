@@ -8,91 +8,89 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
 <style>
-  :root { --bg:#0d0d0d;--surface:#141414;--surface-2:#1a1a1a;--border:rgba(255,255,255,0.07);--text:#f0f0f0;--muted:#666;--subtle:#333;--accent:#4ade80;--accent-rgb:74,222,128;--font-display:'Bebas Neue',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;--radius:12px;--radius-sm:6px; }
+  :root{--bg:#0d0d0d;--surface:#141414;--surface-2:#1a1a1a;--border:rgba(255,255,255,0.07);--text:#f0f0f0;--muted:#666;--subtle:#333;--accent:#4ade80;--accent-rgb:74,222,128;--font-display:'Bebas Neue',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;--radius:12px;--radius-sm:6px;}
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden;position:relative;}
   body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");opacity:0.03;pointer-events:none;z-index:0;}
-  .wrapper{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 20px 100px;}
-  header{padding:44px 0 32px;border-bottom:1px solid var(--border);margin-bottom:32px;}
-  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;margin-bottom:20px;transition:color 0.15s;}
-  .back-link:hover{color:var(--accent);} .back-link::before{content:'←';font-size:12px;}
-  .header-top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
-  h1{font-family:var(--font-display);font-size:clamp(52px,10vw,80px);line-height:0.9;letter-spacing:0.01em;}
-  h1 span{color:var(--accent);}
-  .session-meta{text-align:right;padding-bottom:4px;}
-  .session-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);padding:4px 10px;border-radius:100px;display:inline-block;margin-bottom:8px;}
-  .session-goal{font-size:11px;color:var(--muted);font-family:var(--font-mono);letter-spacing:0.08em;display:block;}
-  .week-bar{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
-  .week-bar-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;white-space:nowrap;}
-  .week-pills{display:flex;gap:5px;flex-wrap:wrap;}
-  .week-pill{font-family:var(--font-mono);font-size:11px;padding:4px 12px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;letter-spacing:0.06em;}
+  .week-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:8px 16px;position:sticky;top:0;z-index:50;}
+  .week-pills{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+  .week-pill-dash{font-family:var(--font-mono);font-size:13px;letter-spacing:0.06em;color:var(--muted);text-decoration:none;padding:4px 8px;border-radius:4px;white-space:nowrap;transition:color 0.15s;}
+  .week-pill-dash:hover{color:var(--accent);}
+  .week-divider{width:1px;height:14px;background:var(--border);margin:0 2px;flex-shrink:0;}
+  .week-pill{font-family:var(--font-mono);font-size:13px;letter-spacing:0.06em;background:none;border:1px solid var(--border);border-radius:4px;color:var(--muted);cursor:pointer;padding:3px 8px;white-space:nowrap;transition:all 0.15s;}
   .week-pill:hover{border-color:var(--accent);color:var(--accent);}
-  .week-pill.active{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600;}
-  .week-pill-dash{font-family:var(--font-mono);font-size:11px;padding:4px 12px;border-radius:100px;border:1px solid rgba(74,222,128,0.4);background:transparent;color:var(--accent);text-decoration:none;letter-spacing:0.06em;transition:all 0.15s;}
-  .week-pill-dash:hover{background:rgba(74,222,128,0.1);}
-  .day-strip-wrap{margin-bottom:28px;} .day-strip{display:flex;gap:6px;flex-wrap:wrap;}
-  .day-strip-pill{font-family:var(--font-mono);font-size:11px;padding:4px 10px;border-radius:100px;border:1px solid var(--border);color:var(--muted);text-decoration:none;transition:all 0.15s;letter-spacing:0.06em;}
-  .day-strip-pill:hover{border-color:var(--accent);color:var(--accent);}
-  .day-strip-pill.current{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600;pointer-events:none;}
-  .section-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .week-pill.active{background:var(--accent);border-color:var(--accent);color:#0d0d0d;font-weight:700;}
+  .page-wrap{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 20px 100px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:13px;letter-spacing:0.06em;color:var(--muted);text-decoration:none;margin:20px 0 12px;transition:color 0.15s;}
+  .back-link:hover{color:var(--accent);}
+  .page-header{margin-bottom:24px;}
+  .session-tag{font-family:var(--font-mono);font-size:13px;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;}
+  .page-title{font-family:var(--font-display);font-size:clamp(52px,10vw,80px);line-height:0.9;color:var(--text);}
+  .page-title span{color:var(--accent);}
+  .goal-tag{font-family:var(--font-mono);font-size:14px;color:var(--muted);margin-top:8px;}
+  .day-strip-wrap{margin-bottom:28px;overflow-x:auto;scrollbar-width:none;}
+  .day-strip-wrap::-webkit-scrollbar{display:none;}
+  .day-strip{display:flex;gap:4px;}
+  .day-strip-pill{font-family:var(--font-mono);font-size:13px;letter-spacing:0.06em;padding:5px 10px;border-radius:4px;border:1px solid var(--border);color:var(--muted);text-decoration:none;white-space:nowrap;transition:all 0.15s;}
+  .day-strip-pill:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
+  .day-strip-pill.current{background:var(--accent);color:#0d0d0d;border-color:var(--accent);pointer-events:none;}
+  .section-label{font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
   .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
   .info-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;}
   .info-card::before{content:'';display:block;height:3px;background:var(--accent);border-radius:var(--radius) var(--radius) 0 0;}
   .info-inner{padding:16px 18px;}
   .zone-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
   .zone-row:last-child{border-bottom:none;}
-  .zone-name{font-size:13px;font-weight:600;color:var(--text);}
-  .zone-detail{font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:3px;}
-  .zone-bpm{font-family:var(--font-display);font-size:24px;color:var(--accent);line-height:1;}
-  .zone-bpm-label{font-family:var(--font-mono);font-size:9px;color:var(--muted);text-align:right;text-transform:uppercase;}
+  .zone-name{font-size:15px;font-weight:600;color:var(--text);}
+  .zone-detail{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:3px;}
+  .zone-bpm{font-family:var(--font-display);font-size:26px;color:var(--accent);line-height:1;}
+  .zone-bpm-label{font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;text-transform:uppercase;}
   .interval-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden;opacity:0;animation:fadeUp 0.35s ease forwards;}
   .interval-card.active-wk{border-color:rgba(74,222,128,0.4);}
   .interval-card::before{content:'';display:block;height:3px;background:var(--accent);border-radius:var(--radius) var(--radius) 0 0;}
   .interval-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;}
-  .interval-wk{font-family:var(--font-mono);font-size:10px;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:3px;}
-  .interval-desc{font-size:15px;font-weight:600;color:var(--text);}
-  .interval-rest{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:3px;}
-  .current-badge{font-family:var(--font-mono);font-size:10px;padding:4px 10px;border-radius:100px;border:1px solid rgba(74,222,128,0.3);background:rgba(74,222,128,0.08);color:var(--accent);white-space:nowrap;}
+  .interval-wk{font-family:var(--font-mono);font-size:12px;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:3px;}
+  .interval-desc{font-size:17px;font-weight:600;color:var(--text);}
+  .interval-rest{font-family:var(--font-mono);font-size:13px;color:var(--muted);margin-top:3px;}
+  .current-badge{font-family:var(--font-mono);font-size:12px;padding:4px 10px;border-radius:100px;border:1px solid rgba(74,222,128,0.3);background:rgba(74,222,128,0.08);color:var(--accent);white-space:nowrap;}
   .note-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin-top:8px;}
-  .note-title{font-family:var(--font-mono);font-size:10px;color:var(--accent);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;}
-  .note-text{font-size:13px;color:var(--muted);line-height:1.6;}
+  .note-title{font-family:var(--font-mono);font-size:12px;color:var(--accent);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;}
+  .note-text{font-size:15px;color:var(--muted);line-height:1.6;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
 </style>
 </head>
 <body>
-<div class="wrapper">
-  <header>
-    <a href="index.html" class="back-link">FORGE Dashboard</a>
-    <div class="header-top">
-      <h1><span>THU</span>RSDAY<br>TEMPO</h1>
-      <div class="session-meta">
-        <span class="session-tag">Run Day</span>
-        <span class="session-goal">Zone 2 · Zone 3 · Zone 2</span>
-      </div>
-    </div>
+<div class="week-bar">
+  <div class="week-pills" id="week-pills">
+    <a href="index.html" class="week-pill-dash">← Dashboard</a>
+    <div class="week-divider"></div>
+    <button class="week-pill" data-week="1">WK 1</button>
+    <button class="week-pill" data-week="2">WK 2</button>
+    <button class="week-pill" data-week="3">WK 3</button>
+    <button class="week-pill" data-week="4">WK 4</button>
+    <button class="week-pill" data-week="5">WK 5</button>
+    <button class="week-pill" data-week="6">WK 6</button>
+    <button class="week-pill" data-week="7">WK 7 · Deload</button>
+  </div>
+</div>
+<div class="page-wrap">
+  <a href="index.html" class="back-link">← FORGE Dashboard</a>
+  <header class="page-header">
+    <div class="session-tag">RUN DAY</div>
+    <h1 class="page-title"><span>THU</span>RSDAY<br>TEMPO</h1>
+    <div class="goal-tag">Zone 2 · Zone 3 · Zone 2</div>
   </header>
-  <div class="week-bar">
-    <div class="week-bar-label">Week</div>
-    <div class="week-pills" id="week-pills">
-      <a href="index.html" class="week-pill-dash">Dashboard</a>
-      <button class="week-pill" data-week="1">WK 1</button>
-      <button class="week-pill" data-week="2">WK 2</button>
-      <button class="week-pill" data-week="3">WK 3</button>
-      <button class="week-pill" data-week="4">WK 4</button>
-      <button class="week-pill" data-week="5">WK 5</button>
-      <button class="week-pill" data-week="6">WK 6</button>
-      <button class="week-pill" data-week="7">WK 7 — Deload</button>
+  <div class="day-strip-wrap">
+    <div class="day-strip">
+      <a href="forge-monday.html" class="day-strip-pill">MON</a>
+      <a href="forge-tuesday.html" class="day-strip-pill">TUE</a>
+      <a href="forge-wednesday.html" class="day-strip-pill">WED</a>
+      <span class="day-strip-pill current">THU</span>
+      <a href="forge-friday.html" class="day-strip-pill">FRI</a>
+      <a href="forge-saturday.html" class="day-strip-pill">SAT</a>
+      <a href="forge-sunday.html" class="day-strip-pill">SUN</a>
     </div>
   </div>
-  <div class="day-strip-wrap"><div class="day-strip">
-    <a href="forge-monday.html" class="day-strip-pill">MON</a>
-    <a href="forge-tuesday.html" class="day-strip-pill">TUE</a>
-    <a href="forge-wednesday.html" class="day-strip-pill">WED</a>
-    <span class="day-strip-pill current">THU</span>
-    <a href="forge-friday.html" class="day-strip-pill">FRI</a>
-    <a href="forge-saturday.html" class="day-strip-pill">SAT</a>
-    <a href="forge-sunday.html" class="day-strip-pill">SUN</a>
-  </div></div>
   <div class="section-label">Run Structure</div>
   <div class="info-card"><div class="info-inner">
     <div class="zone-row"><div><div class="zone-name">Miles 1–2 · Warmup</div><div class="zone-detail">Zone 2 · ~12:30/mi · Easy effort</div></div><div><div class="zone-bpm">133–145</div><div class="zone-bpm-label">bpm</div></div></div>

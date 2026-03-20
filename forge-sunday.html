@@ -12,87 +12,176 @@
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden;position:relative;}
   body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");opacity:0.03;pointer-events:none;z-index:0;}
-  .wrapper{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 20px 100px;}
-  header{padding:44px 0 32px;border-bottom:1px solid var(--border);margin-bottom:32px;}
-  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;margin-bottom:20px;transition:color 0.15s;}
-  .back-link:hover{color:var(--accent);} .back-link::before{content:'←';font-size:12px;}
-  .header-top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
-  h1{font-family:var(--font-display);font-size:clamp(52px,10vw,80px);line-height:0.9;letter-spacing:0.01em;} h1 span{color:var(--accent);}
-  .session-meta{text-align:right;padding-bottom:4px;}
-  .session-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);background:rgba(110,231,183,0.1);border:1px solid rgba(110,231,183,0.2);padding:4px 10px;border-radius:100px;display:inline-block;margin-bottom:8px;}
-  .session-goal{font-size:11px;color:var(--muted);font-family:var(--font-mono);letter-spacing:0.08em;display:block;}
-  .day-strip-wrap{margin-bottom:28px;} .day-strip{display:flex;gap:6px;flex-wrap:wrap;}
-  .day-strip-pill{font-family:var(--font-mono);font-size:11px;padding:4px 10px;border-radius:100px;border:1px solid var(--border);color:var(--muted);text-decoration:none;transition:all 0.15s;letter-spacing:0.06em;}
-  .day-strip-pill:hover{border-color:var(--accent);color:var(--accent);}
-  .day-strip-pill.current{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600;pointer-events:none;}
-  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px;}
-  .stat-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;}
-  .stat-box-value{font-family:var(--font-display);font-size:26px;color:var(--accent);line-height:1;}
-  .stat-box-label{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-top:4px;}
-  .section-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .week-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:8px 16px;position:sticky;top:0;z-index:50;}
+  .week-pills{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+  .week-pill-dash{font-family:var(--font-mono);font-size:13px;letter-spacing:0.06em;color:var(--muted);text-decoration:none;padding:4px 8px;border-radius:4px;white-space:nowrap;transition:color 0.15s;}
+  .week-pill-dash:hover{color:var(--accent);}
+  .week-divider{width:1px;height:14px;background:var(--border);margin:0 2px;flex-shrink:0;}
+  .week-pill{font-family:var(--font-mono);font-size:13px;letter-spacing:0.06em;background:none;border:1px solid var(--border);border-radius:4px;color:var(--muted);cursor:pointer;padding:3px 8px;white-space:nowrap;transition:all 0.15s;}
+  .week-pill:hover{border-color:var(--accent);color:var(--accent);}
+  .week-pill.active{background:var(--accent);border-color:var(--accent);color:#0d0d0d;font-weight:700;}
+  .page-wrap{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 20px 100px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:13px;letter-spacing:0.06em;color:var(--muted);text-decoration:none;margin:20px 0 12px;transition:color 0.15s;}
+  .back-link:hover{color:var(--accent);}
+  .page-header{margin-bottom:24px;}
+  .session-tag{font-family:var(--font-mono);font-size:13px;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;}
+  .page-title{font-family:var(--font-display);font-size:clamp(52px,10vw,80px);line-height:0.9;color:var(--text);}
+  .page-title span{color:var(--accent);}
+  .goal-tag{font-family:var(--font-mono);font-size:14px;color:var(--muted);margin-top:8px;}
+  .day-strip-wrap{margin-bottom:28px;overflow-x:auto;scrollbar-width:none;}
+  .day-strip-wrap::-webkit-scrollbar{display:none;}
+  .day-strip{display:flex;gap:4px;}
+  .day-strip-pill{font-family:var(--font-mono);font-size:13px;letter-spacing:0.06em;padding:5px 10px;border-radius:4px;border:1px solid var(--border);color:var(--muted);text-decoration:none;white-space:nowrap;transition:all 0.15s;}
+  .day-strip-pill:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
+  .day-strip-pill.current{background:var(--accent);color:#0d0d0d;border-color:var(--accent);pointer-events:none;}
+  .section-label{font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
   .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
-  .zone-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;}
-  .zone-card::before{content:'';display:block;height:3px;background:var(--accent);border-radius:var(--radius) var(--radius) 0 0;}
-  .zone-inner{padding:20px 18px;}
-  .zone-main{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-  .zone-title{font-family:var(--font-display);font-size:36px;color:var(--text);line-height:1;} .zone-title span{color:var(--accent);}
-  .zone-bpm-value{font-family:var(--font-display);font-size:42px;color:var(--accent);line-height:1;text-align:right;}
-  .zone-bpm-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;text-align:right;}
-  .rules-list{display:flex;flex-direction:column;gap:8px;}
-  .rule-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--muted);line-height:1.45;}
-  .rule-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px;opacity:0.6;}
-  .post-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-top:10px;}
-  .post-title{font-family:var(--font-mono);font-size:10px;color:var(--accent);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px;}
-  .post-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--muted);line-height:1.45;margin-bottom:8px;}
-  .post-item:last-child{margin-bottom:0;}
+  .info-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;}
+  .info-card::before{content:'';display:block;height:3px;background:var(--accent);border-radius:var(--radius) var(--radius) 0 0;}
+  .info-inner{padding:16px 18px;}
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+  .stat-cell{background:var(--surface);padding:14px 16px;}
+  .stat-label{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;}
+  .stat-value{font-family:var(--font-display);font-size:28px;color:var(--accent);line-height:1;}
+  .stat-unit{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:2px;}
+  .rule-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden;}
+  .rule-card::before{content:'';display:block;height:3px;background:var(--accent);border-radius:var(--radius) var(--radius) 0 0;}
+  .rule-inner{padding:14px 18px;}
+  .rule-title{font-family:var(--font-mono);font-size:12px;color:var(--accent);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px;}
+  .rule-row{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--muted);line-height:1.5;}
+  .rule-row:last-child{border-bottom:none;}
+  .rule-row::before{content:'→';color:var(--accent);font-family:var(--font-mono);font-size:13px;flex-shrink:0;margin-top:1px;}
+  .zone-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden;}
+  .zone-block::before{content:'';display:block;height:3px;background:var(--accent);border-radius:var(--radius) var(--radius) 0 0;}
+  .zone-inner{padding:14px 18px;display:flex;justify-content:space-between;align-items:center;}
+  .zone-name{font-size:15px;font-weight:600;color:var(--text);}
+  .zone-sub{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:3px;}
+  .zone-bpm{font-family:var(--font-display);font-size:28px;color:var(--accent);line-height:1;text-align:right;}
+  .zone-bpm-lbl{font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;}
+  .recovery-card{background:rgba(110,231,183,0.05);border:1px solid rgba(110,231,183,0.2);border-radius:var(--radius);padding:14px 18px;margin-top:8px;}
+  .recovery-title{font-family:var(--font-mono);font-size:12px;color:var(--accent);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;}
+  .recovery-text{font-size:15px;color:var(--muted);line-height:1.6;}
+  .progress-note{font-family:var(--font-mono);font-size:12px;color:var(--muted);text-align:center;padding:16px 0 4px;letter-spacing:0.06em;}
+  .progress-note strong{color:var(--accent);}
 </style>
 </head>
 <body>
-<div class="wrapper">
-  <header>
-    <a href="index.html" class="back-link">FORGE Dashboard</a>
-    <div class="header-top">
-      <h1><span>SUN</span>DAY<br>ZONE 2</h1>
-      <div class="session-meta">
-        <span class="session-tag">Aerobic Base</span>
-        <span class="session-goal">HR governs pace</span>
-      </div>
-    </div>
-  </header>
-  <div class="day-strip-wrap"><div class="day-strip">
-    <a href="forge-monday.html" class="day-strip-pill">MON</a>
-    <a href="forge-tuesday.html" class="day-strip-pill">TUE</a>
-    <a href="forge-wednesday.html" class="day-strip-pill">WED</a>
-    <a href="forge-thursday.html" class="day-strip-pill">THU</a>
-    <a href="forge-friday.html" class="day-strip-pill">FRI</a>
-    <a href="forge-saturday.html" class="day-strip-pill">SAT</a>
-    <span class="day-strip-pill current">SUN</span>
-  </div></div>
-  <div class="stats-row">
-    <div class="stat-box"><div class="stat-box-value">6–7</div><div class="stat-box-label">Target Miles</div></div>
-    <div class="stat-box"><div class="stat-box-value">~12:30</div><div class="stat-box-label">Pace / mi</div></div>
-    <div class="stat-box"><div class="stat-box-value">Zone 2</div><div class="stat-box-label">Only</div></div>
-  </div>
-  <div class="section-label">Heart Rate Target</div>
-  <div class="zone-card"><div class="zone-inner">
-    <div class="zone-main">
-      <div class="zone-title"><span>Zone</span> 2</div>
-      <div><div class="zone-bpm-value">133–145</div><div class="zone-bpm-label">bpm</div></div>
-    </div>
-    <div class="rules-list">
-      <div class="rule-item"><div class="rule-dot"></div>No walk breaks — maintain movement throughout</div>
-      <div class="rule-item"><div class="rule-dot"></div>Zone 3 spikes on hills are fine — let HR settle on flats</div>
-      <div class="rule-item"><div class="rule-dot"></div>If HR exceeds 145 bpm slow down — pace is secondary to heart rate</div>
-      <div class="rule-item"><div class="rule-dot"></div>Conversational effort — you should be able to speak full sentences</div>
-    </div>
-  </div></div>
-  <div class="section-label" style="margin-top:20px;">Post-Run Recovery</div>
-  <div class="post-card">
-    <div class="post-title">Within 30–45 Minutes</div>
-    <div class="post-item"><div class="rule-dot" style="margin-top:6px;"></div>Dole pineapple juice — fast carbs to replenish glycogen</div>
-    <div class="post-item"><div class="rule-dot" style="margin-top:6px;"></div>Protein source — 30 to 40g to begin muscle protein synthesis</div>
-    <div class="post-item"><div class="rule-dot" style="margin-top:6px;"></div>Hydrate — minimum 16 oz water post-run</div>
+<div class="week-bar">
+  <div class="week-pills" id="week-pills">
+    <a href="index.html" class="week-pill-dash">← Dashboard</a>
+    <div class="week-divider"></div>
+    <button class="week-pill" data-week="1">WK 1</button>
+    <button class="week-pill" data-week="2">WK 2</button>
+    <button class="week-pill" data-week="3">WK 3</button>
+    <button class="week-pill" data-week="4">WK 4</button>
+    <button class="week-pill" data-week="5">WK 5</button>
+    <button class="week-pill" data-week="6">WK 6</button>
+    <button class="week-pill" data-week="7">WK 7 · Deload</button>
   </div>
 </div>
+<div class="page-wrap">
+  <a href="index.html" class="back-link">← FORGE Dashboard</a>
+  <header class="page-header">
+    <div class="session-tag">RUN DAY</div>
+    <h1 class="page-title"><span>SUN</span>DAY<br>ZONE 2</h1>
+    <div class="goal-tag">Aerobic Base · Mitochondrial Density</div>
+  </header>
+  <div class="day-strip-wrap">
+    <div class="day-strip">
+      <a href="forge-monday.html" class="day-strip-pill">MON</a>
+      <a href="forge-tuesday.html" class="day-strip-pill">TUE</a>
+      <a href="forge-wednesday.html" class="day-strip-pill">WED</a>
+      <a href="forge-thursday.html" class="day-strip-pill">THU</a>
+      <a href="forge-friday.html" class="day-strip-pill">FRI</a>
+      <a href="forge-saturday.html" class="day-strip-pill">SAT</a>
+      <span class="day-strip-pill current">SUN</span>
+    </div>
+  </div>
+
+  <div class="section-label">Today's Targets</div>
+  <div class="info-card">
+    <div class="stat-grid">
+      <div class="stat-cell">
+        <div class="stat-label">Distance</div>
+        <div class="stat-value">6–7</div>
+        <div class="stat-unit">miles</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Heart Rate</div>
+        <div class="stat-value">133–145</div>
+        <div class="stat-unit">bpm · Zone 2 only</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Pace</div>
+        <div class="stat-value">~7:45</div>
+        <div class="stat-unit">min/km · HR governs</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Duration</div>
+        <div class="stat-value">60–70</div>
+        <div class="stat-unit">minutes</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:20px;">Zone 2 Target</div>
+  <div class="zone-block">
+    <div class="zone-inner">
+      <div>
+        <div class="zone-name">Zone 2 · Aerobic Base</div>
+        <div class="zone-sub">Steady state · Mitochondrial density</div>
+      </div>
+      <div>
+        <div class="zone-bpm">133–145</div>
+        <div class="zone-bpm-lbl">bpm target</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:20px;">Session Rules</div>
+  <div class="rule-card"><div class="rule-inner">
+    <div class="rule-title">Non-Negotiables</div>
+    <div class="rule-row">HR governs pace — slow down if HR exceeds 145 bpm</div>
+    <div class="rule-row">No walk breaks — maintain continuous movement</div>
+    <div class="rule-row">Zone 3 spikes on hills are acceptable — recover on the downhill</div>
+    <div class="rule-row">Same route each week reveals true aerobic adaptation</div>
+  </div></div>
+
+  <div class="section-label" style="margin-top:20px;">Progress Signal</div>
+  <div class="rule-card"><div class="rule-inner">
+    <div class="rule-title">How to Know It's Working</div>
+    <div class="rule-row">Same HR trending faster over weeks = aerobic base expanding</div>
+    <div class="rule-row">Resting HR staying at or below 55 bpm = cardiovascular adaptation confirmed</div>
+    <div class="rule-row">Pace at 137 bpm benchmark — compare Week 1 vs Week 6</div>
+  </div></div>
+
+  <div class="recovery-card">
+    <div class="recovery-title">Post-Run Window</div>
+    <div class="recovery-text">Dole 100% Pineapple Juice + protein within 30–45 min of finishing. 130 cal · 32g carbs · 300mg potassium · 67mg Vitamin C. Treat this as a second post-workout window — don't skip it.</div>
+  </div>
+
+  <div class="progress-note">Signal of progress: <strong>same HR, faster pace</strong> — check this every 3 weeks</div>
+</div>
+<script>
+'use strict';
+var currentWeek = 1;
+try { var w = parseInt(localStorage.getItem('forge_week_v1')); if (w >= 1 && w <= 7) currentWeek = w; } catch(e) {}
+
+function syncPills() {
+  document.querySelectorAll('.week-pill').forEach(function(b) {
+    b.classList.toggle('active', parseInt(b.getAttribute('data-week')) === currentWeek);
+  });
+}
+
+document.getElementById('week-pills').addEventListener('click', function(e) {
+  var btn = e.target.closest('.week-pill');
+  if (!btn) return;
+  currentWeek = parseInt(btn.getAttribute('data-week'));
+  try { localStorage.setItem('forge_week_v1', currentWeek); } catch(err) {}
+  syncPills();
+});
+
+syncPills();
+</script>
 </body>
 </html>
