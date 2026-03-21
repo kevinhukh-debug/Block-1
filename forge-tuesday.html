@@ -500,7 +500,7 @@ function buildCard(ex) {
   const allDone = completedSets === ex.sets;
 
   const card = document.createElement('div');
-  card.className = 'exercise-card ' + (isAnchor ? 'anchor-card' : 'flex-card') + (allDone ? ' collapsed' : '');
+  card.className = 'exercise-card ' + (isAnchor ? 'anchor-card' : 'flex-card') + ' collapsed';
   card.id = 'card-' + ex.id;
 
   
@@ -544,7 +544,7 @@ function buildCard(ex) {
   colRight.appendChild(colCheck);
   colRow.appendChild(colLeft);
   colRow.appendChild(colRight);
-  colRow.addEventListener('click', function() { card.classList.remove('collapsed'); });
+  colRow.addEventListener('click', function() { card.classList.remove('collapsed'); collapseToggleBtn.textContent = '\u25be'; });
   card.appendChild(colRow);
 
   /* Inner */
@@ -566,7 +566,7 @@ function buildCard(ex) {
   hLeft.appendChild(exNameEl);
   const collapseToggleBtn = document.createElement('button');
   collapseToggleBtn.className = 'collapse-btn';
-  collapseToggleBtn.textContent = '\u25be';
+  collapseToggleBtn.textContent = '\u25b8';
   collapseToggleBtn.title = 'Collapse card';
   collapseToggleBtn.addEventListener('click', function(e) {
     e.stopPropagation();
@@ -756,8 +756,8 @@ function buildCard(ex) {
         rIn.setAttribute('data-user-typed', '1');
         if (i === 0) {
           for (let j = 1; j < ex.sets; j++) {
-            const nxt = document.querySelector('[data-exid="' + ex.id + '"][data-set="' + j + '"]');
-            if (nxt && !nxt.getAttribute('data-user-typed') && !exState.reps[j]) {
+            const nxt = card.querySelector('[data-exid="' + ex.id + '"][data-set="' + j + '"]');
+            if (nxt && !nxt.getAttribute('data-user-typed') && (!exState.reps[j] || String(exState.reps[j]).startsWith('__auto__'))) {
               nxt.value = val;
               nxt.classList.add('autofilled');
               nxt.classList.remove('logged');
