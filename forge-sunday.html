@@ -64,6 +64,12 @@
   .progress-note{font-family:var(--font-mono);font-size:12px;color:var(--muted);text-align:center;padding:16px 0 4px;letter-spacing:0.06em;}
   .progress-note strong{color:var(--accent);}
 </style>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#f5c518" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="FORGE" />
+  <link rel="apple-touch-icon" href="forge-icon-192.png" />
 </head>
 <body>
 <div class="week-bar">
@@ -182,6 +188,14 @@ document.getElementById('week-pills').addEventListener('click', function(e) {
 });
 
 syncPills();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("/Block-1/sw.js", { scope: "/Block-1/" })
+      .catch(function(err) { console.log("SW registration failed:", err); });
+  });
+}
 </script>
 </body>
 </html>

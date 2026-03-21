@@ -155,6 +155,12 @@
   .roster-grip{font-size:16px;color:var(--subtle);letter-spacing:2px;}
 
 </style>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#f5c518" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="FORGE" />
+  <link rel="apple-touch-icon" href="forge-icon-192.png" />
 </head>
 <body>
 <div class="wrapper">
@@ -825,6 +831,14 @@ document.querySelectorAll('.week-pill').forEach(function(b){b.classList.remove('
 var ap=document.querySelector('.week-pill[data-week="'+currentWeek+'"]');
 if(ap)ap.classList.add('active');
 renderAll();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("/Block-1/sw.js", { scope: "/Block-1/" })
+      .catch(function(err) { console.log("SW registration failed:", err); });
+  });
+}
 </script>
 </body>
 </html>

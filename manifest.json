@@ -1,0 +1,25 @@
+{
+  "name": "FORGE — Strength & Endurance",
+  "short_name": "FORGE",
+  "description": "7-day workout tracker — Block 1",
+  "start_url": "/Block-1/",
+  "scope": "/Block-1/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d0d0d",
+  "theme_color": "#f5c518",
+  "icons": [
+    {
+      "src": "forge-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "forge-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

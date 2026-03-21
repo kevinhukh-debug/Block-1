@@ -132,6 +132,12 @@
   .footer-left{font-family:var(--font-mono);font-size:10px;color:var(--subtle);letter-spacing:0.12em;text-transform:uppercase;}
   .footer-right{font-family:var(--font-mono);font-size:10px;color:var(--subtle);}
 </style>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#f5c518" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="FORGE" />
+  <link rel="apple-touch-icon" href="forge-icon-192.png" />
 </head>
 <body>
 <div class="wrapper">
@@ -438,6 +444,14 @@ renderCalendar();
 renderFAQ();
 var now=new Date();
 document.getElementById('last-updated').textContent='Updated '+now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("/Block-1/sw.js", { scope: "/Block-1/" })
+      .catch(function(err) { console.log("SW registration failed:", err); });
+  });
+}
 </script>
 </body>
 </html>
