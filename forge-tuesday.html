@@ -226,6 +226,30 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     .reorder-btn,.swap-btn{min-width:34px;min-height:34px;font-size:15px;}
     .header-right{gap:6px;}
   }
+
+/* Warm-up section */
+.wu-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;position:relative;}
+.wu-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:rgba(var(--accent-rgb),0.35);border-radius:var(--radius) var(--radius) 0 0;}
+.wu-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;user-select:none;}
+.wu-title-wrap{display:flex;align-items:center;gap:8px;}
+.wu-lbl{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:0.12em;}
+.wu-meta{font-family:var(--font-mono);font-size:11px;color:var(--subtle);letter-spacing:0.06em;}
+.wu-chevron{font-family:var(--font-mono);font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;padding:0;line-height:1;pointer-events:none;}
+.wu-body{display:none;border-top:1px solid var(--border);padding:6px 14px 10px;}
+.wu-body.open{display:block;}
+.wu-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);}
+.wu-row:last-child{border-bottom:none;}
+.wu-info{flex:1;}
+.wu-drill-name{font-size:14px;color:var(--text);font-weight:500;line-height:1.2;}
+.wu-drill-tag{font-family:var(--font-mono);font-size:10px;color:var(--accent);letter-spacing:0.07em;margin-top:2px;}
+.wu-right{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:10px;}
+.wu-spec{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.wu-dot{width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);cursor:pointer;transition:all 0.15s;flex-shrink:0;background:none;}
+.wu-dot:hover{border-color:rgba(var(--accent-rgb),0.4);}
+.wu-dot.done{background:var(--accent);border-color:var(--accent);}
+/* Delta chip */
+.delta-chip{font-family:var(--font-mono);font-size:11px;padding:3px 8px;border-radius:4px;letter-spacing:0.04em;white-space:nowrap;}
+.delta-chip.positive{background:rgba(74,222,128,0.1);color:#4ade80;border:1px solid rgba(74,222,128,0.25);}
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#f5c518" />
@@ -266,6 +290,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <a href="forge-sunday.html" class="day-strip-pill">SUN</a>
     </div>
   </div>
+  <div id="warmup-zone"></div>
   <div class="zone-label">ANCHOR LIFTS</div>
   <div id="anchor-zone"></div>
   <div class="zone-label">FLEX EXERCISES</div>
@@ -692,6 +717,16 @@ function buildCard(ex) {
     bwLbl.textContent = 'Bodyweight';
     wRow.appendChild(bwLbl);
   }
+  if (swapIdx === 0 && ex.delta > 0 && currentWeek > 1) {
+    const effWk = currentWeek === 7 ? 6 : currentWeek;
+    const chipVal = ex.delta * (effWk - 1);
+    if (chipVal > 0) {
+      const dChip = document.createElement('div');
+      dChip.className = 'delta-chip positive';
+      dChip.textContent = '\u2191 +' + chipVal + ' lbs vs WK1';
+      wRow.appendChild(dChip);
+    }
+  }
   const markAllBtn = document.createElement('button');
   markAllBtn.className = 'mark-all-btn';
   markAllBtn.textContent = exState.sets.every(Boolean) ? 'Undo All' : 'Mark All';
@@ -911,10 +946,86 @@ function renderAll() {
 }
 
 /* ─── Init ─── */
+const WARMUP_TIME = '~5 min';
+const WARMUP_DRILLS = [
+  {name:'Hip Circles',tag:'HIP MOBILITY · JOINT PRIMING',spec:'30 sec each'},
+  {name:'Forward Leg Swings',tag:'HIP FLEXOR · HAMSTRING PREP',spec:'15 each'},
+  {name:'Lateral Leg Swings',tag:'ADDUCTOR · HIP ABDUCTOR PREP',spec:'15 each'},
+  {name:'Glute Bridge',tag:'GLUTE ACTIVATION · SQUAT PREP',spec:'2×15'},
+  {name:'Squat to Stand',tag:'HIP FLEXOR · THORACIC MOBILITY',spec:'10 reps'},
+  {name:'Ankle Circles',tag:'ANKLE MOBILITY · SQUAT DEPTH',spec:'30 sec each'},
+];
+
+function renderWarmup() {
+  var container = document.getElementById('warmup-zone');
+  if (!container) return;
+  container.innerHTML = '';
+  var card = document.createElement('div');
+  card.className = 'wu-card';
+  var isOpen = false;
+  var hdr = document.createElement('div');
+  hdr.className = 'wu-header';
+  var titleWrap = document.createElement('div');
+  titleWrap.className = 'wu-title-wrap';
+  var lbl = document.createElement('span');
+  lbl.className = 'wu-lbl';
+  lbl.textContent = 'WARM-UP';
+  var meta = document.createElement('span');
+  meta.className = 'wu-meta';
+  meta.textContent = WARMUP_DRILLS.length + ' DRILLS · ' + WARMUP_TIME;
+  titleWrap.appendChild(lbl);
+  titleWrap.appendChild(meta);
+  var chev = document.createElement('button');
+  chev.className = 'wu-chevron';
+  chev.id = 'wu-chevron';
+  chev.textContent = '\u25b8';
+  hdr.appendChild(titleWrap);
+  hdr.appendChild(chev);
+  var body = document.createElement('div');
+  body.className = 'wu-body';
+  WARMUP_DRILLS.forEach(function(drill) {
+    var row = document.createElement('div');
+    row.className = 'wu-row';
+    var info = document.createElement('div');
+    info.className = 'wu-info';
+    var nm = document.createElement('div');
+    nm.className = 'wu-drill-name';
+    nm.textContent = drill.name;
+    var tg = document.createElement('div');
+    tg.className = 'wu-drill-tag';
+    tg.textContent = drill.tag;
+    info.appendChild(nm);
+    info.appendChild(tg);
+    var right = document.createElement('div');
+    right.className = 'wu-right';
+    var spec = document.createElement('span');
+    spec.className = 'wu-spec';
+    spec.textContent = drill.spec;
+    var dot = document.createElement('button');
+    dot.className = 'wu-dot';
+    dot.setAttribute('aria-label', drill.name + ' complete');
+    dot.addEventListener('click', function(e) { e.stopPropagation(); dot.classList.toggle('done'); });
+    right.appendChild(spec);
+    right.appendChild(dot);
+    row.appendChild(info);
+    row.appendChild(right);
+    body.appendChild(row);
+  });
+  hdr.addEventListener('click', function() {
+    isOpen = !isOpen;
+    body.classList.toggle('open', isOpen);
+    chev.textContent = isOpen ? '\u25be' : '\u25b8';
+  });
+  card.appendChild(hdr);
+  card.appendChild(body);
+  container.appendChild(card);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   loadState();
   initWeekSync();
   renderAll();
+  renderWarmup();
 
   /* Close roster panel on outside click */
   document.addEventListener('click', function(e) {
