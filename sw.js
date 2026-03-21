@@ -1,6 +1,6 @@
 // FORGE Service Worker — v8
 // Cache-first strategy: gym = offline environment, not network-first
-const CACHE_NAME = 'FORGE-v8';
+const CACHE_NAME = 'FORGE-v9';
 const PRECACHE_URLS = [
   '/Block-1/',
   '/Block-1/index.html',

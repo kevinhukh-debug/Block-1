@@ -198,7 +198,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   .reorder-btn:hover,.reorder-btn.open{color:var(--accent);border-color:rgba(var(--accent-rgb),0.4);}
   .collapse-btn{background:none;border:none;color:var(--subtle);font-size:13px;cursor:pointer;padding:0 2px;line-height:1;transition:color 0.15s;font-family:var(--font-mono);}
   .collapse-btn:hover{color:var(--muted);}
-  .roster-panel{display:none;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px;}
+  .roster-panel{display:none;position:fixed;z-index:100;background:var(--surface-2);border:1px solid rgba(255,255,255,0.14);border-radius:var(--radius);padding:12px 14px;box-shadow:0 8px 32px rgba(0,0,0,0.6);min-width:240px;max-width:320px;}
   .roster-panel.open{display:block;}
   .roster-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
   .roster-lbl{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.1em;}
@@ -301,7 +301,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 'use strict';
 const EXERCISES = [
   {"id":"ex1","name":"Back Squat","type":"anchor","typeLabel":"STRENGTH · ANCHOR","sets":4,"reps":"5-6","baseWeight":185,"delta":5,"restSecs":120,"cue":"Strength focus — add 2.5 to 5 lbs each week","musclePrimary":"Quads","muscleSecondary":"Glutes · Core","alternatives":null},
-  {"id":"ex2","name":"Romanian Deadlift","type":"anchor","typeLabel":"COMPOUND · ANCHOR","sets":4,"reps":"8-10","baseWeight":135,"delta":2.5,"restSecs":120,"cue":"3-second negative — time under tension drives growth","musclePrimary":"Hamstrings","muscleSecondary":"Glutes · Lower Back","alternatives":null, "tempo":{"down":3,"pause":0,"up":1}},
+  {"id":"ex2","name":"Romanian Deadlift","type":"anchor","typeLabel":"COMPOUND · ANCHOR","sets":4,"reps":"8-10","baseWeight":135,"delta":2.5,"restSecs":120,"cue":"3-second negative — time under tension drives growth","musclePrimary":"Hamstrings","muscleSecondary":"Glutes · Lower Back","alternatives":null,"tempo":{"down":3,"pause":0,"up":1}},
   {"id":"ex3","name":"Leg Press","type":"flex","typeLabel":"COMPOUND · FLEX","sets":3,"reps":"12-15","baseWeight":180,"delta":0,"restSecs":120,"cue":"Quad volume after squat — CNS less taxed than barbell","musclePrimary":"Quads","muscleSecondary":"Glutes","alternatives":[{"name":"Hack Squat","tag":"Quads · Barbell-free squat pattern · High quad isolation","baseWeight":135},{"name":"Belt Squat","tag":"Quads · Spinal deload · High frequency friendly","baseWeight":135},{"name":"Goblet Squat","tag":"Quads · Mobility-friendly · Dumbbell or kettlebell","baseWeight":50}]},
   {"id":"ex4","name":"Leg Extension","type":"flex","typeLabel":"ISOLATION · FLEX","sets":3,"reps":"12-15","baseWeight":70,"delta":0,"restSecs":60,"cue":"VMO isolation — after compound work, not before","musclePrimary":"Inner Quad","muscleSecondary":"Quads","alternatives":[{"name":"Sissy Squat","tag":"Quads · Deep VMO stretch · Bodyweight or loaded","baseWeight":0},{"name":"Heel-Elevated Squat","tag":"Quads · Increased knee travel · VMO emphasis","baseWeight":45},{"name":"Single Leg Extension","tag":"Quads · Unilateral · Catch left-right imbalances","baseWeight":40}]},
   {"id":"ex5","name":"Lying Leg Curl","type":"flex","typeLabel":"ISOLATION · FLEX","sets":3,"reps":"10-12","baseWeight":65,"delta":0,"restSecs":60,"cue":"Full ROM — plantarflex foot for extra hamstring range","musclePrimary":"Hamstrings","muscleSecondary":"Calves","alternatives":[{"name":"Seated Leg Curl","tag":"Hamstrings · Hip flexed position · Better stretch","baseWeight":65},{"name":"Nordic Curl","tag":"Hamstrings · Eccentric overload · Highest SFR","baseWeight":0},{"name":"Swiss Ball Leg Curl","tag":"Hamstrings · Hip extension + knee flexion combined","baseWeight":0}]},
@@ -495,7 +495,7 @@ function buildCard(ex) {
   } else {
     weight = calcWeight(ex, currentWeek);
   }
-  const displayName = (swapIdx > 0 && ex.swaps && ex.swaps[swapIdx - 1]) ? ex.swaps[swapIdx - 1] : ex.name;
+  const displayName = (swapIdx > 0 && ex.alternatives && ex.alternatives[swapIdx - 1]) ? ex.alternatives[swapIdx - 1].name : ex.name;
   const completedSets = exState.sets.filter(Boolean).length;
   const allDone = completedSets === ex.sets;
 
@@ -590,9 +590,24 @@ function buildCard(ex) {
       e.stopPropagation();
       const panel = document.getElementById('roster-panel');
       if (!panel) return;
-      const isOpen = panel.classList.toggle('open');
-      reorderBtn.classList.toggle('open', isOpen);
-      if (isOpen) renderRosterPanel();
+      const willOpen = !panel.classList.contains('open');
+      if (willOpen) {
+        renderRosterPanel();
+        const rect = reorderBtn.getBoundingClientRect();
+        const panelW = 280;
+        let left = rect.right - panelW;
+        if (left < 8) left = 8;
+        let top = rect.bottom + 6;
+        if (top + 320 > window.innerHeight) top = rect.top - 320 - 6;
+        panel.style.left = left + 'px';
+        panel.style.top = top + 'px';
+        panel.style.width = panelW + 'px';
+        panel.classList.add('open');
+        reorderBtn.classList.add('open');
+      } else {
+        panel.classList.remove('open');
+        reorderBtn.classList.remove('open');
+      }
     });
     hRight.appendChild(reorderBtn);
   }
@@ -853,7 +868,7 @@ function renderRosterPanel() {
     const ex = EXERCISES.find(function(e) { return e.id === eid; });
     if (!ex) return;
     const swapIdx = (state.swaps && state.swaps[ex.id]) || 0;
-    const displayName = (swapIdx > 0 && ex.swaps && ex.swaps[swapIdx-1]) ? ex.swaps[swapIdx-1] : ex.name;
+    const displayName = (swapIdx > 0 && ex.alternatives && ex.alternatives[swapIdx-1]) ? ex.alternatives[swapIdx-1].name : ex.name;
     const row = document.createElement('div');
     row.className = 'roster-row';
     row.setAttribute('draggable', 'true');
@@ -897,6 +912,17 @@ document.addEventListener('DOMContentLoaded', function() {
   loadState();
   initWeekSync();
   renderAll();
+
+  /* Close roster panel on outside click */
+  document.addEventListener('click', function(e) {
+    const panel = document.getElementById('roster-panel');
+    if (panel && panel.classList.contains('open')) {
+      if (!panel.contains(e.target) && !e.target.closest('.reorder-btn')) {
+        panel.classList.remove('open');
+        document.querySelectorAll('.reorder-btn').forEach(function(b) { b.classList.remove('open'); });
+      }
+    }
+  });
 
   /* Rest overlay btns */
   const skipBtn = document.getElementById('rest-skip');
