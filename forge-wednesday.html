@@ -211,6 +211,20 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   .roster-name{font-size:13px;color:var(--muted);flex:1;}
   .roster-grip{font-size:16px;color:var(--subtle);letter-spacing:2px;}
 
+
+  @media(max-width:520px){
+    .week-pills{gap:3px;}
+    .week-pill,.week-pill-dash{font-size:11px;padding:3px 6px;}
+    .day-strip-pill{font-size:11px;padding:4px 8px;}
+    .ex-name,.collapse-name{font-size:15px;}
+    .muscle-tags{flex-wrap:wrap;}
+    .weight-row{flex-wrap:wrap;gap:6px;}
+    .mark-all-btn{font-size:11px;}
+    .roster-panel{padding:10px 12px;}
+    .rep-input{font-size:13px;}
+    .reorder-btn,.swap-btn{min-width:34px;min-height:34px;font-size:15px;}
+    .header-right{gap:6px;}
+  }
 </style>
 </head>
 <body>
@@ -279,7 +293,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 <script>
 
 'use strict';
-const EXERCISES = [{"id": "ex1", "name": "Incline DB Press", "type": "anchor", "typeLabel": "PRIMARY · ANCHOR", "sets": 4, "reps": "8-10", "baseWeight": 65, "delta": 2.5, "restSecs": 120, "cue": "LEADS every Push day — upper chest freshest", "musclePrimary": "Upper Chest", "muscleSecondary": "Front Delt", "swaps": []}, {"id": "ex2", "name": "Flat DB Press", "type": "anchor", "typeLabel": "PRIMARY · ANCHOR", "sets": 4, "reps": "8-10", "baseWeight": 80, "delta": 2.5, "restSecs": 120, "cue": "Progressive overload — target 105–110 lbs in 8 wks", "musclePrimary": "Chest", "muscleSecondary": "Front Delt · Triceps", "swaps": []}, {"id": "ex3", "name": "Cable Crossover", "type": "flex", "typeLabel": "ISOLATION · FLEX", "sets": 3, "reps": "12-15", "baseWeight": 30, "delta": 0, "restSecs": 60, "cue": "Full stretch at bottom — highest hypertrophy stimulus", "musclePrimary": "Inner Chest", "muscleSecondary": "", "swaps": ["Low Cable Fly", "Dumbbell Fly", "Machine Chest Fly"]}, {"id": "ex4", "name": "Pec Deck Fly", "type": "flex", "typeLabel": "ISOLATION · FLEX", "sets": 3, "reps": "12-15", "baseWeight": 50, "delta": 0, "restSecs": 60, "cue": "Mind-muscle connection — squeeze, don't just move weight", "musclePrimary": "Chest", "muscleSecondary": "", "swaps": ["Incline Cable Fly", "DB Squeeze Press", "Svend Press"]}, {"id": "ex5", "name": "Tricep Pushdown", "type": "flex", "typeLabel": "ISOLATION · FLEX", "sets": 4, "reps": "12-15", "baseWeight": 45, "delta": 2.5, "restSecs": 60, "cue": "AFTER all pressing — straight bar, elbows locked", "musclePrimary": "Triceps", "muscleSecondary": "", "swaps": ["Rope Pushdown", "V-Bar Pushdown", "Band Pushdown"]}, {"id": "ex6", "name": "Overhead Tricep Ext.", "type": "flex", "typeLabel": "ISOLATION · FLEX", "sets": 3, "reps": "10-12", "baseWeight": 35, "delta": 2.5, "restSecs": 60, "cue": "Long head stretch — keep elbows in tight", "musclePrimary": "Triceps Long Head", "muscleSecondary": "", "swaps": ["Cable Overhead Extension", "DB Overhead Ext.", "EZ-Bar Skullcrusher"]}, {"id": "ex7", "name": "Lateral Raise", "type": "flex", "typeLabel": "ISOLATION · FLEX", "sets": 3, "reps": "15", "baseWeight": 20, "delta": 0, "restSecs": 60, "cue": "Medial delt — light weight, full arc", "musclePrimary": "Medial Delt", "muscleSecondary": "", "swaps": ["Cable Lateral Raise", "Machine Lateral Raise", "Leaning DB Lateral"]}, {"id": "ex8", "name": "Chest Dips", "type": "flex", "typeLabel": "COMPOUND+ · FLEX", "sets": 3, "reps": "8-10", "baseWeight": 0, "delta": 0, "restSecs": 60, "cue": "Burnout finisher — lean forward for chest emphasis", "musclePrimary": "Lower Chest", "muscleSecondary": "Triceps", "swaps": ["Bench Dip", "Machine Dip", "Decline Push-Up"]}];
+const EXERCISES = [{"id":"ex1","name":"Incline DB Press","type":"anchor","typeLabel":"PRIMARY \u00b7 ANCHOR","sets":4,"reps":"8-10","baseWeight":65,"delta":2.5,"restSecs":120,"cue":"LEADS every Push day \u2014 upper chest freshest","musclePrimary":"Upper Chest","muscleSecondary":"Front Delt","alternatives":null},{"id":"ex2","name":"Flat DB Press","type":"anchor","typeLabel":"PRIMARY \u00b7 ANCHOR","sets":4,"reps":"8-10","baseWeight":80,"delta":2.5,"restSecs":120,"cue":"Progressive overload \u2014 target 105\u2013110 lbs in 8 wks","musclePrimary":"Chest","muscleSecondary":"Front Delt \u00b7 Triceps","alternatives":null},{"id":"ex3","name":"Cable Crossover","type":"flex","typeLabel":"ISOLATION \u00b7 FLEX","sets":3,"reps":"12-15","baseWeight":30,"delta":0,"restSecs":60,"cue":"Full stretch at bottom \u2014 highest hypertrophy stimulus","musclePrimary":"Inner Chest","muscleSecondary":"","alternatives":[{"name":"Low Cable Fly","tag":"Cable \u00b7 Full pec stretch \u00b7 Constant tension","baseWeight":15},{"name":"Dumbbell Fly","tag":"Dumbbell \u00b7 Deep stretch \u00b7 Chest focus","baseWeight":25},{"name":"Machine Chest Fly","tag":"Machine \u00b7 Guided arc \u00b7 Pec isolation","baseWeight":70}]},{"id":"ex4","name":"Pec Deck Fly","type":"flex","typeLabel":"ISOLATION \u00b7 FLEX","sets":3,"reps":"12-15","baseWeight":50,"delta":0,"restSecs":60,"cue":"Mind-muscle connection \u2014 squeeze, don't just move weight","musclePrimary":"Chest","muscleSecondary":"","alternatives":[{"name":"Incline Cable Fly","tag":"Cable \u00b7 Upper pec isolation \u00b7 Stretch-based","baseWeight":12.5},{"name":"DB Squeeze Press","tag":"Dumbbell \u00b7 Inner chest peak contraction","baseWeight":40},{"name":"Svend Press","tag":"Plate \u00b7 Adduction focus \u00b7 Medial pec","baseWeight":25}]},{"id":"ex5","name":"Tricep Pushdown","type":"flex","typeLabel":"ISOLATION \u00b7 FLEX","sets":4,"reps":"12-15","baseWeight":45,"delta":2.5,"restSecs":60,"cue":"AFTER all pressing \u2014 straight bar, elbows locked","musclePrimary":"Triceps","muscleSecondary":"","alternatives":[{"name":"Rope Pushdown","tag":"Cable \u00b7 Rope \u00b7 Spreading motion at bottom","baseWeight":45},{"name":"V-Bar Pushdown","tag":"Cable \u00b7 V-Bar \u00b7 Standard tricep isolation","baseWeight":45},{"name":"Band Pushdown","tag":"Band \u00b7 Low fatigue \u00b7 High rep finisher","baseWeight":0}]},{"id":"ex6","name":"Overhead Tricep Ext.","type":"flex","typeLabel":"ISOLATION \u00b7 FLEX","sets":3,"reps":"10-12","baseWeight":35,"delta":2.5,"restSecs":60,"cue":"Long head stretch \u2014 keep elbows in tight","musclePrimary":"Triceps Long Head","muscleSecondary":"","alternatives":[{"name":"Cable Overhead Extension","tag":"Cable \u00b7 Constant tension \u00b7 Long head stretch","baseWeight":35},{"name":"DB Overhead Ext.","tag":"Dumbbell \u00b7 Long head stretch \u00b7 Single arm option","baseWeight":30},{"name":"EZ-Bar Skullcrusher","tag":"Barbell \u00b7 Long head focus \u00b7 Elbows in","baseWeight":40}]},{"id":"ex7","name":"Lateral Raise","type":"flex","typeLabel":"ISOLATION \u00b7 FLEX","sets":3,"reps":"15","baseWeight":20,"delta":0,"restSecs":60,"cue":"Medial delt \u2014 light weight, full arc","musclePrimary":"Medial Delt","muscleSecondary":"","alternatives":[{"name":"Cable Lateral Raise","tag":"Cable \u00b7 Constant tension vs dumbbell","baseWeight":10},{"name":"Machine Lateral Raise","tag":"Machine \u00b7 Seated \u00b7 Guided path","baseWeight":25},{"name":"Leaning DB Lateral","tag":"Dumbbell \u00b7 Leaning \u00b7 Greater ROM","baseWeight":12.5}]},{"id":"ex8","name":"Chest Dips","type":"flex","typeLabel":"COMPOUND+ \u00b7 FLEX","sets":3,"reps":"8-10","baseWeight":0,"delta":0,"restSecs":60,"cue":"Burnout finisher \u2014 lean forward for chest emphasis","musclePrimary":"Lower Chest","muscleSecondary":"Triceps","alternatives":[{"name":"Bench Dip","tag":"Bodyweight \u00b7 Tricep focus \u00b7 Low setup","baseWeight":0},{"name":"Machine Dip","tag":"Machine \u00b7 Assisted \u00b7 Controlled ROM","baseWeight":50},{"name":"Decline Push-Up","tag":"Bodyweight \u00b7 Upper chest + tricep","baseWeight":0}]}];
 const FLEX_IDS = ["ex3", "ex4", "ex5", "ex6", "ex7", "ex8"];
 const STORAGE_KEY = 'forge_wednesday_v1';
 const WEEK_SYNC_KEY = 'forge_week_v1';
@@ -460,6 +474,10 @@ function buildCard(ex) {
   let weight;
   if (swapIdx > 0 && state.swapWeights && state.swapWeights[swapKey] != null) {
     weight = state.swapWeights[swapKey];
+  } else if (swapIdx > 0 && ex.alternatives && ex.alternatives[swapIdx-1] && ex.alternatives[swapIdx-1].baseWeight) {
+    weight = ex.alternatives[swapIdx-1].baseWeight;
+    state.swapWeights = state.swapWeights || {};
+    state.swapWeights[swapKey] = weight;
   } else {
     weight = calcWeight(ex, currentWeek);
   }
@@ -537,8 +555,10 @@ function buildCard(ex) {
   collapseToggleBtn.title = 'Collapse card';
   collapseToggleBtn.addEventListener('click', function(e) {
     e.stopPropagation();
+    const willCollapse = !card.classList.contains('collapsed');
     card.classList.toggle('collapsed');
-    collapseToggleBtn.textContent = card.classList.contains('collapsed') ? '\u25b8' : '\u25be';
+    collapseToggleBtn.textContent = willCollapse ? '\u25b8' : '\u25be';
+    if (willCollapse) { colSummaryText.textContent = buildSummaryText(); }
   });
   hLeft.appendChild(collapseToggleBtn);
   const hRight = document.createElement('div');
@@ -563,7 +583,7 @@ function buildCard(ex) {
   }
 
   /* Swap btn */
-  if (!isAnchor && ex.swaps && ex.swaps.length > 0) {
+  if (!isAnchor && ex.alternatives && ex.alternatives.length > 0) {
     const swapBtn = document.createElement('button');
     swapBtn.className = 'swap-btn';
     swapBtn.textContent = '\u21c4';
@@ -758,40 +778,50 @@ function buildCard(ex) {
   inner.appendChild(sGrid);
 
   /* Swap drawer */
-  if (!isAnchor && ex.swaps && ex.swaps.length > 0) {
+  if (!isAnchor && ex.alternatives && ex.alternatives.length > 0) {
     const drawer = document.createElement('div');
     drawer.className = 'swap-drawer';
     drawer.id = 'swap-' + ex.id;
     const dLbl = document.createElement('div');
     dLbl.className = 'swap-drawer-label';
-    dLbl.textContent = 'SWAP EXERCISE';
+    dLbl.textContent = 'SELECT REPLACEMENT — SAME MUSCLE GROUP';
     drawer.appendChild(dLbl);
-    const opts = document.createElement('div');
-    opts.className = 'swap-options';
-    function makeSwapOpt(name, idx) {
-      const btn = document.createElement('button');
-      btn.className = 'swap-option' + (swapIdx === idx ? ' active' : '');
-      btn.textContent = name;
-      btn.addEventListener('click', function() {
+    function makeCardOpt(name, tag, idx) {
+      const opt = document.createElement('div');
+      opt.className = 'swap-option' + (swapIdx === idx ? ' selected' : '');
+      const info = document.createElement('div');
+      const nm = document.createElement('div');
+      nm.className = 'swap-opt-name';
+      nm.textContent = name;
+      const tg = document.createElement('div');
+      tg.className = 'swap-opt-tag';
+      tg.textContent = tag;
+      info.appendChild(nm);
+      info.appendChild(tg);
+      const pill = document.createElement('div');
+      pill.className = 'swap-select-pill';
+      pill.textContent = swapIdx === idx ? 'ACTIVE' : 'SELECT';
+      opt.appendChild(info);
+      opt.appendChild(pill);
+      opt.addEventListener('click', function() {
         state.swaps = state.swaps || {};
         state.swaps[ex.id] = idx;
-        if (idx > 0) {
+        if (idx > 0 && ex.alternatives[idx-1]) {
           const sk = ex.id + '_sw' + idx;
-          if (state.swapWeights && state.swapWeights[sk] != null) {
-            /* weight already stored */
-          } else {
-            state.swapWeights = state.swapWeights || {};
-            state.swapWeights[sk] = calcWeight(ex, currentWeek);
+          state.swapWeights = state.swapWeights || {};
+          if (state.swapWeights[sk] == null) {
+            state.swapWeights[sk] = ex.alternatives[idx-1].baseWeight || calcWeight(ex, currentWeek);
           }
         }
         autoSave();
         renderAll();
       });
-      return btn;
+      return opt;
     }
-    opts.appendChild(makeSwapOpt('Default: ' + ex.name, 0));
-    ex.swaps.forEach(function(sn, si) { opts.appendChild(makeSwapOpt(sn, si + 1)); });
-    drawer.appendChild(opts);
+    drawer.appendChild(makeCardOpt('Default: ' + ex.name, 'Default — programmed exercise', 0));
+    ex.alternatives.forEach(function(alt, ai) {
+      drawer.appendChild(makeCardOpt(alt.name, alt.tag, ai + 1));
+    });
     inner.appendChild(drawer);
   }
 

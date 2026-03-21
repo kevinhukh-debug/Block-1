@@ -406,6 +406,16 @@ function renderZone(zoneId,exercises){
     typeLabel.className='ex-type-label';
     typeLabel.textContent=isSwapped?ex.typeLabel+' \u2022 SWAPPED':ex.typeLabel;
 
+    var collapseToggle=document.createElement('button');
+    collapseToggle.className='collapse-btn';
+    collapseToggle.textContent='▾';
+    collapseToggle.title='Collapse card';
+    collapseToggle.addEventListener('click',function(e){
+      e.stopPropagation();
+      card.classList.toggle('collapsed');
+      collapseToggle.textContent=card.classList.contains('collapsed')?'▸':'▾';
+    });
+
     var nameRow=document.createElement('div');
     var num=document.createElement('span');
     num.className='card-number';
@@ -423,6 +433,8 @@ function renderZone(zoneId,exercises){
     cueEl.textContent=displayCue;
 
     left.appendChild(typeLabel);
+    left.appendChild(collapseToggle);
+    left.appendChild(collapseToggle);
     left.appendChild(nameRow);
     left.appendChild(cueEl);
 
@@ -620,7 +632,7 @@ function renderZone(zoneId,exercises){
       // Default option
       var defOpt=document.createElement('div');
       defOpt.className='swap-option'+(swapIdx===0?' selected':'');
-      defOpt.innerHTML='<div><div class="swap-opt-name">'+ex.name+'</div><div class="swap-opt-tag">Default \u2014 programmed exercise</div></div><div class="swap-select-pill">'+(swapIdx===0?'Active':'Select')+'</div>';
+      defOpt.innerHTML='<div><div class="swap-opt-name">'+ex.name+'</div><div class="swap-opt-tag">Default \u2014 programmed exercise</div></div><div class="swap-select-pill">'+(swapIdx===0?'ACTIVE':'SELECT')+'</div>';
       (function(capturedEx){
         defOpt.addEventListener('click',function(){
           state.swaps=state.swaps||{};
@@ -633,7 +645,7 @@ function renderZone(zoneId,exercises){
       ex.alternatives.forEach(function(alt,ai){
         var opt=document.createElement('div');
         opt.className='swap-option'+(swapIdx===ai+1?' selected':'');
-        opt.innerHTML='<div><div class="swap-opt-name">'+alt.name+'</div><div class="swap-opt-tag">'+alt.tag+'</div></div><div class="swap-select-pill">'+(swapIdx===ai+1?'Active':'Select')+'</div>';
+        opt.innerHTML='<div><div class="swap-opt-name">'+alt.name+'</div><div class="swap-opt-tag">'+alt.tag+'</div></div><div class="swap-select-pill">'+(swapIdx===ai+1?'ACTIVE':'SELECT')+'</div>';
         (function(capturedEx,capturedAi){
           opt.addEventListener('click',function(){
             state.swaps=state.swaps||{};

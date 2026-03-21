@@ -211,6 +211,20 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   .roster-name{font-size:13px;color:var(--muted);flex:1;}
   .roster-grip{font-size:16px;color:var(--subtle);letter-spacing:2px;}
 
+
+  @media(max-width:520px){
+    .week-pills{gap:3px;}
+    .week-pill,.week-pill-dash{font-size:11px;padding:3px 6px;}
+    .day-strip-pill{font-size:11px;padding:4px 8px;}
+    .ex-name,.collapse-name{font-size:15px;}
+    .muscle-tags{flex-wrap:wrap;}
+    .weight-row{flex-wrap:wrap;gap:6px;}
+    .mark-all-btn{font-size:11px;}
+    .roster-panel{padding:10px 12px;}
+    .rep-input{font-size:13px;}
+    .reorder-btn,.swap-btn{min-width:34px;min-height:34px;font-size:15px;}
+    .header-right{gap:6px;}
+  }
 </style>
 </head>
 <body>
@@ -279,7 +293,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 <script>
 
 'use strict';
-const EXERCISES = [{"id": "ex1", "name": "Wide Grip Lat Pulldown", "type": "anchor", "typeLabel": "COMPOUND · ANCHOR", "sets": 4, "reps": "10-12", "baseWeight": 110, "delta": 2.5, "restSecs": 120, "cue": "Elbows driving to hips — squeeze lats at bottom", "musclePrimary": "Lats", "muscleSecondary": "Biceps · Rear Delt", "swaps": []}, {"id": "ex2", "name": "Seated Cable Row", "type": "anchor", "typeLabel": "COMPOUND · ANCHOR", "sets": 4, "reps": "10-12", "baseWeight": 120, "delta": 2.5, "restSecs": 120, "cue": "Chest tall — full scapular retraction at end", "musclePrimary": "Mid Back", "muscleSecondary": "Lats · Biceps", "swaps": []}, {"id": "ex3", "name": "Single Arm DB Row", "type": "flex", "typeLabel": "COMPOUND · FLEX", "sets": 3, "reps": "10-12", "baseWeight": 65, "delta": 2.5, "restSecs": 120, "cue": "Unilateral — eliminates dominant side compensation", "musclePrimary": "Lats", "muscleSecondary": "Mid Back", "swaps": ["Chest-Supported Row", "Meadows Row", "Cable Single Arm Row"]}, {"id": "ex4", "name": "Face Pull", "type": "flex", "typeLabel": "HEALTH · FLEX", "sets": 3, "reps": "15", "baseWeight": 30, "delta": 0, "restSecs": 60, "cue": "External rotation — shoulder health, never skip", "musclePrimary": "Rear Delt", "muscleSecondary": "Rotator Cuff", "swaps": ["Band Pull-Apart", "Rear Delt Fly Machine", "DB Rear Delt Fly"]}, {"id": "ex5", "name": "Shoulder Shrug", "type": "flex", "typeLabel": "ISOLATION · FLEX", "sets": 3, "reps": "12", "baseWeight": 60, "delta": 0, "restSecs": 60, "cue": "Upper trap — hold 1 sec at top", "musclePrimary": "Upper Traps", "muscleSecondary": "", "swaps": ["DB Shrug", "Trap Bar Shrug", "Behind-Back Barbell Shrug"]}, {"id": "ex6", "name": "Preacher Curl", "type": "flex", "typeLabel": "ISOLATION · FLEX", "sets": 3, "reps": "10-12", "baseWeight": 45, "delta": 2.5, "restSecs": 60, "cue": "Short head — full stretch at bottom", "musclePrimary": "Biceps Short Head", "muscleSecondary": "", "swaps": ["Machine Curl", "Spider Curl", "Cable Curl"]}, {"id": "ex7", "name": "Incline DB Curl", "type": "flex", "typeLabel": "ISOLATION · FLEX", "sets": 3, "reps": "10-12", "baseWeight": 25, "delta": 2.5, "restSecs": 60, "cue": "Long head stretch — replaces concentration curl", "musclePrimary": "Biceps Long Head", "muscleSecondary": "Brachialis", "swaps": ["Cable Incline Curl", "Overhead Cable Curl", "Spider Curl"]}, {"id": "ex8", "name": "Cable Crunch", "type": "flex", "typeLabel": "CORE · FLEX", "sets": 3, "reps": "15", "baseWeight": 50, "delta": 2.5, "restSecs": 60, "cue": "Weighted core — progressive load weekly", "musclePrimary": "Abs", "muscleSecondary": "Hip Flexors", "swaps": ["Ab Wheel", "Decline Crunch", "Hanging Knee Raise"]}];
+const EXERCISES = [{"id":"ex1","name":"Wide Grip Lat Pulldown","type":"anchor","typeLabel":"COMPOUND \u00b7 ANCHOR","sets":4,"reps":"10-12","baseWeight":110,"delta":2.5,"restSecs":120,"cue":"Elbows driving to hips \u2014 squeeze lats at bottom","musclePrimary":"Lats","muscleSecondary":"Biceps \u00b7 Rear Delt","alternatives":null},{"id":"ex2","name":"Seated Cable Row","type":"anchor","typeLabel":"COMPOUND \u00b7 ANCHOR","sets":4,"reps":"10-12","baseWeight":120,"delta":2.5,"restSecs":120,"cue":"Chest tall \u2014 full scapular retraction at end","musclePrimary":"Mid Back","muscleSecondary":"Lats \u00b7 Biceps","alternatives":null},{"id":"ex3","name":"Single Arm DB Row","type":"flex","typeLabel":"COMPOUND \u00b7 FLEX","sets":3,"reps":"10-12","baseWeight":65,"delta":2.5,"restSecs":120,"cue":"Unilateral \u2014 eliminates dominant side compensation","musclePrimary":"Lats","muscleSecondary":"Mid Back","alternatives":[{"name":"Chest-Supported Row","tag":"Machine \u00b7 No lower back fatigue \u00b7 Pure back","baseWeight":90},{"name":"Meadows Row","tag":"Barbell \u00b7 Landmine \u00b7 Unilateral stretch","baseWeight":95},{"name":"Cable Single Arm Row","tag":"Cable \u00b7 Full ROM \u00b7 Anti-rotation","baseWeight":60}]},{"id":"ex4","name":"Face Pull","type":"flex","typeLabel":"HEALTH \u00b7 FLEX","sets":3,"reps":"15","baseWeight":30,"delta":0,"restSecs":60,"cue":"External rotation \u2014 shoulder health, never skip","musclePrimary":"Rear Delt","muscleSecondary":"Rotator Cuff","alternatives":[{"name":"Band Pull-Apart","tag":"Band \u00b7 Shoulder health \u00b7 External rotation","baseWeight":0},{"name":"Rear Delt Fly Machine","tag":"Machine \u00b7 Rear delt isolation \u00b7 Pec deck","baseWeight":30},{"name":"DB Rear Delt Fly","tag":"Dumbbell \u00b7 Prone or seated \u00b7 Rear delt","baseWeight":20}]},{"id":"ex5","name":"Shoulder Shrug","type":"flex","typeLabel":"ISOLATION \u00b7 FLEX","sets":3,"reps":"12","baseWeight":60,"delta":0,"restSecs":60,"cue":"Upper trap \u2014 hold 1 sec at top","musclePrimary":"Upper Traps","muscleSecondary":"","alternatives":[{"name":"DB Shrug","tag":"Dumbbell \u00b7 Neutral grip \u00b7 Full ROM","baseWeight":65},{"name":"Trap Bar Shrug","tag":"Trap bar \u00b7 Natural path \u00b7 Heavy load","baseWeight":135},{"name":"Behind-Back Barbell Shrug","tag":"Barbell \u00b7 Scapular retraction emphasis","baseWeight":95}]},{"id":"ex6","name":"Preacher Curl","type":"flex","typeLabel":"ISOLATION \u00b7 FLEX","sets":3,"reps":"10-12","baseWeight":45,"delta":2.5,"restSecs":60,"cue":"Short head \u2014 full stretch at bottom","musclePrimary":"Biceps Short Head","muscleSecondary":"","alternatives":[{"name":"Machine Curl","tag":"Machine \u00b7 Bilateral \u00b7 Constant tension","baseWeight":50},{"name":"Spider Curl","tag":"Incline bench \u00b7 Stretch + peak contraction","baseWeight":30},{"name":"Cable Curl","tag":"Cable \u00b7 Constant tension \u00b7 Full ROM","baseWeight":35}]},{"id":"ex7","name":"Incline DB Curl","type":"flex","typeLabel":"ISOLATION \u00b7 FLEX","sets":3,"reps":"10-12","baseWeight":25,"delta":2.5,"restSecs":60,"cue":"Long head stretch \u2014 replaces concentration curl","musclePrimary":"Biceps Long Head","muscleSecondary":"Brachialis","alternatives":[{"name":"Cable Incline Curl","tag":"Cable + incline bench \u00b7 Long head stretch","baseWeight":20},{"name":"Overhead Cable Curl","tag":"Cable \u00b7 Both heads \u00b7 Lengthened position","baseWeight":15},{"name":"Spider Curl","tag":"Incline bench \u00b7 Stretch + peak contraction","baseWeight":25}]},{"id":"ex8","name":"Cable Crunch","type":"flex","typeLabel":"CORE \u00b7 FLEX","sets":3,"reps":"15","baseWeight":50,"delta":2.5,"restSecs":60,"cue":"Weighted core \u2014 progressive load weekly","musclePrimary":"Abs","muscleSecondary":"Hip Flexors","alternatives":[{"name":"Ab Wheel","tag":"Bodyweight \u00b7 Full core \u00b7 High difficulty","baseWeight":0},{"name":"Decline Crunch","tag":"Bodyweight \u00b7 Weighted option available","baseWeight":0},{"name":"Hanging Knee Raise","tag":"Bodyweight \u00b7 Hip flexor + core","baseWeight":0}]}];
 const FLEX_IDS = ["ex3", "ex4", "ex5", "ex6", "ex7", "ex8"];
 const STORAGE_KEY = 'forge_friday_v1';
 const WEEK_SYNC_KEY = 'forge_week_v1';
@@ -460,6 +474,10 @@ function buildCard(ex) {
   let weight;
   if (swapIdx > 0 && state.swapWeights && state.swapWeights[swapKey] != null) {
     weight = state.swapWeights[swapKey];
+  } else if (swapIdx > 0 && ex.alternatives && ex.alternatives[swapIdx-1] && ex.alternatives[swapIdx-1].baseWeight) {
+    weight = ex.alternatives[swapIdx-1].baseWeight;
+    state.swapWeights = state.swapWeights || {};
+    state.swapWeights[swapKey] = weight;
   } else {
     weight = calcWeight(ex, currentWeek);
   }
@@ -537,8 +555,10 @@ function buildCard(ex) {
   collapseToggleBtn.title = 'Collapse card';
   collapseToggleBtn.addEventListener('click', function(e) {
     e.stopPropagation();
+    const willCollapse = !card.classList.contains('collapsed');
     card.classList.toggle('collapsed');
-    collapseToggleBtn.textContent = card.classList.contains('collapsed') ? '\u25b8' : '\u25be';
+    collapseToggleBtn.textContent = willCollapse ? '\u25b8' : '\u25be';
+    if (willCollapse) { colSummaryText.textContent = buildSummaryText(); }
   });
   hLeft.appendChild(collapseToggleBtn);
   const hRight = document.createElement('div');
@@ -563,7 +583,7 @@ function buildCard(ex) {
   }
 
   /* Swap btn */
-  if (!isAnchor && ex.swaps && ex.swaps.length > 0) {
+  if (!isAnchor && ex.alternatives && ex.alternatives.length > 0) {
     const swapBtn = document.createElement('button');
     swapBtn.className = 'swap-btn';
     swapBtn.textContent = '\u21c4';
@@ -758,40 +778,50 @@ function buildCard(ex) {
   inner.appendChild(sGrid);
 
   /* Swap drawer */
-  if (!isAnchor && ex.swaps && ex.swaps.length > 0) {
+  if (!isAnchor && ex.alternatives && ex.alternatives.length > 0) {
     const drawer = document.createElement('div');
     drawer.className = 'swap-drawer';
     drawer.id = 'swap-' + ex.id;
     const dLbl = document.createElement('div');
     dLbl.className = 'swap-drawer-label';
-    dLbl.textContent = 'SWAP EXERCISE';
+    dLbl.textContent = 'SELECT REPLACEMENT — SAME MUSCLE GROUP';
     drawer.appendChild(dLbl);
-    const opts = document.createElement('div');
-    opts.className = 'swap-options';
-    function makeSwapOpt(name, idx) {
-      const btn = document.createElement('button');
-      btn.className = 'swap-option' + (swapIdx === idx ? ' active' : '');
-      btn.textContent = name;
-      btn.addEventListener('click', function() {
+    function makeCardOpt(name, tag, idx) {
+      const opt = document.createElement('div');
+      opt.className = 'swap-option' + (swapIdx === idx ? ' selected' : '');
+      const info = document.createElement('div');
+      const nm = document.createElement('div');
+      nm.className = 'swap-opt-name';
+      nm.textContent = name;
+      const tg = document.createElement('div');
+      tg.className = 'swap-opt-tag';
+      tg.textContent = tag;
+      info.appendChild(nm);
+      info.appendChild(tg);
+      const pill = document.createElement('div');
+      pill.className = 'swap-select-pill';
+      pill.textContent = swapIdx === idx ? 'ACTIVE' : 'SELECT';
+      opt.appendChild(info);
+      opt.appendChild(pill);
+      opt.addEventListener('click', function() {
         state.swaps = state.swaps || {};
         state.swaps[ex.id] = idx;
-        if (idx > 0) {
+        if (idx > 0 && ex.alternatives[idx-1]) {
           const sk = ex.id + '_sw' + idx;
-          if (state.swapWeights && state.swapWeights[sk] != null) {
-            /* weight already stored */
-          } else {
-            state.swapWeights = state.swapWeights || {};
-            state.swapWeights[sk] = calcWeight(ex, currentWeek);
+          state.swapWeights = state.swapWeights || {};
+          if (state.swapWeights[sk] == null) {
+            state.swapWeights[sk] = ex.alternatives[idx-1].baseWeight || calcWeight(ex, currentWeek);
           }
         }
         autoSave();
         renderAll();
       });
-      return btn;
+      return opt;
     }
-    opts.appendChild(makeSwapOpt('Default: ' + ex.name, 0));
-    ex.swaps.forEach(function(sn, si) { opts.appendChild(makeSwapOpt(sn, si + 1)); });
-    drawer.appendChild(opts);
+    drawer.appendChild(makeCardOpt('Default: ' + ex.name, 'Default — programmed exercise', 0));
+    ex.alternatives.forEach(function(alt, ai) {
+      drawer.appendChild(makeCardOpt(alt.name, alt.tag, ai + 1));
+    });
     inner.appendChild(drawer);
   }
 

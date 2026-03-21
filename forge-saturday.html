@@ -211,6 +211,20 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   .roster-name{font-size:13px;color:var(--muted);flex:1;}
   .roster-grip{font-size:16px;color:var(--subtle);letter-spacing:2px;}
 
+
+  @media(max-width:520px){
+    .week-pills{gap:3px;}
+    .week-pill,.week-pill-dash{font-size:11px;padding:3px 6px;}
+    .day-strip-pill{font-size:11px;padding:4px 8px;}
+    .ex-name,.collapse-name{font-size:15px;}
+    .muscle-tags{flex-wrap:wrap;}
+    .weight-row{flex-wrap:wrap;gap:6px;}
+    .mark-all-btn{font-size:11px;}
+    .roster-panel{padding:10px 12px;}
+    .rep-input{font-size:13px;}
+    .reorder-btn,.swap-btn{min-width:34px;min-height:34px;font-size:15px;}
+    .header-right{gap:6px;}
+  }
 </style>
 </head>
 <body>
@@ -279,7 +293,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 <script>
 
 'use strict';
-const EXERCISES = [{"id": "ex1", "name": "Hip Thrust", "type": "anchor", "typeLabel": "PRIMARY · ANCHOR", "sets": 4, "reps": "10-12", "baseWeight": 135, "delta": 2.5, "restSecs": 120, "cue": "LEADS — chin tucked, full hip extension at top", "musclePrimary": "Glutes", "muscleSecondary": "Hamstrings", "swaps": []}, {"id": "ex2", "name": "Romanian Deadlift", "type": "anchor", "typeLabel": "COMPOUND · ANCHOR", "sets": 3, "reps": "10-12", "baseWeight": 115, "delta": 0, "restSecs": 120, "cue": "Lighter than Tuesday — glute/ham focus, feel the stretch", "musclePrimary": "Hamstrings", "muscleSecondary": "Glutes", "swaps": []}, {"id": "ex3", "name": "Walking Lunge", "type": "flex", "typeLabel": "COMPOUND · FLEX", "sets": 3, "reps": "12 ea", "baseWeight": 40, "delta": 0, "restSecs": 120, "cue": "Drive through heel — torso upright", "musclePrimary": "Quads", "muscleSecondary": "Glutes · Balance", "swaps": ["Bulgarian Split Squat", "Step-Up", "Reverse Lunge"]}, {"id": "ex4", "name": "Good Morning", "type": "flex", "typeLabel": "COMPOUND · FLEX", "sets": 3, "reps": "10-12", "baseWeight": 65, "delta": 0, "restSecs": 120, "cue": "Hip hinge with load — hamstring stretch under tension", "musclePrimary": "Hamstrings", "muscleSecondary": "Lower Back", "swaps": ["Hyperextension", "Cable Pull-Through", "Back Extension"]}, {"id": "ex5", "name": "Leg Extension", "type": "flex", "typeLabel": "ISOLATION · FLEX", "sets": 2, "reps": "15", "baseWeight": 60, "delta": 0, "restSecs": 60, "cue": "Maintenance only — quads already hit Tuesday", "musclePrimary": "Inner Quad", "muscleSecondary": "Quads", "swaps": ["Sissy Squat", "Single Leg Extension", "Terminal Knee Extension"]}, {"id": "ex6", "name": "Calf Press Machine", "type": "flex", "typeLabel": "ISOLATION · FLEX", "sets": 4, "reps": "15-20", "baseWeight": 90, "delta": 0, "restSecs": 60, "cue": "Full ROM — pause at bottom stretch", "musclePrimary": "Calves", "muscleSecondary": "Soleus", "swaps": ["Leg Press Calf Raise", "Standing Calf Raise", "Donkey Calf Raise"]}, {"id": "ex7", "name": "Side Lunge", "type": "flex", "typeLabel": "MOBILITY · FLEX", "sets": 3, "reps": "10 ea", "baseWeight": 0, "delta": 0, "restSecs": 60, "cue": "Adductor work — control the lateral push", "musclePrimary": "Adductors", "muscleSecondary": "Glutes", "swaps": ["Cable Adductor Pull", "Sumo Squat", "Copenhagen Plank"]}, {"id": "ex8", "name": "Ab Crunch", "type": "flex", "typeLabel": "CORE · FLEX", "sets": 3, "reps": "20", "baseWeight": 0, "delta": 0, "restSecs": 60, "cue": "Bodyweight — high rep, squeeze at top", "musclePrimary": "Abs", "muscleSecondary": "", "swaps": ["Cable Crunch", "Decline Crunch", "Ab Wheel Rollout"]}];
+const EXERCISES = [{"id":"ex1","name":"Hip Thrust","type":"anchor","typeLabel":"PRIMARY \u00b7 ANCHOR","sets":4,"reps":"10-12","baseWeight":135,"delta":2.5,"restSecs":120,"cue":"LEADS \u2014 chin tucked, full hip extension at top","musclePrimary":"Glutes","muscleSecondary":"Hamstrings","alternatives":null},{"id":"ex2","name":"Romanian Deadlift","type":"anchor","typeLabel":"COMPOUND \u00b7 ANCHOR","sets":3,"reps":"10-12","baseWeight":115,"delta":0,"restSecs":120,"cue":"Lighter than Tuesday \u2014 glute/ham focus, feel the stretch","musclePrimary":"Hamstrings","muscleSecondary":"Glutes","alternatives":null},{"id":"ex3","name":"Walking Lunge","type":"flex","typeLabel":"COMPOUND \u00b7 FLEX","sets":3,"reps":"12 ea","baseWeight":40,"delta":0,"restSecs":120,"cue":"Drive through heel \u2014 torso upright","musclePrimary":"Quads","muscleSecondary":"Glutes \u00b7 Balance","alternatives":[{"name":"Bulgarian Split Squat","tag":"Dumbbell \u00b7 Quad + glute \u00b7 Unilateral","baseWeight":30},{"name":"Step-Up","tag":"Dumbbell \u00b7 Functional \u00b7 Quad drive","baseWeight":35},{"name":"Reverse Lunge","tag":"Dumbbell \u00b7 Knee-friendly \u00b7 Hip flexor stretch","baseWeight":35}]},{"id":"ex4","name":"Good Morning","type":"flex","typeLabel":"COMPOUND \u00b7 FLEX","sets":3,"reps":"10-12","baseWeight":65,"delta":0,"restSecs":120,"cue":"Hip hinge with load \u2014 hamstring stretch under tension","musclePrimary":"Hamstrings","muscleSecondary":"Lower Back","alternatives":[{"name":"Hyperextension","tag":"Bodyweight \u00b7 Lower back + hamstring","baseWeight":0},{"name":"Cable Pull-Through","tag":"Cable \u00b7 Hip hinge \u00b7 Glute focus","baseWeight":50},{"name":"Back Extension","tag":"Bodyweight or weighted \u00b7 Posterior chain","baseWeight":25}]},{"id":"ex5","name":"Leg Extension","type":"flex","typeLabel":"ISOLATION \u00b7 FLEX","sets":2,"reps":"15","baseWeight":60,"delta":0,"restSecs":60,"cue":"Maintenance only \u2014 quads already hit Tuesday","musclePrimary":"Inner Quad","muscleSecondary":"Quads","alternatives":[{"name":"Sissy Squat","tag":"Bodyweight \u00b7 VMO extreme stretch \u00b7 Advanced","baseWeight":0},{"name":"Single Leg Extension","tag":"Machine \u00b7 Unilateral \u00b7 Imbalance correction","baseWeight":40},{"name":"Terminal Knee Extension","tag":"Band \u00b7 VMO activation \u00b7 Rehab-friendly","baseWeight":0}]},{"id":"ex6","name":"Calf Press Machine","type":"flex","typeLabel":"ISOLATION \u00b7 FLEX","sets":4,"reps":"15-20","baseWeight":90,"delta":0,"restSecs":60,"cue":"Full ROM \u2014 pause at bottom stretch","musclePrimary":"Calves","muscleSecondary":"Soleus","alternatives":[{"name":"Leg Press Calf Raise","tag":"Machine \u00b7 Full ROM \u00b7 High load capable","baseWeight":180},{"name":"Standing Calf Raise","tag":"Machine or freeweight \u00b7 Gastroc focus","baseWeight":90},{"name":"Donkey Calf Raise","tag":"Bodyweight \u00b7 Hip hinge \u00b7 Deep stretch","baseWeight":0}]},{"id":"ex7","name":"Side Lunge","type":"flex","typeLabel":"MOBILITY \u00b7 FLEX","sets":3,"reps":"10 ea","baseWeight":0,"delta":0,"restSecs":60,"cue":"Adductor work \u2014 control the lateral push","musclePrimary":"Adductors","muscleSecondary":"Glutes","alternatives":[{"name":"Cable Adductor Pull","tag":"Cable \u00b7 Adductor isolation \u00b7 Constant tension","baseWeight":20},{"name":"Sumo Squat","tag":"Dumbbell \u00b7 Wide stance \u00b7 Inner thigh","baseWeight":40},{"name":"Copenhagen Plank","tag":"Bodyweight \u00b7 Adductor + core \u00b7 Isometric","baseWeight":0}]},{"id":"ex8","name":"Ab Crunch","type":"flex","typeLabel":"CORE \u00b7 FLEX","sets":3,"reps":"20","baseWeight":0,"delta":0,"restSecs":60,"cue":"Bodyweight \u2014 high rep, squeeze at top","musclePrimary":"Abs","muscleSecondary":"","alternatives":[{"name":"Cable Crunch","tag":"Cable \u00b7 Weighted \u00b7 Spine flexion","baseWeight":50},{"name":"Decline Crunch","tag":"Bodyweight \u00b7 Weighted option \u00b7 Hip anchored","baseWeight":0},{"name":"Ab Wheel Rollout","tag":"Bodyweight \u00b7 Full core engagement","baseWeight":0}]}];
 const FLEX_IDS = ["ex3", "ex4", "ex5", "ex6", "ex7", "ex8"];
 const STORAGE_KEY = 'forge_saturday_v1';
 const WEEK_SYNC_KEY = 'forge_week_v1';
@@ -460,6 +474,10 @@ function buildCard(ex) {
   let weight;
   if (swapIdx > 0 && state.swapWeights && state.swapWeights[swapKey] != null) {
     weight = state.swapWeights[swapKey];
+  } else if (swapIdx > 0 && ex.alternatives && ex.alternatives[swapIdx-1] && ex.alternatives[swapIdx-1].baseWeight) {
+    weight = ex.alternatives[swapIdx-1].baseWeight;
+    state.swapWeights = state.swapWeights || {};
+    state.swapWeights[swapKey] = weight;
   } else {
     weight = calcWeight(ex, currentWeek);
   }
@@ -537,8 +555,10 @@ function buildCard(ex) {
   collapseToggleBtn.title = 'Collapse card';
   collapseToggleBtn.addEventListener('click', function(e) {
     e.stopPropagation();
+    const willCollapse = !card.classList.contains('collapsed');
     card.classList.toggle('collapsed');
-    collapseToggleBtn.textContent = card.classList.contains('collapsed') ? '\u25b8' : '\u25be';
+    collapseToggleBtn.textContent = willCollapse ? '\u25b8' : '\u25be';
+    if (willCollapse) { colSummaryText.textContent = buildSummaryText(); }
   });
   hLeft.appendChild(collapseToggleBtn);
   const hRight = document.createElement('div');
@@ -563,7 +583,7 @@ function buildCard(ex) {
   }
 
   /* Swap btn */
-  if (!isAnchor && ex.swaps && ex.swaps.length > 0) {
+  if (!isAnchor && ex.alternatives && ex.alternatives.length > 0) {
     const swapBtn = document.createElement('button');
     swapBtn.className = 'swap-btn';
     swapBtn.textContent = '\u21c4';
@@ -758,40 +778,50 @@ function buildCard(ex) {
   inner.appendChild(sGrid);
 
   /* Swap drawer */
-  if (!isAnchor && ex.swaps && ex.swaps.length > 0) {
+  if (!isAnchor && ex.alternatives && ex.alternatives.length > 0) {
     const drawer = document.createElement('div');
     drawer.className = 'swap-drawer';
     drawer.id = 'swap-' + ex.id;
     const dLbl = document.createElement('div');
     dLbl.className = 'swap-drawer-label';
-    dLbl.textContent = 'SWAP EXERCISE';
+    dLbl.textContent = 'SELECT REPLACEMENT — SAME MUSCLE GROUP';
     drawer.appendChild(dLbl);
-    const opts = document.createElement('div');
-    opts.className = 'swap-options';
-    function makeSwapOpt(name, idx) {
-      const btn = document.createElement('button');
-      btn.className = 'swap-option' + (swapIdx === idx ? ' active' : '');
-      btn.textContent = name;
-      btn.addEventListener('click', function() {
+    function makeCardOpt(name, tag, idx) {
+      const opt = document.createElement('div');
+      opt.className = 'swap-option' + (swapIdx === idx ? ' selected' : '');
+      const info = document.createElement('div');
+      const nm = document.createElement('div');
+      nm.className = 'swap-opt-name';
+      nm.textContent = name;
+      const tg = document.createElement('div');
+      tg.className = 'swap-opt-tag';
+      tg.textContent = tag;
+      info.appendChild(nm);
+      info.appendChild(tg);
+      const pill = document.createElement('div');
+      pill.className = 'swap-select-pill';
+      pill.textContent = swapIdx === idx ? 'ACTIVE' : 'SELECT';
+      opt.appendChild(info);
+      opt.appendChild(pill);
+      opt.addEventListener('click', function() {
         state.swaps = state.swaps || {};
         state.swaps[ex.id] = idx;
-        if (idx > 0) {
+        if (idx > 0 && ex.alternatives[idx-1]) {
           const sk = ex.id + '_sw' + idx;
-          if (state.swapWeights && state.swapWeights[sk] != null) {
-            /* weight already stored */
-          } else {
-            state.swapWeights = state.swapWeights || {};
-            state.swapWeights[sk] = calcWeight(ex, currentWeek);
+          state.swapWeights = state.swapWeights || {};
+          if (state.swapWeights[sk] == null) {
+            state.swapWeights[sk] = ex.alternatives[idx-1].baseWeight || calcWeight(ex, currentWeek);
           }
         }
         autoSave();
         renderAll();
       });
-      return btn;
+      return opt;
     }
-    opts.appendChild(makeSwapOpt('Default: ' + ex.name, 0));
-    ex.swaps.forEach(function(sn, si) { opts.appendChild(makeSwapOpt(sn, si + 1)); });
-    drawer.appendChild(opts);
+    drawer.appendChild(makeCardOpt('Default: ' + ex.name, 'Default — programmed exercise', 0));
+    ex.alternatives.forEach(function(alt, ai) {
+      drawer.appendChild(makeCardOpt(alt.name, alt.tag, ai + 1));
+    });
     inner.appendChild(drawer);
   }
 
