@@ -163,9 +163,9 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .set-dot.done::after{content:'';width:6px;height:6px;background:#0d0d0d;border-radius:50%;display:block;}
 
 /* Swap drawer */
-.swap-drawer{display:none;margin-top:10px;border-top:1px solid var(--border);padding-top:10px;}
+.swap-drawer{display:none;position:absolute;right:0;top:calc(100% + 6px);z-index:30;background:var(--surface-2);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius);min-width:260px;max-width:92vw;box-shadow:0 8px 24px rgba(0,0,0,0.55);padding:8px;}
 .swap-drawer.open{display:block;}
-.swap-drawer-label{font-family:var(--font-mono);font-size:11px;color:var(--subtle);letter-spacing:0.07em;margin-bottom:6px;}
+.swap-drawer-label{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.07em;margin-bottom:8px;padding:4px 4px 8px;border-bottom:1px solid var(--border);}
 .swap-options{display:flex;flex-wrap:wrap;gap:5px;}
 .swap-option{font-family:var(--font-mono);font-size:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:var(--muted);padding:4px 10px;cursor:pointer;transition:all 0.15s;}
 .swap-option:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
@@ -555,6 +555,7 @@ function buildCard(ex) {
   exNameEl.className = 'ex-name';
   exNameEl.textContent = displayName;
   hLeft.appendChild(typeLbl);
+  hLeft.appendChild(exNameEl);
   const collapseToggleBtn = document.createElement('button');
   collapseToggleBtn.className = 'collapse-btn';
   collapseToggleBtn.textContent = '\u25be';
@@ -828,7 +829,7 @@ function buildCard(ex) {
     ex.alternatives.forEach(function(alt, ai) {
       drawer.appendChild(makeCardOpt(alt.name, alt.tag, ai + 1));
     });
-    inner.appendChild(drawer);
+    hRight.appendChild(drawer);
   }
 
   card.appendChild(inner);
