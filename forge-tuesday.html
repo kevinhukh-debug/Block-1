@@ -250,6 +250,13 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 /* Delta chip */
 .delta-chip{font-family:var(--font-mono);font-size:11px;padding:3px 8px;border-radius:4px;letter-spacing:0.04em;white-space:nowrap;}
 .delta-chip.positive{background:rgba(74,222,128,0.1);color:#4ade80;border:1px solid rgba(74,222,128,0.25);}
+
+  .share-btn-wrap{text-align:center;margin-top:12px;padding-bottom:32px;}
+  .share-btn{background:rgba(var(--accent-rgb),0.06);border:1px solid rgba(var(--accent-rgb),0.25);border-radius:10px;padding:13px 24px;font-family:var(--font-mono);font-size:13px;color:var(--accent);letter-spacing:0.1em;cursor:pointer;width:100%;}
+  .share-ov-hint{font-family:var(--font-mono);font-size:10px;color:#555;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px;}
+  .share-ov-btns{display:flex;gap:8px;width:100%;max-width:360px;}
+  .share-ov-save{flex:1;padding:11px;color:#0d0d0d;border:none;border-radius:8px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.08em;cursor:pointer;font-weight:700;background:var(--accent);}
+  .share-ov-close{flex:1;padding:11px;background:none;border:1px solid rgba(255,255,255,0.1);border-radius:8px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.08em;color:#555;cursor:pointer;}
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#f5c518" />
@@ -305,6 +312,19 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   <div class="reset-link-wrap">
     <button class="reset-link" id="reset-btn">Reset session</button>
   </div>
+  <div class="share-btn-wrap">
+    <button class="share-btn" id="share-btn">↑ SHARE WORKOUT</button>
+  </div>
+</div>
+
+<!-- Share overlay -->
+<div id="share-overlay" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;padding:20px;flex-direction:column;">
+  <div class="share-ov-hint">SHARE WORKOUT</div>
+  <canvas id="share-canvas" style="border-radius:10px;max-width:100%;width:300px;margin:12px 0;display:block;"></canvas>
+  <div class="share-ov-btns">
+    <button id="share-save-btn" class="share-ov-save">↓ SAVE IMAGE</button>
+    <button id="share-close-btn" class="share-ov-close">CLOSE</button>
+  </div>
 </div>
 
 <!-- Rest timer overlay -->
@@ -336,6 +356,115 @@ const EXERCISES = [
 ];
 const FLEX_IDS = ["ex3", "ex4", "ex5", "ex6", "ex7"];
 const STORAGE_KEY = 'forge_tuesday_v1';
+const DAY_KEY = 'tuesday';
+const CARD_ACCENT = '#fb7185';
+const CARD_GRAD = ['#fb7185','#f5c518','#fb923c'];
+const DAY_LABEL = 'TUESDAY LOWER';
+const PR_STORAGE_KEY = 'forge_prs_v1';
+var sessionPRs = {};
+function getPRStore() {
+  try { return JSON.parse(localStorage.getItem(PR_STORAGE_KEY) || '{}'); } catch(e) { return {}; }
+}
+function savePRStore(d) {
+  try { localStorage.setItem(PR_STORAGE_KEY, JSON.stringify(d)); } catch(e) {}
+}
+function checkAndUpdatePR(dayKey, exId, weight) {
+  if (!weight || weight <= 0) return;
+  var key = dayKey + '_' + exId;
+  var prs = getPRStore();
+  if (!prs[key] || weight > prs[key]) {
+    prs[key] = weight; savePRStore(prs); sessionPRs[exId] = weight;
+  } else if (sessionPRs[exId] != null && weight < sessionPRs[exId]) {
+    delete sessionPRs[exId];
+  }
+}
+function getSessionPRs() {
+  var result = [];
+  EXERCISES.filter(function(ex) { return ex.type === 'anchor'; }).forEach(function(ex) {
+    if (sessionPRs[ex.id] != null) result.push({ name: ex.name, weight: sessionPRs[ex.id] });
+  });
+  return result;
+}
+function roundRectCanvas(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath();
+}
+async function renderShareCanvas() {
+  var canvas = document.getElementById('share-canvas');
+  var ctx = canvas.getContext('2d');
+  var W = 600, H = 700;
+  canvas.width = W; canvas.height = H;
+  await document.fonts.ready;
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
+  var grd = ctx.createLinearGradient(0, 0, W, 0);
+  grd.addColorStop(0, CARD_GRAD[0]);
+  grd.addColorStop(0.5, CARD_GRAD[1]);
+  grd.addColorStop(1, CARD_GRAD[2]);
+  ctx.fillStyle = grd; ctx.fillRect(0, 0, W, 8);
+  var pad = 40, y = 48;
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.fillStyle = '#999999'; ctx.textAlign = 'left';
+  ctx.fillText('FORGE \u00b7 Block 1 \u00b7 Week ' + currentWeek, pad, y);
+  y += 58;
+  ctx.font = '64px "Bebas Neue", sans-serif';
+  ctx.fillStyle = '#111111';
+  ctx.fillText(DAY_LABEL, pad, y);
+  y += 30;
+  var now = new Date();
+  var mo = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.fillStyle = '#aaaaaa';
+  ctx.fillText(now.getDate() + ' ' + mo[now.getMonth()] + ' ' + now.getFullYear(), pad, y);
+  y += 30;
+  ctx.strokeStyle = '#e8e8e8'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(W-pad, y); ctx.stroke();
+  y += 32;
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.fillStyle = '#bbbbbb';
+  ctx.fillText('PERSONAL RECORDS', pad, y);
+  y += 26;
+  var prs = getSessionPRs();
+  if (prs.length === 0) {
+    ctx.font = '13px "JetBrains Mono", monospace';
+    ctx.fillStyle = '#cccccc';
+    ctx.fillText('No PRs this session', pad, y);
+  } else {
+    prs.forEach(function(pr) {
+      roundRectCanvas(ctx, pad, y-13, 30, 18, 3);
+      ctx.fillStyle = '#fff9e0'; ctx.fill();
+      ctx.strokeStyle = '#f0d060'; ctx.lineWidth = 1; ctx.stroke();
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#b8860b'; ctx.textAlign = 'left';
+      ctx.fillText('PR', pad+7, y);
+      ctx.font = '13px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#333333';
+      ctx.fillText(pr.name, pad+40, y);
+      ctx.fillStyle = CARD_ACCENT; ctx.textAlign = 'right';
+      ctx.fillText(pr.weight + 'lb', W-pad, y);
+      ctx.textAlign = 'left'; y += 34;
+    });
+  }
+  var fY = H - 88;
+  ctx.strokeStyle = '#e8e8e8'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, fY); ctx.lineTo(W, fY); ctx.stroke();
+  var eGrd = ctx.createLinearGradient(pad, 0, pad+170, 0);
+  eGrd.addColorStop(0, '#47b8ff'); eGrd.addColorStop(1, '#6ee7b7');
+  ctx.fillStyle = eGrd; ctx.font = '9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('TRAIN. BUILD. ADAPT.', pad, fY+24);
+  var fgrd = ctx.createLinearGradient(pad, 0, pad+160, 0);
+  fgrd.addColorStop(0, '#47b8ff'); fgrd.addColorStop(0.4, '#333333');
+  fgrd.addColorStop(0.7, '#f5c518'); fgrd.addColorStop(1, '#ff6b35');
+  ctx.fillStyle = fgrd; ctx.font = '32px "Bebas Neue", sans-serif';
+  ctx.fillText('[ FORGE ]', pad, fY+58);
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.fillStyle = '#bbbbbb'; ctx.textAlign = 'right';
+  ctx.fillText('openlift.app', W-pad, fY+58);
+}
+
 const WEEK_SYNC_KEY = 'forge_week_v1';
 
 let state = {};
@@ -734,6 +863,7 @@ function buildCard(ex) {
       if (!state.exercises[ex.id]) state.exercises[ex.id] = {};
       state.exercises[ex.id].weight = v;
       if (swapIdx > 0) { state.swapWeights = state.swapWeights || {}; state.swapWeights[swapKey] = v; }
+      if (isAnchor) { checkAndUpdatePR(DAY_KEY, ex.id, v); }
       autoSave();
     });
     wRow.appendChild(wIn);
@@ -1083,6 +1213,30 @@ document.addEventListener('DOMContentLoaded', function() {
       loadState();
       renderAll();
       showToast('Session reset');
+    });
+  }
+  var shareBtn = document.getElementById('share-btn');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', function() {
+      var ov = document.getElementById('share-overlay');
+      ov.style.display = 'flex';
+      renderShareCanvas();
+    });
+  }
+  var shareSaveBtn = document.getElementById('share-save-btn');
+  if (shareSaveBtn) {
+    shareSaveBtn.addEventListener('click', function() {
+      var canvas = document.getElementById('share-canvas');
+      var link = document.createElement('a');
+      link.download = 'FORGE-' + DAY_KEY + '-' + new Date().toISOString().slice(0,10) + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  }
+  var shareCloseBtn = document.getElementById('share-close-btn');
+  if (shareCloseBtn) {
+    shareCloseBtn.addEventListener('click', function() {
+      document.getElementById('share-overlay').style.display = 'none';
     });
   }
 });

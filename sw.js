@@ -1,8 +1,8 @@
-// FORGE Service Worker — v9
+// FORGE Service Worker — v12
 // Strategy:
 //   HTML files  → network-first (always get latest deploy, fall back to cache offline)
 //   Assets      → cache-first  (icons, manifest — rarely change)
-const CACHE_NAME = 'FORGE-v11';
+const CACHE_NAME = 'FORGE-v12';
 
 const HTML_FILES = [
   '/Block-1/',
