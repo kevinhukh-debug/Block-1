@@ -155,6 +155,54 @@
   footer{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid var(--border);}
   .footer-left{font-family:var(--font-mono);font-size:11px;color:var(--subtle);letter-spacing:0.12em;text-transform:uppercase;}
   .footer-right{font-family:var(--font-mono);font-size:11px;color:var(--subtle);}
+
+  .install-panel{overflow:hidden;max-height:0;transition:max-height 0.35s ease;width:100%;}
+  .install-panel.open{max-height:500px;}
+  .install-panel-inner{background:var(--surface);border:1px solid rgba(74,222,128,0.18);border-radius:var(--radius);padding:4px 0;margin-bottom:24px;}
+  .install-tabs{display:flex;gap:6px;padding:12px 16px 8px;}
+  .install-tab{font-family:var(--font-mono);font-size:11px;padding:4px 12px;border-radius:4px;border:1px solid var(--border);color:var(--muted);cursor:pointer;background:none;letter-spacing:0.08em;}
+  .install-tab.active{border-color:rgba(74,222,128,0.35);color:#4ade80;}
+  .install-steps{padding:0 16px 14px;}
+  .install-step{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--muted);line-height:1.5;}
+  .install-step:last-child{border-bottom:none;}
+  .install-step strong{color:var(--text);font-weight:500;}
+  .install-step-num{font-family:var(--font-mono);font-size:11px;color:#4ade80;flex-shrink:0;margin-top:2px;letter-spacing:0.06em;}
+  .notif-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .notif-row-txt{font-family:var(--font-mono);font-size:12px;color:var(--muted);}
+  .notif-enable-btn{font-family:var(--font-mono);font-size:11px;padding:5px 14px;border-radius:6px;background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.25);color:#4ade80;cursor:pointer;letter-spacing:0.08em;}
+  .notif-on-txt{font-family:var(--font-mono);font-size:11px;color:#4ade80;letter-spacing:0.08em;}
+  .notif-off-txt{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;}
+  .vol-week-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:10px;}
+  .vol-week-card::before{content:'';display:block;height:3px;background:linear-gradient(90deg,#47b8ff,#f5c518,#fb923c);}
+  .vol-week-inner{padding:14px 18px;}
+  .vol-week-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);}
+  .vol-week-row:last-child{border-bottom:none;}
+  .vol-week-muscle{font-family:var(--font-mono);font-size:12px;color:var(--muted);}
+  .vol-week-val{font-family:var(--font-mono);font-size:13px;color:#4ade80;font-weight:700;}
+
+  .install-panel{overflow:hidden;max-height:0;transition:max-height 0.35s ease;width:100%;}
+  .install-panel.open{max-height:500px;}
+  .install-panel-inner{background:var(--surface);border:1px solid rgba(74,222,128,0.18);border-radius:var(--radius);padding:4px 0;margin-bottom:24px;}
+  .install-tabs{display:flex;gap:6px;padding:12px 16px 8px;}
+  .install-tab{font-family:var(--font-mono);font-size:11px;padding:4px 12px;border-radius:4px;border:1px solid var(--border);color:var(--muted);cursor:pointer;background:none;letter-spacing:0.08em;}
+  .install-tab.active{border-color:rgba(74,222,128,0.35);color:#4ade80;}
+  .install-steps{padding:0 16px 14px;}
+  .install-step{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--muted);line-height:1.5;}
+  .install-step:last-child{border-bottom:none;}
+  .install-step strong{color:var(--text);font-weight:500;}
+  .install-step-num{font-family:var(--font-mono);font-size:11px;color:#4ade80;flex-shrink:0;margin-top:2px;letter-spacing:0.06em;}
+  .notif-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .notif-row-txt{font-family:var(--font-mono);font-size:12px;color:var(--muted);}
+  .notif-enable-btn{font-family:var(--font-mono);font-size:11px;padding:5px 14px;border-radius:6px;background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.25);color:#4ade80;cursor:pointer;letter-spacing:0.08em;}
+  .notif-on-txt{font-family:var(--font-mono);font-size:11px;color:#4ade80;letter-spacing:0.08em;}
+  .notif-off-txt{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;}
+  .vol-week-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:10px;}
+  .vol-week-card::before{content:'';display:block;height:3px;background:linear-gradient(90deg,#47b8ff,#f5c518,#fb923c);}
+  .vol-week-inner{padding:14px 18px;}
+  .vol-week-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);}
+  .vol-week-row:last-child{border-bottom:none;}
+  .vol-week-muscle{font-family:var(--font-mono);font-size:12px;color:var(--muted);}
+  .vol-week-val{font-family:var(--font-mono);font-size:13px;color:#4ade80;font-weight:700;}
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#f5c518" />
@@ -179,6 +227,8 @@
       <div class="header-btns">
         <button class="hdr-pill-btn" id="about-toggle-btn">About this program <span class="arrow">&#9660;</span></button>
         <button class="hdr-pill-btn" id="faq-toggle-btn">FAQ <span class="arrow">&#9660;</span></button>
+        <button class="hdr-pill-btn" id="install-toggle-btn">Install <span class="arrow">&#9660;</span></button>
+        <button class="hdr-pill-btn" id="install-toggle-btn">Install <span class="arrow">&#9660;</span></button>
       </div>
     </div>
     <div class="about-body" id="about-body">
@@ -193,6 +243,26 @@
     </div>
     <div class="faq-panel" id="faq-panel">
       <div class="faq-panel-inner" id="faq-wrap"></div>
+    </div>
+    <div class="install-panel" id="install-panel">
+      <div class="install-panel-inner">
+        <div class="install-tabs">
+          <button class="install-tab active" id="ios-tab" onclick="switchInstallTab('ios')">iOS</button>
+          <button class="install-tab" id="android-tab" onclick="switchInstallTab('android')">Android</button>
+        </div>
+        <div class="install-steps" id="ios-steps">
+          <div class="install-step"><div class="install-step-num">1</div><div>Open FORGE in <strong>Safari</strong> (not Chrome or Firefox)</div></div>
+          <div class="install-step"><div class="install-step-num">2</div><div>Tap the Share icon at the bottom of the screen</div></div>
+          <div class="install-step"><div class="install-step-num">3</div><div>Scroll down and tap <strong>Add to Home Screen</strong></div></div>
+          <div class="install-step"><div class="install-step-num">4</div><div>Tap Add &mdash; FORGE installs like a native app</div></div>
+        </div>
+        <div class="install-steps" id="android-steps" style="display:none">
+          <div class="install-step"><div class="install-step-num">1</div><div>Open FORGE in <strong>Chrome</strong></div></div>
+          <div class="install-step"><div class="install-step-num">2</div><div>Tap the three-dot menu in the top right</div></div>
+          <div class="install-step"><div class="install-step-num">3</div><div>Tap <strong>Add to Home Screen</strong> or <strong>Install App</strong></div></div>
+          <div class="install-step"><div class="install-step-num">4</div><div>Tap Add &mdash; FORGE installs like a native app</div></div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -209,6 +279,16 @@
     </div>
   </div>
 
+  <div class="notif-row" id="notif-row">
+    <div class="notif-row-txt">Rest timer notifications</div>
+    <div id="notif-status-wrap"><button class="notif-enable-btn" id="notif-enable-btn">Enable</button></div>
+  </div>
+  <div class="section-label">Volume This Week</div>
+  <div class="vol-week-card">
+    <div class="vol-week-inner" id="vol-week-inner">
+      <div style="font-family:var(--font-mono);font-size:12px;color:var(--subtle)">Complete a session to see volume data.</div>
+    </div>
+  </div>
   <div class="section-label">This Week</div>
   <div class="day-grid" id="day-grid"></div>
 
@@ -490,6 +570,66 @@ syncPills();
 renderGrid();
 renderTrack();
 renderCalendar();
+function switchInstallTab(tab){
+  document.getElementById('ios-steps').style.display=tab==='ios'?'block':'none';
+  document.getElementById('android-steps').style.display=tab==='android'?'block':'none';
+  document.getElementById('ios-tab').classList.toggle('active',tab==='ios');
+  document.getElementById('android-tab').classList.toggle('active',tab==='android');
+}
+var isAndroid=/Android/i.test(navigator.userAgent);
+if(isAndroid)switchInstallTab('android');
+document.getElementById('install-toggle-btn').addEventListener('click',function(){
+  var panel=document.getElementById('install-panel');
+  var btn=document.getElementById('install-toggle-btn');
+  panel.classList.toggle('open');
+  btn.classList.toggle('open');
+});
+function initNotifUI(){
+  var wrap=document.getElementById('notif-status-wrap');
+  if(!wrap)return;
+  if(!('Notification' in window)){wrap.innerHTML='<span class="notif-off-txt">Not supported on this browser</span>';return;}
+  var perm=Notification.permission;
+  var stored=localStorage.getItem('forge_notif_v1')==='true';
+  if(perm==='granted'&&stored){
+    wrap.innerHTML='<span class="notif-on-txt">On \u2713</span>';
+  }else if(perm==='denied'){
+    wrap.innerHTML='<span class="notif-off-txt">Blocked \u2014 enable in browser settings</span>';
+  }else{
+    wrap.innerHTML='<button class="notif-enable-btn" id="notif-enable-btn">Enable</button>';
+    var btn=document.getElementById('notif-enable-btn');
+    if(btn)btn.addEventListener('click',function(){
+      Notification.requestPermission().then(function(result){
+        if(result==='granted'){try{localStorage.setItem('forge_notif_v1','true');}catch(e){}}
+        initNotifUI();
+      });
+    });
+  }
+}
+initNotifUI();
+function renderWeeklyVolume(){
+  var inner=document.getElementById('vol-week-inner');
+  if(!inner)return;
+  try{
+    var shared=JSON.parse(localStorage.getItem('forge_volume_v1')||'{}');
+    var totals={};
+    Object.keys(shared).forEach(function(day){
+      var dayVol=shared[day];
+      Object.keys(dayVol).forEach(function(muscle){
+        if(!totals[muscle])totals[muscle]=0;
+        totals[muscle]+=dayVol[muscle].done||0;
+      });
+    });
+    var muscles=Object.keys(totals).filter(function(m){return totals[m]>0;});
+    if(!muscles.length){inner.innerHTML='<div style="font-family:var(--font-mono);font-size:12px;color:var(--subtle)">Complete a session to see volume data.</div>';return;}
+    muscles.sort(function(a,b){return totals[b]-totals[a];});
+    var html='';
+    muscles.forEach(function(m){
+      html+='<div class="vol-week-row"><div class="vol-week-muscle">'+m+'</div><div class="vol-week-val">'+totals[m]+' sets</div></div>';
+    });
+    inner.innerHTML=html;
+  }catch(e){}
+}
+renderWeeklyVolume();
 renderFAQ();
 var now=new Date();
 document.getElementById('last-updated').textContent='Updated '+now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});

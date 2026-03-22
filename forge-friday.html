@@ -257,6 +257,20 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   .share-ov-btns{display:flex;gap:8px;width:100%;max-width:360px;}
   .share-ov-save{flex:1;padding:11px;color:#0d0d0d;border:none;border-radius:8px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.08em;cursor:pointer;font-weight:700;background:var(--accent);}
   .share-ov-close{flex:1;padding:11px;background:none;border:1px solid rgba(255,255,255,0.1);border-radius:8px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.08em;color:#555;cursor:pointer;}
+
+  #volume-row{margin-bottom:16px;}
+  .vol-strip{display:flex;flex-wrap:wrap;gap:6px;}
+  .vol-chip{background:var(--surface);border:1px solid rgba(var(--accent-rgb),0.2);border-radius:6px;padding:6px 10px;display:flex;align-items:center;gap:6px;}
+  .vol-chip-name{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;}
+  .vol-chip-val{font-family:var(--font-mono);font-size:14px;color:var(--accent);font-weight:700;}
+  .vol-chip-lbl{font-family:var(--font-mono);font-size:10px;color:var(--subtle);}
+
+  #volume-row{margin-bottom:16px;}
+  .vol-strip{display:flex;flex-wrap:wrap;gap:6px;}
+  .vol-chip{background:var(--surface);border:1px solid rgba(var(--accent-rgb),0.2);border-radius:6px;padding:6px 10px;display:flex;align-items:center;gap:6px;}
+  .vol-chip-name{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;}
+  .vol-chip-val{font-family:var(--font-mono);font-size:14px;color:var(--accent);font-weight:700;}
+  .vol-chip-lbl{font-family:var(--font-mono);font-size:10px;color:var(--subtle);}
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#f5c518" />
@@ -298,6 +312,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     </div>
   </div>
   <div id="warmup-zone"></div>
+  <div id="volume-row"></div>
+  <div id="volume-row"></div>
   <div class="zone-label">ANCHOR LIFTS</div>
   <div id="anchor-zone"></div>
   <div class="zone-label">FLEX EXERCISES</div>
@@ -351,32 +367,19 @@ const STORAGE_KEY = 'forge_friday_v1';
 const DAY_KEY = 'friday';
 const CARD_ACCENT = '#fb923c';
 const CARD_GRAD = ['#fb923c','#f5c518','#47b8ff'];
-const DAY_LABEL = 'FRIDAY PULL';
+
 const PR_STORAGE_KEY = 'forge_prs_v1';
 var sessionPRs = {};
-function getPRStore() {
-  try { return JSON.parse(localStorage.getItem(PR_STORAGE_KEY) || '{}'); } catch(e) { return {}; }
-}
-function savePRStore(d) {
-  try { localStorage.setItem(PR_STORAGE_KEY, JSON.stringify(d)); } catch(e) {}
-}
-function checkAndUpdatePR(dayKey, exId, weight) {
-  if (!weight || weight <= 0) return;
-  var key = dayKey + '_' + exId;
-  var prs = getPRStore();
-  if (!prs[key] || weight > prs[key]) {
-    prs[key] = weight; savePRStore(prs); sessionPRs[exId] = weight;
-  } else if (sessionPRs[exId] != null && weight < sessionPRs[exId]) {
-    delete sessionPRs[exId];
-  }
-}
-function getSessionPRs() {
-  var result = [];
-  EXERCISES.filter(function(ex) { return ex.type === 'anchor'; }).forEach(function(ex) {
-    if (sessionPRs[ex.id] != null) result.push({ name: ex.name, weight: sessionPRs[ex.id] });
-  });
-  return result;
-}
+function getPRStore(){try{return JSON.parse(localStorage.getItem(PR_STORAGE_KEY)||'{}');}catch(e){return {};}}
+function savePRStore(d){try{localStorage.setItem(PR_STORAGE_KEY,JSON.stringify(d));}catch(e){}}
+function checkAndUpdatePR(dayKey,exId,weight){if(!weight||weight<=0)return;var key=dayKey+'_'+exId;var prs=getPRStore();if(!prs[key]||weight>prs[key]){prs[key]=weight;savePRStore(prs);sessionPRs[exId]=weight;}else if(sessionPRs[exId]!=null&&weight<sessionPRs[exId]){delete sessionPRs[exId];}}
+function getSessionPRs(){var result=[];EXERCISES.filter(function(ex){return ex.type==='anchor';}).forEach(function(ex){if(sessionPRs[ex.id]!=null)result.push({name:ex.name,weight:sessionPRs[ex.id]});});return result;}
+
+var MUSCLE_MAP={'Upper Chest':'Chest','Chest':'Chest','Lower Chest':'Chest','Mid Back':'Back','Upper Back':'Back','Lats':'Back','Quads':'Quads','Hamstrings':'Hamstrings','Glutes':'Glutes','Front Delt':'Delts','Medial Delt':'Delts','Rear Delt':'Delts','Biceps':'Biceps','Brachialis':'Biceps','Triceps':'Triceps','Hip Flexors':'Core','Abs':'Core','Soleus':'Calves','Calves':'Calves','Adductors':'Adductors'};
+function calcVolume(){var vol={};EXERCISES.forEach(function(ex){var raw=ex.musclePrimary;var muscle=MUSCLE_MAP[raw]||raw;if(!muscle)return;if(!vol[muscle])vol[muscle]={done:0,total:0};vol[muscle].total+=ex.sets;var exState=state.exercises[ex.id];if(exState&&Array.isArray(exState.sets)){vol[muscle].done+=exState.sets.filter(Boolean).length;}});return vol;}
+function writeVolumeToStorage(){try{var shared=JSON.parse(localStorage.getItem('forge_volume_v1')||'{}');shared[DAY_KEY]=calcVolume();localStorage.setItem('forge_volume_v1',JSON.stringify(shared));}catch(e){}}
+function renderVolumeRow(){var container=document.getElementById('volume-row');if(!container)return;var vol=calcVolume();var muscles=Object.keys(vol).filter(function(m){return vol[m].total>0;});if(!muscles.length){container.innerHTML='';return;}var html='<div class="vol-strip">';muscles.forEach(function(m){html+='<div class="vol-chip"><div class="vol-chip-name">'+m+'</div><div class="vol-chip-val">'+vol[m].done+'</div><div class="vol-chip-lbl">/ '+vol[m].total+' sets</div></div>';});html+='</div>';container.innerHTML=html;writeVolumeToStorage();}
+
 function roundRectCanvas(ctx, x, y, w, h, r) {
   ctx.beginPath();
   ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r);
@@ -558,6 +561,8 @@ function playRestEndBeep() {
     osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.6);
   } catch(e) {}
 }
+function fireRestNotification(){try{var enabled=localStorage.getItem('forge_notif_v1')==='true';if(!enabled)return;if(!('Notification' in window))return;if(Notification.permission==='granted'){new Notification('FORGE — Rest complete',{body:'Time to lift.',icon:'/Block-1/forge-icon-192.png',silent:true});}}catch(e){}}
+
 
 /* ─── Rest Timer ─── */
 function startRest(secs) {
@@ -573,7 +578,7 @@ function startRest(secs) {
   function tick() {
     if (label) label.textContent = restRemaining + 's';
     if (circle) circle.style.strokeDashoffset = CIRC * (1 - restRemaining / secs);
-    if (restRemaining <= 0) { clearInterval(restInterval); releaseWakeLock(); playRestEndBeep(); overlay.classList.remove('show'); }
+    if (restRemaining <= 0) { clearInterval(restInterval); releaseWakeLock(); playRestEndBeep(); fireRestNotification(); overlay.classList.remove('show'); }
     restRemaining--;
   }
   tick();
@@ -1095,6 +1100,7 @@ function renderAll() {
     const ex = EXERCISES.find(function(e) { return e.id === eid; });
     if (ex) fZone.appendChild(buildCard(ex));
   });
+  renderVolumeRow();
 }
 
 /* ─── Init ─── */
@@ -1178,6 +1184,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initWeekSync();
   renderAll();
   renderWarmup();
+  renderVolumeRow();
 
   /* Close roster panel on outside click */
   document.addEventListener('click', function(e) {
