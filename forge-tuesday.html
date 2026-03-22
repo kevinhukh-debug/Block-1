@@ -197,8 +197,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   /* ─── Reorder btn & roster panel ─── */
   .reorder-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:var(--muted);font-size:15px;padding:3px 8px;cursor:pointer;transition:all 0.15s;line-height:1;}
   .reorder-btn:hover,.reorder-btn.open{color:var(--accent);border-color:rgba(var(--accent-rgb),0.4);}
-  .collapse-btn{background:none;border:none;color:var(--subtle);font-size:13px;cursor:pointer;padding:0 2px;line-height:1;transition:color 0.15s;font-family:var(--font-mono);}
-  .collapse-btn:hover{color:var(--muted);}
+  .collapse-btn{background:none;border:none;color:var(--accent);font-size:16px;cursor:pointer;padding:0 2px;line-height:1;transition:color 0.15s;font-family:var(--font-mono);}
+  .collapse-btn:hover{color:var(--text);}
   .roster-panel{display:none;position:fixed;z-index:100;background:var(--surface-2);border:1px solid rgba(255,255,255,0.14);border-radius:var(--radius);padding:12px 14px;box-shadow:0 8px 32px rgba(0,0,0,0.6);min-width:240px;max-width:320px;}
   .roster-panel.open{display:block;}
   .roster-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
@@ -269,7 +269,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <button class="week-pill" data-week="4">WK 4</button>
     <button class="week-pill" data-week="5">WK 5</button>
     <button class="week-pill" data-week="6">WK 6</button>
-    <button class="week-pill" data-week="7">WK 7 · Deload</button>
+    <button class="week-pill" data-week="7">Deload</button>
   </div>
 </div>
 <div class="page-wrap">
@@ -413,8 +413,34 @@ function updateWeekUI() {
   });
 }
 
+/* ─── Wake Lock ─── */
+var _wakeLock = null;
+async function acquireWakeLock() {
+  if (!('wakeLock' in navigator)) return;
+  try { _wakeLock = await navigator.wakeLock.request('screen'); } catch(e) {}
+}
+function releaseWakeLock() {
+  if (_wakeLock) { _wakeLock.release(); _wakeLock = null; }
+}
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'visible' && restRemaining > 0) { acquireWakeLock(); }
+});
+function playRestEndBeep() {
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 440; osc.type = 'sine';
+    gain.gain.setValueAtTime(0.4, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.6);
+  } catch(e) {}
+}
+
 /* ─── Rest Timer ─── */
 function startRest(secs) {
+  acquireWakeLock();
   clearInterval(restInterval);
   restRemaining = secs;
   const overlay = document.getElementById('rest-overlay');
@@ -426,13 +452,13 @@ function startRest(secs) {
   function tick() {
     if (label) label.textContent = restRemaining + 's';
     if (circle) circle.style.strokeDashoffset = CIRC * (1 - restRemaining / secs);
-    if (restRemaining <= 0) { clearInterval(restInterval); overlay.classList.remove('show'); }
+    if (restRemaining <= 0) { clearInterval(restInterval); releaseWakeLock(); playRestEndBeep(); overlay.classList.remove('show'); }
     restRemaining--;
   }
   tick();
   restInterval = setInterval(tick, 1000);
 }
-function skipRest() { clearInterval(restInterval); const o = document.getElementById('rest-overlay'); if (o) o.classList.remove('show'); }
+function skipRest() { clearInterval(restInterval); releaseWakeLock(); const o = document.getElementById('rest-overlay'); if (o) o.classList.remove('show'); }
 function addRestTime() { restRemaining += 30; }
 
 /* ─── Day Complete ─── */
@@ -590,18 +616,6 @@ function buildCard(ex) {
   exNameEl.textContent = displayName;
   hLeft.appendChild(typeLbl);
   hLeft.appendChild(exNameEl);
-  const collapseToggleBtn = document.createElement('button');
-  collapseToggleBtn.className = 'collapse-btn';
-  collapseToggleBtn.textContent = '\u25b8';
-  collapseToggleBtn.title = 'Collapse card';
-  collapseToggleBtn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    const willCollapse = !card.classList.contains('collapsed');
-    card.classList.toggle('collapsed');
-    collapseToggleBtn.textContent = willCollapse ? '\u25b8' : '\u25be';
-    if (willCollapse) { colSummaryText.textContent = buildSummaryText(); }
-  });
-  hLeft.appendChild(collapseToggleBtn);
   const hRight = document.createElement('div');
   hRight.className = 'header-right';
   hRight.style.position = 'relative';
@@ -668,6 +682,18 @@ function buildCard(ex) {
     tags.appendChild(tagS);
   }
   hRight.appendChild(tags);
+  const collapseToggleBtn = document.createElement('button');
+  collapseToggleBtn.className = 'collapse-btn';
+  collapseToggleBtn.textContent = '\u25b8';
+  collapseToggleBtn.title = 'Collapse card';
+  collapseToggleBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const willCollapse = !card.classList.contains('collapsed');
+    card.classList.toggle('collapsed');
+    collapseToggleBtn.textContent = willCollapse ? '\u25b8' : '\u25be';
+    if (willCollapse) { colSummaryText.textContent = buildSummaryText(); }
+  });
+  hRight.appendChild(collapseToggleBtn);
   hdr.appendChild(hLeft);
   hdr.appendChild(hRight);
   inner.appendChild(hdr);
@@ -778,6 +804,10 @@ function buildCard(ex) {
         rIn.classList.add('logged');
         rIn.setAttribute('data-user-typed', '1');
       }
+    }
+    if (exState.sets[i]) {
+      rIn.classList.add('logged');
+      rIn.classList.remove('autofilled');
     }
     rIn.addEventListener('input', function() {
       const val = rIn.value.trim();

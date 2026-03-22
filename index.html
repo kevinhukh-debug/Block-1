@@ -10,43 +10,60 @@
 <style>
   :root{--bg:#0d0d0d;--surface:#141414;--surface-2:#1a1a1a;--border:rgba(255,255,255,0.07);--text:#f0f0f0;--muted:#666;--subtle:#333;--yellow:#f5c518;--blue:#47b8ff;--rose:#fb7185;--orange:#fb923c;--green:#4ade80;--pink:#f472b6;--mint:#6ee7b7;--font-display:'Bebas Neue',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;--radius:12px;--radius-sm:6px;}
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden;position:relative;}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-height:100vh;overflow-x:hidden;position:relative;}
   body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");opacity:0.03;pointer-events:none;z-index:0;}
   .wrapper{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px 80px;}
-  header{padding:52px 0 0;border-bottom:1px solid var(--border);margin-bottom:36px;}
-  .header-inner{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:32px;}
-  .logo-block h1{font-family:var(--font-display);font-size:clamp(60px,8vw,96px);line-height:0.9;letter-spacing:0.01em;color:var(--yellow);}
-  .tagline{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;margin-top:10px;}
-  /* About toggle in header */
-  .about-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:0;padding-top:8px;}
-  .about-toggle-btn{font-family:var(--font-mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:8px 16px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.15s;}
-  .about-toggle-btn:hover{border-color:var(--yellow);color:var(--yellow);}
-  .about-toggle-btn .arrow{font-size:10px;transition:transform 0.2s;}
-  .about-toggle-btn.open .arrow{transform:rotate(180deg);}
+  /* HEADER */
+  header{padding:48px 0 0;border-bottom:1px solid var(--border);margin-bottom:36px;}
+  .header-inner{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:28px;}
+  .logo-block{flex:1;}
+  .logo-eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:0.26em;text-transform:uppercase;margin-bottom:6px;font-weight:400;background:linear-gradient(90deg,#47b8ff,#6ee7b7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .logo-main{display:flex;align-items:center;line-height:1;}
+  .logo-bracket{font-family:var(--font-display);font-size:clamp(44px,8vw,80px);font-weight:900;background:linear-gradient(90deg,#fb923c 0%,#47b8ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:0.9;}
+  .logo-text{font-family:var(--font-display);font-size:clamp(44px,8vw,80px);font-weight:900;background:linear-gradient(90deg,#47b8ff 0%,#ffffff 40%,#f5c518 70%,#ff6b35 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:0.9;}
+  .logo-tagline{font-family:var(--font-mono);font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:transparent;-webkit-text-stroke:0.6px rgba(255,255,255,0.35);margin-top:10px;}
+  .header-btns{display:flex;flex-direction:column;align-items:flex-end;gap:7px;padding-top:6px;}
+  .hdr-pill-btn{font-family:var(--font-mono);font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:8px 16px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.15s;white-space:nowrap;}
+  .hdr-pill-btn:hover{border-color:var(--yellow);color:var(--yellow);}
+  .hdr-pill-btn .arrow{font-size:11px;transition:transform 0.2s;}
+  .hdr-pill-btn.open .arrow{transform:rotate(180deg);}
+  /* About panel */
   .about-body{overflow:hidden;max-height:0;transition:max-height 0.35s ease;width:100%;}
   .about-body.open{max-height:600px;}
   .about-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:20px 0 24px;}
   @media(max-width:700px){.about-pillars{grid-template-columns:repeat(2,1fr);}}
   @media(max-width:420px){.about-pillars{grid-template-columns:1fr;}}
   .pillar-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;}
-  .pillar-title{font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--yellow);margin-bottom:6px;}
-  .pillar-text{font-size:12px;color:var(--muted);line-height:1.5;}
-  /* Week bar */
+  .pillar-title{font-family:var(--font-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--yellow);margin-bottom:6px;}
+  .pillar-text{font-family:var(--font-body);font-size:13px;color:var(--muted);line-height:1.5;}
+  /* FAQ panel */
+  .faq-panel{overflow:hidden;max-height:0;transition:max-height 0.35s ease;width:100%;}
+  .faq-panel.open{max-height:600px;}
+  .faq-panel-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:4px 0;margin-bottom:24px;}
+  .faq-item{border-bottom:1px solid var(--border);}
+  .faq-item:last-child{border-bottom:none;}
+  .faq-q{width:100%;background:none;border:none;color:var(--text);font-family:var(--font-mono);font-size:13px;font-weight:500;text-align:left;padding:16px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;transition:color 0.15s;letter-spacing:0.02em;}
+  .faq-q:hover{color:var(--yellow);}
+  .faq-q .faq-arrow{font-family:var(--font-mono);font-size:12px;color:var(--muted);transition:transform 0.2s;flex-shrink:0;}
+  .faq-q.open .faq-arrow{transform:rotate(180deg);color:var(--yellow);}
+  .faq-a{font-family:var(--font-body);font-size:14px;color:var(--muted);line-height:1.65;max-height:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.3s ease;padding:0 18px;}
+  .faq-a.open{max-height:200px;padding:0 18px 16px;}
+  /* WEEK BAR */
   .week-bar{display:flex;align-items:center;gap:12px;margin-bottom:36px;}
-  .week-bar-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;white-space:nowrap;margin-right:4px;}
+  .week-bar-label{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;white-space:nowrap;margin-right:4px;}
   .week-pills{display:flex;gap:6px;flex-wrap:wrap;}
-  .week-pill{font-family:var(--font-mono);font-size:11px;padding:5px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;letter-spacing:0.08em;position:relative;}
+  .week-pill{font-family:var(--font-mono);font-size:12px;padding:5px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;letter-spacing:0.08em;position:relative;}
   .week-pill:hover{border-color:var(--yellow);color:var(--yellow);}
   .week-pill.active{background:var(--yellow);border-color:var(--yellow);color:#000;font-weight:600;}
   .week-pill .active-dot{position:absolute;top:-3px;right:-3px;width:7px;height:7px;border-radius:50%;background:var(--yellow);border:2px solid var(--bg);display:none;}
   .week-pill.is-current .active-dot{display:block;}
   .week-pill.active .active-dot{display:none;}
-  /* Section label */
-  .section-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  /* SECTION LABEL */
+  .section-label{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
   .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
-  .collapse-btn{font-family:var(--font-mono);font-size:10px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:100px;padding:3px 10px;cursor:pointer;letter-spacing:0.08em;transition:all 0.15s;flex-shrink:0;}
+  .collapse-btn{font-family:var(--font-mono);font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:100px;padding:3px 10px;cursor:pointer;letter-spacing:0.08em;transition:all 0.15s;flex-shrink:0;}
   .collapse-btn:hover{color:var(--yellow);border-color:var(--yellow);}
-  /* Day grid */
+  /* DAY GRID */
   .day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-bottom:48px;}
   @media(max-width:900px){.day-grid{grid-template-columns:repeat(4,1fr);}}
   @media(max-width:560px){.day-grid{grid-template-columns:repeat(2,1fr);}}
@@ -57,80 +74,87 @@
   .day-card:hover::after{opacity:0.09;transform:scale(1.2);}
   .card-day-name{font-family:var(--font-display);font-size:32px;line-height:1;}
   .card-day-name span{color:var(--card-accent);}
-  .card-session-type{font-family:var(--font-mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--card-accent);background:rgba(0,0,0,0.3);padding:3px 8px;border-radius:100px;display:inline-block;border:1px solid var(--card-accent);opacity:0.85;}
+  .card-session-type{font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--card-accent);background:rgba(0,0,0,0.3);padding:3px 8px;border-radius:100px;display:inline-block;border:1px solid var(--card-accent);opacity:0.85;}
   .card-exercises{flex:1;display:flex;flex-direction:column;gap:5px;}
-  .card-ex-item{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;line-height:1.4;}
+  .card-ex-item{font-family:var(--font-mono);font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;line-height:1.4;}
   .card-ex-item::before{content:'';display:block;width:4px;height:4px;border-radius:50%;background:var(--border);flex-shrink:0;}
   .card-ex-item.anchor-ex{color:var(--text);}
   .card-ex-item.anchor-ex::before{background:var(--card-accent);}
-  .card-ex-more{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.06em;}
+  .card-ex-more{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.06em;}
   .run-zones{display:flex;flex-direction:column;gap:6px;}
   .run-zone-row{display:flex;justify-content:space-between;align-items:center;}
-  .run-zone-label{font-size:11px;color:var(--muted);}
-  .run-zone-hr{font-family:var(--font-mono);font-size:11px;color:var(--card-accent);}
+  .run-zone-label{font-family:var(--font-mono);font-size:12px;color:var(--muted);}
+  .run-zone-hr{font-family:var(--font-mono);font-size:12px;color:var(--card-accent);}
   .run-distance{font-family:var(--font-display);font-size:28px;color:var(--card-accent);line-height:1;}
-  .run-distance-label{font-family:var(--font-mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:3px;}
-  /* Block progress */
-  .block-progress-body{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:48px;overflow:hidden;max-height:600px;transition:max-height 0.35s ease,padding 0.35s ease;}
-  .block-progress-body.collapsed{max-height:0;padding-top:0;padding-bottom:0;border-color:transparent;margin-bottom:16px;}
-  .block-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
-  .block-title{font-family:var(--font-display);font-size:24px;color:var(--text);line-height:1;}
-  .block-subtitle{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-top:4px;}
-  .block-week-indicator{font-family:var(--font-display);font-size:36px;color:var(--yellow);line-height:1;text-align:right;}
-  .block-week-indicator span{display:block;font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;line-height:1;margin-top:4px;}
+  .run-distance-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:3px;}
+  /* BLOCK OVERVIEW merged card */
+  .overview-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:48px;overflow:hidden;}
+  .overview-summary{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;border-bottom:1px solid transparent;transition:border-color 0.2s;}
+  .overview-summary.open{border-bottom-color:var(--border);}
+  .ov-stats{display:flex;gap:24px;}
+  .ov-stat{text-align:center;}
+  .ov-stat-val{font-family:var(--font-mono);font-size:22px;color:var(--yellow);line-height:1;font-weight:700;}
+  .ov-stat-lbl{font-family:var(--font-mono);font-size:10px;color:var(--subtle);letter-spacing:0.1em;text-transform:uppercase;margin-top:3px;}
+  .ov-expand-btn{font-family:var(--font-mono);font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:100px;padding:4px 12px;cursor:pointer;white-space:nowrap;letter-spacing:0.06em;transition:all 0.15s;}
+  .ov-expand-btn:hover{color:var(--yellow);border-color:var(--yellow);}
+  .overview-body{overflow:hidden;max-height:0;transition:max-height 0.4s ease;}
+  .overview-body.open{max-height:1000px;}
+  .ov-inner{padding:22px 20px;}
+  .ov-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;flex-wrap:wrap;gap:12px;}
+  .ov-title{font-family:var(--font-mono);font-size:15px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);line-height:1;}
+  .ov-subtitle{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-top:4px;}
+  .ov-wk-indicator{font-family:var(--font-mono);font-size:34px;color:var(--yellow);line-height:1;text-align:right;font-weight:700;}
+  .ov-wk-indicator span{display:block;font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;line-height:1;margin-top:4px;font-weight:400;}
   .week-track{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:16px;}
   @media(max-width:700px){.week-track{grid-template-columns:repeat(4,1fr);}}
   @media(max-width:420px){.week-track{grid-template-columns:repeat(4,1fr);gap:6px;}}
   .week-node{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 8px;text-align:center;}
   .week-node.active{background:rgba(245,197,24,0.12);border-color:rgba(245,197,24,0.4);}
   .week-node.completed{background:rgba(74,222,128,0.08);border-color:rgba(74,222,128,0.3);}
-  .week-node-label{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--muted);}
+  .week-node-label{font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--muted);}
   .week-node.active .week-node-label{color:var(--yellow);}
   .week-node.completed .week-node-label{color:#4ade80;}
-  .week-node-sub{font-family:var(--font-mono);font-size:9px;color:var(--subtle);letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;}
+  .week-node-sub{font-family:var(--font-mono);font-size:10px;color:var(--subtle);letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;}
   .week-node.active .week-node-sub{color:rgba(245,197,24,0.7);}
   .week-node.completed .week-node-sub{color:rgba(74,222,128,0.7);}
-  /* What changes box */
-  .week-changes-box{background:var(--surface-2);border:1px solid rgba(245,197,24,0.2);border-radius:var(--radius-sm);padding:14px 16px;}
-  .wcb-heading{font-family:var(--font-mono);font-size:10px;color:var(--yellow);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px;}
+  .week-changes-box{background:var(--surface-2);border:1px solid rgba(245,197,24,0.2);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:20px;}
+  .wcb-heading{font-family:var(--font-mono);font-size:11px;color:var(--yellow);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px;}
   .wcb-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px;}
   .wcb-row:last-child{margin-bottom:0;}
-  .wcb-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;border-radius:100px;padding:2px 8px;flex-shrink:0;margin-top:2px;}
+  .wcb-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;border-radius:100px;padding:2px 8px;flex-shrink:0;margin-top:2px;}
   .wcb-tag.lift{background:rgba(71,184,255,0.12);color:#47b8ff;border:1px solid rgba(71,184,255,0.25);}
   .wcb-tag.run{background:rgba(74,222,128,0.12);color:#4ade80;border:1px solid rgba(74,222,128,0.25);}
-  .wcb-text{font-size:12px;color:var(--muted);line-height:1.5;}
-  /* Calendar */
-  .cal-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:48px;}
+  .wcb-text{font-family:var(--font-body);font-size:13px;color:var(--muted);line-height:1.5;}
+  .ov-divider{height:1px;background:var(--border);margin:0 0 20px;}
   .streak-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
   .streak-box{background:var(--surface-2);border-radius:var(--radius-sm);padding:12px 10px;text-align:center;}
-  .streak-val{font-family:var(--font-display);font-size:28px;color:var(--yellow);line-height:1;}
-  .streak-lbl{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;}
+  .streak-val{font-family:var(--font-mono);font-size:26px;color:var(--yellow);line-height:1;font-weight:700;}
+  .streak-lbl{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;}
   .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-  .cal-month-label{font-family:var(--font-mono);font-size:11px;color:var(--text);letter-spacing:0.1em;text-transform:uppercase;}
-  .cal-nav-btn{font-family:var(--font-mono);font-size:11px;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:5px 12px;cursor:pointer;transition:all 0.15s;}
+  .cal-month-label{font-family:var(--font-mono);font-size:12px;color:var(--text);letter-spacing:0.1em;text-transform:uppercase;}
+  .cal-nav-btn{font-family:var(--font-mono);font-size:12px;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:5px 12px;cursor:pointer;transition:all 0.15s;}
   .cal-nav-btn:hover{color:var(--yellow);border-color:var(--yellow);}
   .cal-dow-row{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;}
-  .cal-dow{font-family:var(--font-mono);font-size:9px;color:var(--muted);text-align:center;letter-spacing:0.06em;}
+  .cal-dow{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-align:center;letter-spacing:0.06em;}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
-  .cal-cell{aspect-ratio:1;border-radius:var(--radius-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;font-weight:600;position:relative;}
+  .cal-cell{aspect-ratio:1;border-radius:var(--radius-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;font-weight:600;position:relative;}
   .cal-cell.empty,.cal-cell.future{color:var(--subtle);}
   .cal-cell.today{outline:1.5px solid var(--yellow);outline-offset:-1px;color:var(--yellow);}
   .cal-cell.lift-done{background:rgba(74,222,128,0.1);color:#4ade80;}
   .cal-cell.run-done{background:rgba(71,184,255,0.1);color:#47b8ff;}
   .cal-cell.missed{background:rgba(251,113,133,0.1);color:#fb7185;}
-  .cal-cell-label{font-size:8px;opacity:0.7;margin-top:1px;letter-spacing:0.04em;}
-  /* FAQ */
-  .faq-wrap{margin-bottom:48px;}
-  .faq-item{border-bottom:1px solid var(--border);}
-  .faq-q{width:100%;background:none;border:none;color:var(--text);font-family:var(--font-body);font-size:14px;font-weight:500;text-align:left;padding:16px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;transition:color 0.15s;}
-  .faq-q:hover{color:var(--yellow);}
-  .faq-q .faq-arrow{font-family:var(--font-mono);font-size:12px;color:var(--muted);transition:transform 0.2s;flex-shrink:0;}
-  .faq-q.open .faq-arrow{transform:rotate(180deg);color:var(--yellow);}
-  .faq-a{font-size:13px;color:var(--muted);line-height:1.65;max-height:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.3s ease;padding:0;}
-  .faq-a.open{max-height:200px;padding-bottom:16px;}
+  .cal-cell-label{font-size:9px;opacity:0.7;margin-top:1px;letter-spacing:0.04em;}
+  /* MISSION */
+  .mission-body{overflow:hidden;max-height:0;transition:max-height 0.35s ease;margin-bottom:48px;}
+  .mission-body.open{max-height:400px;}
+  .mission-card{background:rgba(245,197,24,0.03);border:1px solid rgba(245,197,24,0.12);border-radius:var(--radius);padding:22px 24px;}
+  .mission-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--yellow);margin-bottom:12px;}
+  .mission-text{font-family:var(--font-body);font-size:15px;color:var(--muted);line-height:1.75;}
+  .mission-text strong{color:var(--yellow);font-weight:500;}
+  /* FOOTER */
   footer{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid var(--border);}
-  .footer-left{font-family:var(--font-mono);font-size:10px;color:var(--subtle);letter-spacing:0.12em;text-transform:uppercase;}
-  .footer-right{font-family:var(--font-mono);font-size:10px;color:var(--subtle);}
+  .footer-left{font-family:var(--font-mono);font-size:11px;color:var(--subtle);letter-spacing:0.12em;text-transform:uppercase;}
+  .footer-right{font-family:var(--font-mono);font-size:11px;color:var(--subtle);}
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#f5c518" />
@@ -144,14 +168,17 @@
   <header>
     <div class="header-inner">
       <div class="logo-block">
-        <h1>FORGE</h1>
-        <p class="tagline">Strength &amp; Endurance &middot; 7-Week Block</p>
+        <div class="logo-eyebrow">Train. Build. Adapt.</div>
+        <div class="logo-main">
+          <span class="logo-bracket">[&nbsp;</span>
+          <span class="logo-text">FORGE</span>
+          <span class="logo-bracket">&nbsp;]</span>
+        </div>
+        <div class="logo-tagline">Strength &amp; Endurance &middot; 7-Week Block</div>
       </div>
-      <div class="about-wrap">
-        <button class="about-toggle-btn" id="about-toggle-btn">
-          About this program
-          <span class="arrow">&#9660;</span>
-        </button>
+      <div class="header-btns">
+        <button class="hdr-pill-btn" id="about-toggle-btn">About this program <span class="arrow">&#9660;</span></button>
+        <button class="hdr-pill-btn" id="faq-toggle-btn">FAQ <span class="arrow">&#9660;</span></button>
       </div>
     </div>
     <div class="about-body" id="about-body">
@@ -164,7 +191,11 @@
         <div class="pillar-card"><div class="pillar-title">Deload Week</div><div class="pillar-text">Week 7 is not optional. The body adapts during recovery, not during stress. Skip deload and you plateau. Run it and you come back stronger.</div></div>
       </div>
     </div>
+    <div class="faq-panel" id="faq-panel">
+      <div class="faq-panel-inner" id="faq-wrap"></div>
+    </div>
   </header>
+
   <div class="week-bar">
     <div class="week-bar-label">Week</div>
     <div class="week-pills" id="week-pills">
@@ -174,42 +205,66 @@
       <button class="week-pill" data-week="4">WK 4<span class="active-dot"></span></button>
       <button class="week-pill" data-week="5">WK 5<span class="active-dot"></span></button>
       <button class="week-pill" data-week="6">WK 6<span class="active-dot"></span></button>
-      <button class="week-pill" data-week="7">WK 7 &mdash; Deload<span class="active-dot"></span></button>
+      <button class="week-pill" data-week="7">Deload<span class="active-dot"></span></button>
     </div>
   </div>
+
   <div class="section-label">This Week</div>
   <div class="day-grid" id="day-grid"></div>
-  <div class="section-label">Block Progress <button class="collapse-btn" id="bp-toggle">Hide &#9650;</button></div>
-  <div class="block-progress-body" id="block-progress-body">
-    <div class="block-header">
-      <div><div class="block-title">7-WEEK BLOCK</div><div class="block-subtitle">Strength &middot; Run &middot; Deload</div></div>
-      <div class="block-week-indicator" id="week-display">1<span>Current Week</span></div>
+
+  <div class="section-label">Block Overview <button class="collapse-btn" id="ov-toggle">Show &#9660;</button></div>
+  <div class="overview-card">
+    <div class="overview-summary" id="ov-summary" onclick="toggleOverview()">
+      <div class="ov-stats">
+        <div class="ov-stat"><div class="ov-stat-val" id="ov-streak">0</div><div class="ov-stat-lbl">Streak</div></div>
+        <div class="ov-stat"><div class="ov-stat-val" id="ov-days">0</div><div class="ov-stat-lbl">Days Done</div></div>
+        <div class="ov-stat"><div class="ov-stat-val" id="ov-pct">0%</div><div class="ov-stat-lbl">Block %</div></div>
+        <div class="ov-stat"><div class="ov-stat-val" id="ov-wk-mini">WK 1</div><div class="ov-stat-lbl">Current</div></div>
+      </div>
+      <button class="ov-expand-btn" id="ov-expand-btn" onclick="event.stopPropagation();toggleOverview()">Expand &#9660;</button>
     </div>
-    <div class="week-track" id="week-track"></div>
-    <div class="week-changes-box" id="week-changes-box"></div>
+    <div class="overview-body" id="overview-body">
+      <div class="ov-inner">
+        <div class="ov-header">
+          <div><div class="ov-title">7-Week Block</div><div class="ov-subtitle">Strength &middot; Run &middot; Deload</div></div>
+          <div class="ov-wk-indicator" id="week-display">1<span>Current Week</span></div>
+        </div>
+        <div class="week-track" id="week-track"></div>
+        <div class="week-changes-box" id="week-changes-box"></div>
+        <div class="ov-divider"></div>
+        <div class="streak-row">
+          <div class="streak-box"><div class="streak-val" id="streak-cur">0</div><div class="streak-lbl">Current Streak</div></div>
+          <div class="streak-box"><div class="streak-val" id="streak-best">0</div><div class="streak-lbl">Best Streak</div></div>
+          <div class="streak-box"><div class="streak-val" id="days-done">0</div><div class="streak-lbl">Days Done</div></div>
+          <div class="streak-box"><div class="streak-val" id="pct-done">0%</div><div class="streak-lbl">Block %</div></div>
+        </div>
+        <div class="cal-nav">
+          <button class="cal-nav-btn" id="cal-prev">&#8592;</button>
+          <div class="cal-month-label" id="cal-month-label">March 2026</div>
+          <button class="cal-nav-btn" id="cal-next">&#8594;</button>
+        </div>
+        <div class="cal-dow-row">
+          <div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div><div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
+    </div>
   </div>
-  <div class="section-label">Workout Calendar</div>
-  <div class="cal-card">
-    <div class="streak-row">
-      <div class="streak-box"><div class="streak-val" id="streak-cur">0</div><div class="streak-lbl">Current Streak</div></div>
-      <div class="streak-box"><div class="streak-val" id="streak-best">0</div><div class="streak-lbl">Best Streak</div></div>
-      <div class="streak-box"><div class="streak-val" id="days-done">0</div><div class="streak-lbl">Days Done</div></div>
-      <div class="streak-box"><div class="streak-val" id="pct-done">0%</div><div class="streak-lbl">Block %</div></div>
+
+  <div class="section-label">Mission <button class="collapse-btn" id="mission-toggle">Show &#9660;</button></div>
+  <div class="mission-body" id="mission-body">
+    <div class="mission-card">
+      <div class="mission-eyebrow">Why FORGE exists</div>
+      <div class="mission-text">
+        <strong>Fitness information shouldn&apos;t be locked behind a paywall.</strong><br><br>
+        When I started my fitness journey, websites like Bodybuilding.com gave away free templates to everyone. Somewhere along the way that changed &mdash; today everything is gated. Programs, tracking tools, periodization systems. All paywalled.<br><br>
+        FORGE exists to push back on that. <strong>Evidence-based programming, free. Forever.</strong> No account. No subscription. No ads. Just a tool that helps you train smarter &mdash; built in the open, for anyone willing to put in the work.
+      </div>
     </div>
-    <div class="cal-nav">
-      <button class="cal-nav-btn" id="cal-prev">&#8592;</button>
-      <div class="cal-month-label" id="cal-month-label">March 2026</div>
-      <button class="cal-nav-btn" id="cal-next">&#8594;</button>
-    </div>
-    <div class="cal-dow-row">
-      <div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div><div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div>
-    </div>
-    <div class="cal-grid" id="cal-grid"></div>
   </div>
-  <div class="section-label">FAQ</div>
-  <div class="faq-wrap" id="faq-wrap"></div>
+
   <footer>
-    <div class="footer-left">FORGE &middot; STRENGTH &amp; ENDURANCE &middot; BLOCK 1</div>
+    <div class="footer-left">FORGE &middot; Strength &amp; Endurance &middot; Block 1</div>
     <div class="footer-right" id="last-updated"></div>
   </footer>
 </div>
@@ -231,7 +286,6 @@ var DAYS=[
   {short:'SUN',rest:'DAY',session:'Zone 2 Run',type:'run',accent:'#6ee7b7',href:'forge-sunday.html',
    zones:[{label:'Zone 2',hr:'133-145'}],distance:'6-8 mi'},
 ];
-
 var WEEK_CHANGES={
   1:{lift:'Establish your base weights &mdash; log every set, every rep. These numbers set your entire block trajectory.',run:'Zone 2 only. No tempo work. Building the aerobic floor this week.'},
   2:{lift:'Same weights as WK 1 &mdash; quality over load. Lock in form on every compound before adding weight.',run:'Tempo extends to 3 &times; 10 min. Rest between intervals stays at 3 min.'},
@@ -241,44 +295,48 @@ var WEEK_CHANGES={
   6:{lift:'Peak week &mdash; heaviest weights of the entire block. No junk sets, no skipped reps.',run:'Final hard tempo before deload. Leave everything on the track.'},
   7:{lift:'Deload &mdash; all weights drop to WK 1 loads. Full ROM, no grinding. Adaptation happens here.',run:'Two long 15 min tempo intervals with 3 min rest. Easy Zone 2 on Sunday.'}
 };
-
 var FAQ_ITEMS=[
   {q:'What does anchor vs flex mean?',a:'Anchor exercises are fixed &mdash; they are the structural spine of the program and drive the primary stimulus for each muscle group. Flex exercises can be swapped via the exercise card for a different movement that targets the same muscle. Anchors never change. Flex exercises have three curated alternatives each.'},
   {q:'How do I set my starting weights?',a:'Open any training day and enter the weight you can perform for the target reps with 1&ndash;2 reps in reserve (not to failure). The app will auto-calculate your weights for all 7 weeks from that base. Adjust at any time &mdash; the system back-calculates your base weight.'},
-  {q:'Can I change the order of exercises?',a:'Yes &mdash; flex exercises can be reordered by grabbing the drag handle at the top of each card. Anchor exercises always stay fixed at the top of each day because CNS-fresh compound work comes first.'},
+  {q:'Can I change the order of exercises?',a:'Yes &mdash; flex exercises can be reordered via the roster panel at the top of each day. Anchor exercises always stay fixed because CNS-fresh compound work comes first.'},
   {q:'What should I do if I miss a day?',a:'Skip it and pick up the next scheduled day. Do not try to make up missed sessions by doubling up &mdash; that stacks fatigue and creates a worse outcome than the missed day itself. The program is designed with built-in recovery.'},
   {q:'How does progressive overload work here?',a:'Each exercise has a delta value (e.g., +2.5 lbs/week). The app adds that delta each week automatically. You enter WK 1 weights once, and WK 2 through WK 6 calculate themselves. Week 7 uses WK 6 weights at reduced volume.'},
   {q:'Why is the deload mandatory &mdash; can I skip it?',a:'The deload is when your body actually adapts to the accumulated stimulus from weeks 1&ndash;6. The stress of training is the signal; sleep and recovery are when the signal gets processed. Skip deload and you start Block 2 under-recovered, which reduces the gains from the entire previous block.'}
 ];
-
-var BLOCK_START = new Date(2026,2,16);
-var DAY_TYPE_MAP={0:'run',1:'lift',2:'lift',3:'lift',4:'run',5:'lift',6:'lift'};
+var BLOCK_START=new Date(2026,2,16);
 var DAY_LABEL_MAP={0:'Z2',1:'Upper',2:'Lower',3:'Push',4:'Tempo',5:'Pull',6:'Leg'};
-
 var currentWeek=1;
 try{var _w=parseInt(localStorage.getItem('forge_week_v1'));if(_w>=1&&_w<=7)currentWeek=_w;}catch(e){}
-
 var TODAY_MAP=[6,0,1,2,3,4,5];
 var todayIdx=TODAY_MAP[new Date().getDay()];
-
 var calYear=2026,calMonth=2;
 
-// About toggle
+// About
 document.getElementById('about-toggle-btn').addEventListener('click',function(){
-  var btn=this;
-  var body=document.getElementById('about-body');
-  btn.classList.toggle('open');
-  body.classList.toggle('open');
-  btn.querySelector('.arrow').textContent=btn.classList.contains('open')?'▲':'▼';
+  var open=document.getElementById('about-body').classList.toggle('open');
+  this.classList.toggle('open',open);
+  this.querySelector('.arrow').textContent=open?'▲':'▼';
 });
-
-// Block Progress collapse
-var bpCollapsed=false;
-document.getElementById('bp-toggle').addEventListener('click',function(){
-  bpCollapsed=!bpCollapsed;
-  var body=document.getElementById('block-progress-body');
-  body.classList.toggle('collapsed',bpCollapsed);
-  this.textContent=bpCollapsed?'Show ▼':'Hide ▲';
+// FAQ
+document.getElementById('faq-toggle-btn').addEventListener('click',function(){
+  var open=document.getElementById('faq-panel').classList.toggle('open');
+  this.classList.toggle('open',open);
+  this.querySelector('.arrow').textContent=open?'▲':'▼';
+});
+// Overview toggle
+var ovOpen=false;
+function toggleOverview(){
+  ovOpen=!ovOpen;
+  document.getElementById('overview-body').classList.toggle('open',ovOpen);
+  document.getElementById('ov-summary').classList.toggle('open',ovOpen);
+  document.getElementById('ov-toggle').innerHTML=ovOpen?'Hide &#9650;':'Show &#9660;';
+  document.getElementById('ov-expand-btn').innerHTML=ovOpen?'Collapse &#9650;':'Expand &#9660;';
+  if(ovOpen){renderCalendar();}
+}
+// Mission toggle
+document.getElementById('mission-toggle').addEventListener('click',function(){
+  var open=document.getElementById('mission-body').classList.toggle('open');
+  this.innerHTML=open?'Hide &#9650;':'Show &#9660;';
 });
 
 function renderGrid(){
@@ -288,7 +346,7 @@ function renderGrid(){
     var card=document.createElement('a');
     card.href=day.href;
     card.style.setProperty('--card-accent',day.accent);
-    card.className='day-card'+(day.type==='run'?' run-card':'');
+    card.className='day-card';
     var html='<div class="card-day-name"><span>'+day.short+'</span>'+day.rest+(i===todayIdx?' <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:'+day.accent+';margin-left:4px;vertical-align:middle;"></span>':'')+'</div>';
     html+='<div class="card-session-type">'+day.session+'</div>';
     if(day.type==='run'){
@@ -326,10 +384,8 @@ function renderTrack(){
   }
   document.getElementById('week-display').innerHTML=currentWeek+'<span>Current Week</span>';
   var wc=WEEK_CHANGES[currentWeek];
-  var box=document.getElementById('week-changes-box');
-  box.innerHTML='<div class="wcb-heading">WK '+currentWeek+' &mdash; What changes</div>'+
-    '<div class="wcb-row"><span class="wcb-tag lift">Lift</span><div class="wcb-text">'+wc.lift+'</div></div>'+
-    '<div class="wcb-row"><span class="wcb-tag run">Run</span><div class="wcb-text">'+wc.run+'</div></div>';
+  document.getElementById('week-changes-box').innerHTML='<div class="wcb-heading">WK '+currentWeek+' &mdash; What changes</div><div class="wcb-row"><span class="wcb-tag lift">Lift</span><div class="wcb-text">'+wc.lift+'</div></div><div class="wcb-row"><span class="wcb-tag run">Run</span><div class="wcb-text">'+wc.run+'</div></div>';
+  document.getElementById('ov-wk-mini').textContent=currentWeek===7?'DL':'WK '+currentWeek;
 }
 
 function syncPills(){
@@ -347,16 +403,11 @@ document.getElementById('week-pills').addEventListener('click',function(e){
   try{localStorage.setItem('forge_week_v1',currentWeek);}catch(err){}
   syncPills();
   renderTrack();
+  if(ovOpen){renderCalendar();}
 });
 
-// Calendar
-function getCompletions(){
-  try{return JSON.parse(localStorage.getItem('forge_completions_v1'))||{};}catch(e){return{};}
-}
-
-function dateKey(y,m,d){
-  return y+'-'+(m<9?'0':'')+(m+1)+'-'+(d<10?'0':'')+d;
-}
+function getCompletions(){try{return JSON.parse(localStorage.getItem('forge_completions_v1'))||{};}catch(e){return{};}}
+function dateKey(y,m,d){return y+'-'+(m<9?'0':'')+(m+1)+'-'+(d<10?'0':'')+d;}
 
 function renderCalendar(){
   var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -388,16 +439,12 @@ function renderCalendar(){
     cell.innerHTML=d+(inBlock&&!isFuture?'<div class="cal-cell-label">'+lbl+'</div>':'');
     grid.appendChild(cell);
   }
-  // Stats
   var allKeys=Object.keys(completions);
-  var liftDone=allKeys.filter(function(k){return completions[k]==='lift';}).length;
-  var runDone=allKeys.filter(function(k){return completions[k]==='run';}).length;
-  var total=liftDone+runDone;
-  document.getElementById('days-done').textContent=total;
-  // Block days = days from block start to today
+  var total=allKeys.filter(function(k){return completions[k]==='lift'||completions[k]==='run';}).length;
   var blockDays=Math.max(0,Math.floor((today-BLOCK_START)/(1000*60*60*24))+1);
-  document.getElementById('pct-done').textContent=blockDays>0?Math.round((total/blockDays)*100)+'%':'0%';
-  // Streak
+  var pct=blockDays>0?Math.round((total/blockDays)*100)+'%':'0%';
+  document.getElementById('days-done').textContent=total;
+  document.getElementById('pct-done').textContent=pct;
   var streak=0,best=0,cur=0;
   var check=new Date(today);
   for(var s=0;s<60;s++){
@@ -408,15 +455,17 @@ function renderCalendar(){
   }
   document.getElementById('streak-cur').textContent=streak;
   document.getElementById('streak-best').textContent=best;
+  document.getElementById('ov-streak').textContent=streak;
+  document.getElementById('ov-days').textContent=total;
+  document.getElementById('ov-pct').textContent=pct;
 }
 
 document.getElementById('cal-prev').addEventListener('click',function(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();});
 document.getElementById('cal-next').addEventListener('click',function(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();});
 
-// FAQ
 function renderFAQ(){
   var wrap=document.getElementById('faq-wrap');
-  FAQ_ITEMS.forEach(function(item,i){
+  FAQ_ITEMS.forEach(function(item){
     var div=document.createElement('div');
     div.className='faq-item';
     var btn=document.createElement('button');
