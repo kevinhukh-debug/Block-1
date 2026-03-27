@@ -156,29 +156,12 @@
   .footer-left{font-family:var(--font-mono);font-size:11px;color:var(--subtle);letter-spacing:0.12em;text-transform:uppercase;}
   .footer-right{font-family:var(--font-mono);font-size:11px;color:var(--subtle);}
 
-  .install-panel{overflow:hidden;max-height:0;transition:max-height 0.35s ease;width:100%;}
-  .install-panel.open{max-height:500px;}
-  .install-panel-inner{background:var(--surface);border:1px solid rgba(74,222,128,0.18);border-radius:var(--radius);padding:4px 0;margin-bottom:24px;}
-  .install-tabs{display:flex;gap:6px;padding:12px 16px 8px;}
-  .install-tab{font-family:var(--font-mono);font-size:11px;padding:4px 12px;border-radius:4px;border:1px solid var(--border);color:var(--muted);cursor:pointer;background:none;letter-spacing:0.08em;}
-  .install-tab.active{border-color:rgba(74,222,128,0.35);color:#4ade80;}
-  .install-steps{padding:0 16px 14px;}
-  .install-step{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--muted);line-height:1.5;}
-  .install-step:last-child{border-bottom:none;}
-  .install-step strong{color:var(--text);font-weight:500;}
-  .install-step-num{font-family:var(--font-mono);font-size:11px;color:#4ade80;flex-shrink:0;margin-top:2px;letter-spacing:0.06em;}
-  .notif-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-  .notif-row-txt{font-family:var(--font-mono);font-size:12px;color:var(--muted);}
+font-family:var(--font-mono);font-size:11px;color:#4ade80;flex-shrink:0;margin-top:2px;letter-spacing:0.06em;}
+font-family:var(--font-mono);font-size:12px;color:var(--muted);}
   .notif-enable-btn{font-family:var(--font-mono);font-size:11px;padding:5px 14px;border-radius:6px;background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.25);color:#4ade80;cursor:pointer;letter-spacing:0.08em;}
   .notif-on-txt{font-family:var(--font-mono);font-size:11px;color:#4ade80;letter-spacing:0.08em;}
   .notif-off-txt{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:0.08em;}
-  .vol-week-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:10px;}
-  .vol-week-card::before{content:'';display:block;height:3px;background:linear-gradient(90deg,#47b8ff,#f5c518,#fb923c);}
-  .vol-week-inner{padding:14px 18px;}
-  .vol-week-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);}
-  .vol-week-row:last-child{border-bottom:none;}
-  .vol-week-muscle{font-family:var(--font-mono);font-size:12px;color:var(--muted);}
-  .vol-week-val{font-family:var(--font-mono);font-size:13px;color:#4ade80;font-weight:700;}
+font-family:var(--font-mono);font-size:13px;color:#4ade80;font-weight:700;}
 
   .install-panel{overflow:hidden;max-height:0;transition:max-height 0.35s ease;width:100%;}
   .install-panel.open{max-height:500px;}
@@ -228,7 +211,8 @@
         <button class="hdr-pill-btn" id="about-toggle-btn">About this program <span class="arrow">&#9660;</span></button>
         <button class="hdr-pill-btn" id="faq-toggle-btn">FAQ <span class="arrow">&#9660;</span></button>
         <button class="hdr-pill-btn" id="install-toggle-btn">Install <span class="arrow">&#9660;</span></button>
-        <button class="hdr-pill-btn" id="install-toggle-btn">Install <span class="arrow">&#9660;</span></button>
+        <button class="hdr-pill-btn" id="mission-hdr-btn">Mission <span class="arrow">&#9660;</span></button>
+        
       </div>
     </div>
     <div class="about-body" id="about-body">
@@ -247,8 +231,8 @@
     <div class="install-panel" id="install-panel">
       <div class="install-panel-inner">
         <div class="install-tabs">
-          <button class="install-tab active" id="ios-tab" onclick="switchInstallTab('ios')">iOS</button>
-          <button class="install-tab" id="android-tab" onclick="switchInstallTab('android')">Android</button>
+          <button class="install-tab active" id="ios-tab" onclick="switchInstallTab('ios')">Safari</button>
+          <button class="install-tab" id="android-tab" onclick="switchInstallTab('android')">Chrome</button>
         </div>
         <div class="install-steps" id="ios-steps">
           <div class="install-step"><div class="install-step-num">1</div><div>Open FORGE in <strong>Safari</strong> (not Chrome or Firefox)</div></div>
@@ -261,6 +245,12 @@
           <div class="install-step"><div class="install-step-num">2</div><div>Tap the three-dot menu in the top right</div></div>
           <div class="install-step"><div class="install-step-num">3</div><div>Tap <strong>Add to Home Screen</strong> or <strong>Install App</strong></div></div>
           <div class="install-step"><div class="install-step-num">4</div><div>Tap Add &mdash; FORGE installs like a native app</div></div>
+        </div>
+
+        <div style="text-align:center;padding:12px 16px 16px;border-top:1px solid var(--border);">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.12em;margin-bottom:10px;">SCAN TO INSTALL</div>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&amp;data=https%3A%2F%2Fkevinhukh-debug.github.io%2FBlock-1%2F&amp;color=0d0d0d&amp;bgcolor=ffffff&amp;margin=6" alt="FORGE QR code" style="width:120px;height:120px;border-radius:8px;border:1px solid var(--border);">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--subtle);margin-top:6px;letter-spacing:0.06em;">kevinhukh-debug.github.io/Block-1</div>
         </div>
       </div>
     </div>
@@ -280,14 +270,8 @@
   </div>
 
   <div class="notif-row" id="notif-row">
-    <div class="notif-row-txt">Rest timer notifications</div>
+    <div class="notif-row-txt">🌮 Rest timer notifications</div>
     <div id="notif-status-wrap"><button class="notif-enable-btn" id="notif-enable-btn">Enable</button></div>
-  </div>
-  <div class="section-label">Volume This Week</div>
-  <div class="vol-week-card">
-    <div class="vol-week-inner" id="vol-week-inner">
-      <div style="font-family:var(--font-mono);font-size:12px;color:var(--subtle)">Complete a session to see volume data.</div>
-    </div>
   </div>
   <div class="section-label">This Week</div>
   <div class="day-grid" id="day-grid"></div>
