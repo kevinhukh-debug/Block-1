@@ -165,6 +165,8 @@ font-family:var(--font-mono);font-size:13px;color:#4ade80;font-weight:700;}
 
   .install-panel{overflow:hidden;max-height:0;transition:max-height 0.35s ease;width:100%;}
   .install-panel.open{max-height:500px;}
+  .mission-panel{overflow:hidden;max-height:0;transition:max-height 0.35s ease;width:100%;}
+  .mission-panel.open{max-height:400px;}
   .install-panel-inner{background:var(--surface);border:1px solid rgba(74,222,128,0.18);border-radius:var(--radius);padding:4px 0;margin-bottom:24px;}
   .install-tabs{display:flex;gap:6px;padding:12px 16px 8px;}
   .install-tab{font-family:var(--font-mono);font-size:11px;padding:4px 12px;border-radius:4px;border:1px solid var(--border);color:var(--muted);cursor:pointer;background:none;letter-spacing:0.08em;}
@@ -253,6 +255,15 @@ font-family:var(--font-mono);font-size:13px;color:#4ade80;font-weight:700;}
           <div style="font-family:var(--font-mono);font-size:10px;color:var(--subtle);margin-top:6px;letter-spacing:0.06em;">kevinhukh-debug.github.io/Block-1</div>
         </div>
       </div>
+    <div class="mission-panel" id="mission-panel">
+      <div class="mission-card" style="margin-bottom:24px;">
+        <div class="mission-eyebrow">Why FORGE exists</div>
+        <div class="mission-text">
+          <strong>Fitness information shouldn&apos;t be locked behind a paywall.</strong><br><br>
+          When I started my fitness journey, websites like Bodybuilding.com gave away free templates to everyone. Somewhere along the way that changed &mdash; today everything is gated. Programs, tracking tools, periodization systems. All paywalled.<br><br>
+          FORGE exists to push back on that. <strong>Evidence-based programming, free. Forever.</strong> No account. No subscription. No ads. Just a tool that helps you train smarter &mdash; built in the open, for anyone willing to put in the work.
+        </div>
+      </div>
     </div>
   </header>
 
@@ -271,61 +282,14 @@ font-family:var(--font-mono);font-size:13px;color:#4ade80;font-weight:700;}
 
   <div class="notif-row" id="notif-row">
     <div class="notif-row-txt">🌮 Rest timer notifications</div>
-    <div id="notif-status-wrap"><button class="notif-enable-btn" id="notif-enable-btn">Enable</button></div>
+    <div id="notif-status-wrap"></div>
   </div>
   <div class="section-label">This Week</div>
   <div class="day-grid" id="day-grid"></div>
 
-  <div class="section-label">Block Overview <button class="collapse-btn" id="ov-toggle">Show &#9660;</button></div>
-  <div class="overview-card">
-    <div class="overview-summary" id="ov-summary" onclick="toggleOverview()">
-      <div class="ov-stats">
-        <div class="ov-stat"><div class="ov-stat-val" id="ov-streak">0</div><div class="ov-stat-lbl">Streak</div></div>
-        <div class="ov-stat"><div class="ov-stat-val" id="ov-days">0</div><div class="ov-stat-lbl">Days Done</div></div>
-        <div class="ov-stat"><div class="ov-stat-val" id="ov-pct">0%</div><div class="ov-stat-lbl">Block %</div></div>
-        <div class="ov-stat"><div class="ov-stat-val" id="ov-wk-mini">WK 1</div><div class="ov-stat-lbl">Current</div></div>
-      </div>
-      <button class="ov-expand-btn" id="ov-expand-btn" onclick="event.stopPropagation();toggleOverview()">Expand &#9660;</button>
-    </div>
-    <div class="overview-body" id="overview-body">
-      <div class="ov-inner">
-        <div class="ov-header">
-          <div><div class="ov-title">7-Week Block</div><div class="ov-subtitle">Strength &middot; Run &middot; Deload</div></div>
-          <div class="ov-wk-indicator" id="week-display">1<span>Current Week</span></div>
-        </div>
-        <div class="week-track" id="week-track"></div>
-        <div class="week-changes-box" id="week-changes-box"></div>
-        <div class="ov-divider"></div>
-        <div class="streak-row">
-          <div class="streak-box"><div class="streak-val" id="streak-cur">0</div><div class="streak-lbl">Current Streak</div></div>
-          <div class="streak-box"><div class="streak-val" id="streak-best">0</div><div class="streak-lbl">Best Streak</div></div>
-          <div class="streak-box"><div class="streak-val" id="days-done">0</div><div class="streak-lbl">Days Done</div></div>
-          <div class="streak-box"><div class="streak-val" id="pct-done">0%</div><div class="streak-lbl">Block %</div></div>
-        </div>
-        <div class="cal-nav">
-          <button class="cal-nav-btn" id="cal-prev">&#8592;</button>
-          <div class="cal-month-label" id="cal-month-label">March 2026</div>
-          <button class="cal-nav-btn" id="cal-next">&#8594;</button>
-        </div>
-        <div class="cal-dow-row">
-          <div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div><div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div>
-        </div>
-        <div class="cal-grid" id="cal-grid"></div>
-      </div>
-    </div>
-  </div>
 
-  <div class="section-label">Mission <button class="collapse-btn" id="mission-toggle">Show &#9660;</button></div>
-  <div class="mission-body" id="mission-body">
-    <div class="mission-card">
-      <div class="mission-eyebrow">Why FORGE exists</div>
-      <div class="mission-text">
-        <strong>Fitness information shouldn&apos;t be locked behind a paywall.</strong><br><br>
-        When I started my fitness journey, websites like Bodybuilding.com gave away free templates to everyone. Somewhere along the way that changed &mdash; today everything is gated. Programs, tracking tools, periodization systems. All paywalled.<br><br>
-        FORGE exists to push back on that. <strong>Evidence-based programming, free. Forever.</strong> No account. No subscription. No ads. Just a tool that helps you train smarter &mdash; built in the open, for anyone willing to put in the work.
-      </div>
-    </div>
-  </div>
+
+
 
   <footer>
     <div class="footer-left">FORGE &middot; Strength &amp; Endurance &middot; Block 1</div>
@@ -564,9 +528,15 @@ var isAndroid=/Android/i.test(navigator.userAgent);
 if(isAndroid)switchInstallTab('android');
 document.getElementById('install-toggle-btn').addEventListener('click',function(){
   var panel=document.getElementById('install-panel');
-  var btn=document.getElementById('install-toggle-btn');
-  panel.classList.toggle('open');
-  btn.classList.toggle('open');
+  var open=panel.classList.toggle('open');
+  this.classList.toggle('open',open);
+  this.querySelector('.arrow').textContent=open?'▲':'▼';
+});
+document.getElementById('mission-hdr-btn').addEventListener('click',function(){
+  var panel=document.getElementById('mission-panel');
+  var open=panel.classList.toggle('open');
+  this.classList.toggle('open',open);
+  this.querySelector('.arrow').textContent=open?'▲':'▼';
 });
 function initNotifUI(){
   var wrap=document.getElementById('notif-status-wrap');

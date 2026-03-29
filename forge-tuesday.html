@@ -643,7 +643,7 @@ function fireRestNotification(){
     if (!enabled) return;
     if (!("Notification" in window)) return;
     if (Notification.permission === "granted") {
-      new Notification("FORGE — Rest complete", {body: "Time to lift.", icon: "/Block-1/forge-icon-192.png", silent: true});
+      new Notification("FORGE — Rest complete", {body: "Time to lift.", silent: true});
     }
   } catch(e) {}
 }
